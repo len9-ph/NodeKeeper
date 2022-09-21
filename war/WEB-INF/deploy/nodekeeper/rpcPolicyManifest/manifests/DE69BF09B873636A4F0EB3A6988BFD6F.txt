@@ -1,0 +1,2 @@
+serviceClass: com.lgadetsky.nodekeeper.client.GreetingService
+path: B02086A4C47536926C82E9021D46AF3A.gwt.rpc
