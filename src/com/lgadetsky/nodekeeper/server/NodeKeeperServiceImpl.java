@@ -8,28 +8,36 @@ import com.lgadetsky.nodekeeper.shared.Node;
 
 public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeKeeperService{
 
+    private static final long serialVersionUID = 1L;
+    
+    private NodeDao nodeDao;
+    
     @Override
     public List<Node> getAllNodes() {
-        // TODO Auto-generated method stub
-        return null;
+        return nodeDao.getAll();
     }
 
     @Override
     public Node getNode(int id) {
-        // TODO Auto-generated method stub
-        return null;
+        return nodeDao.get(id);
     }
 
     @Override
     public boolean update(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+        Node res = nodeDao.update(node);
+        if (res == null)
+            return false;
+        else
+            return true;
     }
 
     @Override
     public boolean delete(int id) {
-        // TODO Auto-generated method stub
-        return false;
+        int res = nodeDao.delete(id);
+        if (res < 0)
+            return false;
+        else 
+            return true;
     }
     
 }

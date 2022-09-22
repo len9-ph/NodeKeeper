@@ -2,79 +2,103 @@ package com.lgadetsky.nodekeeper.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.TextBox;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class NodeKeeper implements EntryPoint {
-    private FlowPanel upperBlock = new FlowPanel();
-    private FlowPanel lowerBlock = new FlowPanel();
+    // Two big blocks of layout
+    private FlowPanel upperPanel = new FlowPanel();
+    private FlowPanel lowerPanel = new FlowPanel();
+    
+    // Blocks in upperPanel creating
+    private ScrollPanel treePanel = new ScrollPanel();
     private FlowPanel selectedPanel = new FlowPanel();
-    private FlowPanel allNodesPanel = new FlowPanel();
+    
+    private Grid selectedGrid = new Grid(5, 2);
+    private TextBox idBox = new TextBox();
+    private TextBox parentBox = new TextBox();
+    private TextBox nameBox = new TextBox();
+    private TextBox ipBox = new TextBox();
+    private TextBox portBox = new TextBox();
+    
+    // Blocks in lowerPanel creating
     private FlowPanel buttonPanel = new FlowPanel();
+    private Button addRootButton = new Button("Add root node");
+    private Button addChildButton = new Button("Add child");
+    private Button editButton = new Button("Edit");
+    private Button deleteButton = new Button("Delete");
+    private Label selectedNodeLabel = new Label("Selected node: ");
+    private TextBox selectedNodeTextBox = new TextBox();
     
-    private FlowPanel treePanel = new FlowPanel();
-    
-    private FlexTable selectedTable = new FlexTable();
-    private FlexTable allNodesTable = new FlexTable();
-    
+    private FlowPanel allNodesPanel = new FlowPanel();
+    private Button refreshButton = new Button("Refresh");
+    private Grid allNodesGrid = new Grid(1, 5);
     
     @Override
     public void onModuleLoad() {
-        // Scroll panel 
-        HTML content = new HTML("Scroll panel for nodes");
-        treePanel.add(content);
-        treePanel.setSize("200px", "100px");
-        treePanel.addStyleName("treePanel");
-        // TODO build tree panel
+        // Upper panel assembly
+        // TODO add tree implementation
+        TextBox textStub = new TextBox();
+        textStub.setText("TEXTSTUB");
+        treePanel.add(textStub);
+        treePanel.setStyleName("treePanel");
+        upperPanel.add(treePanel);
         
-        // Table for selected item
-        selectedTable.setText(0, 0, "id");
-        selectedTable.setText(1, 0, "parentId");
-        selectedTable.setText(2, 0, "name");
-        selectedTable.setText(3, 0, "ip");
-        selectedTable.setText(4, 0, "port");
-        
-        // Button table
-        buttonPanel.add(new Button("Add root node"));
-        buttonPanel.add(new Button("Add child"));
-        buttonPanel.add(new Button("Edit"));
-        buttonPanel.add(new Button("Delete"));
-        // TODO add selected item indicator
-        
-        // All nodes Table
-        allNodesTable.setText(0, 0, "id");
-        allNodesTable.setText(0, 1, "parentId");
-        allNodesTable.setText(0, 2, "name");
-        allNodesTable.setText(0, 3, "ip");
-        allNodesTable.setText(0, 4, "port");
-        
-        // UpperPanelAssembly
-        selectedPanel.addStyleName("selectedPanel");
-        selectedPanel.add(selectedTable);
-        upperBlock.add(treePanel);
-        upperBlock.add(selectedPanel);
-        upperBlock.addStyleName("upperPanel");
-        
-        // LowerPanelAssembly
-        allNodesPanel.add(allNodesTable);
-        lowerBlock.add(buttonPanel);
-        lowerBlock.add(allNodesPanel);
-        lowerBlock.addStyleName("lowerPanel");
-        
-        // Root panel assembly
-        RootPanel.get("nodeKeeper").add(upperBlock);
-        RootPanel.get("nodeKeeper").add(lowerBlock);
+        selectedGrid.setText(0, 0, "id");
+        selectedGrid.setText(1, 0, "parentId");
+        selectedGrid.setText(2, 0, "name");
+        selectedGrid.setText(3, 0, "ip");
+        selectedGrid.setText(4, 0, "port");
+        selectedGrid.setWidget(0, 1, idBox);
+        selectedGrid.setWidget(1, 1, parentBox);
+        selectedGrid.setWidget(2, 1, nameBox);
+        selectedGrid.setWidget(3, 1, ipBox);
+        selectedGrid.setWidget(4, 1, portBox);
         
         
+        selectedGrid.setStyleName("selectedGrid");
         
+        upperPanel.add(selectedGrid);
+        upperPanel.setStyleName("panel");
+        
+        // Lower panel assembly
+        buttonPanel.add(addRootButton);
+        buttonPanel.add(addChildButton);
+        buttonPanel.add(editButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(selectedNodeLabel);
+        buttonPanel.add(selectedNodeTextBox);
+        
+        selectedNodeLabel.setStyleName("selectedNodePanel");
+        
+        lowerPanel.add(buttonPanel);
+        
+        allNodesPanel.add(refreshButton);
+        allNodesGrid.setText(0, 0, "ip");
+        allNodesGrid.setText(0, 1, "parentId");
+        allNodesGrid.setText(0, 2, "name");
+        allNodesGrid.setText(0, 3, "ip");
+        allNodesGrid.setText(0, 4, "port");
+        allNodesPanel.add(allNodesGrid);
+        allNodesGrid.setStyleName("allNodesGrid");
+        
+        lowerPanel.add(allNodesPanel);
+        lowerPanel.setStyleName("panel");
+        
+        RootPanel.get("nodeKeeper").add(upperPanel);
+        RootPanel.get("nodeKeeper").add(lowerPanel);
+        
+    }
+    
+    private void addRootNode() {
     }
 
 }

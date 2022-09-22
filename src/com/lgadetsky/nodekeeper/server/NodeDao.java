@@ -23,17 +23,17 @@ public class NodeDao implements DAO<Node>{
 
     @Override
     public List<Node> getAll() {
-
         return nodes;
     }
 
     @Override
-    public void save(Node node) {
+    public Node save(Node node) {
         nodes.add(node);
+        return node;
     }
 
     @Override
-    public void update(Node node) {
+    public Node update(Node node) {
         Iterator<Node> nodeIterator = nodes.iterator();
         while (nodeIterator.hasNext()) {
             Node nextNode = nodeIterator.next();
@@ -42,18 +42,22 @@ public class NodeDao implements DAO<Node>{
                 nextNode.setParentId(node.getParentId());
                 nextNode.setName(node.getName());
                 nextNode.setPort(node.getPort());
+                return node;
             }
         }
+        return null;
     }
 
     @Override
-    public void delete(int id) {
+    public int delete(int id) {
         Iterator<Node> nodeIterator = nodes.iterator();
         while (nodeIterator.hasNext()) {
             Node nextNode = nodeIterator.next();
             if (nextNode.getId() == id)
                 nodeIterator.remove();
+            return id;
         }
+        return -1;
     }
 
 }
