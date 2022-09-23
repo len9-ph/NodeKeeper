@@ -98,6 +98,13 @@ public class NodeKeeper implements EntryPoint {
             }
         });
         
+        addChildButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addChildNode();
+            }
+        });
+        
         buttonPanel.setStyleName("buttonPanel");
         
         lowerPanel.add(buttonPanel);
@@ -122,14 +129,6 @@ public class NodeKeeper implements EntryPoint {
             }
         });
         
-//        refreshButton.addKeyDownHandler(new KeyDownHandler() {
-//            @Override
-//            public void onKeyDown(KeyDownEvent event) {
-//                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
-//                    refreshAllNodesPanel();
-//            }
-//        });
-        
         lowerPanel.add(allNodesPanel);
         lowerPanel.setStyleName("panel");
         
@@ -145,8 +144,19 @@ public class NodeKeeper implements EntryPoint {
         String name = nameBox.getText();
         String ip = ipBox.getText();
         String port = portBox.getText();
-        
+                
         Node newNode = new Node(Integer.valueOf(id), name, ip, port);
+        nodes.add(newNode);
+    }
+    
+    private void addChildNode() {
+        String id = idBox.getText();
+        String parentId = parentBox.getText();
+        String name = nameBox.getText();
+        String ip = ipBox.getText();
+        String port = portBox.getText();
+        
+        Node newNode = new Node(Integer.valueOf(id), Integer.valueOf(parentId), name, ip, port);
         nodes.add(newNode);
     }
     
