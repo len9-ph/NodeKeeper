@@ -1,10 +1,22 @@
+* {
+    margin: 5px 2px 5px 2px !important;
+}
+
+
 body {
-    width: 600px;
+    width: 800px;
+}
+
+tr, td {
+    border: 1px solid;
 }
 
 .selectedGrid {
-    border: 2px solid silver;
+    border: 2px solid black;
     display: inline-block;
+    width: 300px;
+    text-align: left;
+    height: 300px;
 }
 
 .selectedNodePanel {
@@ -13,13 +25,26 @@ body {
 
 .treePanel {
     display: inline-block;
-    border: 2px solid silver;
+    border: 2px solid black;
+    width: 300px;
+    height: 300px;
+}
+
+.buttonPanel {
+    border: 2px solid black;
+    width: 604px;
 }
 
 .panel {
-    margin: 10px 10px 10px 10px;
+}
+
+.allNodesPanel {
+	width: 604px;
+    border: 2px solid black;
 }
 
 .allNodesGrid {
-    border: 2px solid silver;
+    border: 1px solid black;
+    width: 604px;
+    text-align: center;
 }

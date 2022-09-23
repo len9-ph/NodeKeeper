@@ -1,6 +1,13 @@
 package com.lgadetsky.nodekeeper.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
@@ -8,12 +15,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.lgadetsky.nodekeeper.shared.Node;
 
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class NodeKeeper implements EntryPoint {
+    // Stub array for data
+    private ArrayList<Node> nodes = new ArrayList<>();
     // Two big blocks of layout
     private FlowPanel upperPanel = new FlowPanel();
     private FlowPanel lowerPanel = new FlowPanel();
@@ -44,6 +54,9 @@ public class NodeKeeper implements EntryPoint {
     
     @Override
     public void onModuleLoad() {
+        nodes.add(new Node(1, "Jora", "192.180.1.1", "4114"));
+        nodes.add(new Node(2, "Dasha", "192.141.2.2", "2222"));
+        
         // Upper panel assembly
         // TODO add tree implementation
         TextBox textStub = new TextBox();
@@ -62,6 +75,7 @@ public class NodeKeeper implements EntryPoint {
         selectedGrid.setWidget(2, 1, nameBox);
         selectedGrid.setWidget(3, 1, ipBox);
         selectedGrid.setWidget(4, 1, portBox);
+        selectedNodeLabel.setStyleName("selectedNodePanel");
         
         
         selectedGrid.setStyleName("selectedGrid");
@@ -77,7 +91,7 @@ public class NodeKeeper implements EntryPoint {
         buttonPanel.add(selectedNodeLabel);
         buttonPanel.add(selectedNodeTextBox);
         
-        selectedNodeLabel.setStyleName("selectedNodePanel");
+        buttonPanel.setStyleName("buttonPanel");
         
         lowerPanel.add(buttonPanel);
         
@@ -89,6 +103,25 @@ public class NodeKeeper implements EntryPoint {
         allNodesGrid.setText(0, 4, "port");
         allNodesPanel.add(allNodesGrid);
         allNodesGrid.setStyleName("allNodesGrid");
+        allNodesPanel.setStyleName("allNodesPanel");
+        
+        // Refresh button assembly
+        refreshButton.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                refreshAllNodesPanel();
+                
+            }
+        });
+        
+//        refreshButton.addKeyDownHandler(new KeyDownHandler() {
+//            @Override
+//            public void onKeyDown(KeyDownEvent event) {
+//                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
+//                    refreshAllNodesPanel();
+//            }
+//        });
         
         lowerPanel.add(allNodesPanel);
         lowerPanel.setStyleName("panel");
@@ -99,6 +132,24 @@ public class NodeKeeper implements EntryPoint {
     }
     
     private void addRootNode() {
+        
+    }
+    
+    private void refreshAllNodesPanel() {
+        allNodesGrid.resize(nodes.size() + 1, 5);
+        allNodesGrid.setText(0, 0, "ip");
+        allNodesGrid.setText(0, 1, "parentId");
+        allNodesGrid.setText(0, 2, "name");
+        allNodesGrid.setText(0, 3, "ip");
+        allNodesGrid.setText(0, 4, "port");
+        for(int i = 0; i < nodes.size(); i++) {
+            allNodesGrid.setText(i + 1, 0, String.valueOf(nodes.get(i).getId()));
+            if (nodes.get(i).getParentId() != -1) 
+                allNodesGrid.setText(i + 1, 1, String.valueOf(nodes.get(i).getParentId()));
+            allNodesGrid.setText(i + 1, 2, nodes.get(i).getName());
+            allNodesGrid.setText(i + 1, 3, nodes.get(i).getIp());
+            allNodesGrid.setText(i + 1, 4, nodes.get(i).getPort());
+        }
     }
 
 }
