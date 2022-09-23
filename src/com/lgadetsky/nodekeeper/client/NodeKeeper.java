@@ -155,6 +155,7 @@ public class NodeKeeper implements EntryPoint {
     }
     
     private void addRootNode() {
+        // TODO add input validation
         String name = nameBox.getText();
         String ip = ipBox.getText();
         String port = portBox.getText();
@@ -164,6 +165,7 @@ public class NodeKeeper implements EntryPoint {
     }
     
     private void addChildNode() {
+        // TODO add input validation
         String parentId = parentBox.getText();
         String name = nameBox.getText();
         String ip = ipBox.getText();
@@ -175,12 +177,14 @@ public class NodeKeeper implements EntryPoint {
     
     private void editNode() {
         // TODO implement editing of selected element
+     // TODO add input validation
         
         
     }
     
     private void deleteNode() {
         // TODO implement deleting node by id
+        // TODO add input validation
         int id = Integer.valueOf(selectedNodeTextBox.getText());
         
         for (Node node : nodes) {
