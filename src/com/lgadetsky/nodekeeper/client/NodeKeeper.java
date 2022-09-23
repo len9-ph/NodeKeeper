@@ -91,6 +91,13 @@ public class NodeKeeper implements EntryPoint {
         buttonPanel.add(selectedNodeLabel);
         buttonPanel.add(selectedNodeTextBox);
         
+        addRootButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addRootNode();
+            }
+        });
+        
         buttonPanel.setStyleName("buttonPanel");
         
         lowerPanel.add(buttonPanel);
@@ -126,13 +133,21 @@ public class NodeKeeper implements EntryPoint {
         lowerPanel.add(allNodesPanel);
         lowerPanel.setStyleName("panel");
         
-        RootPanel.get("nodeKeeper").add(upperPanel);
-        RootPanel.get("nodeKeeper").add(lowerPanel);
+        RootPanel.get("page").add(upperPanel);
+        RootPanel.get("page").add(lowerPanel);
         
+        // Refresh allNodesPanel on loading
+        refreshAllNodesPanel();
     }
     
     private void addRootNode() {
+        String id = idBox.getText();
+        String name = nameBox.getText();
+        String ip = ipBox.getText();
+        String port = portBox.getText();
         
+        Node newNode = new Node(Integer.valueOf(id), name, ip, port);
+        nodes.add(newNode);
     }
     
     private void refreshAllNodesPanel() {

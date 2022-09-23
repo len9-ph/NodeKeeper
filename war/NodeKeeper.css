@@ -2,13 +2,17 @@
     margin: 5px 2px 5px 2px !important;
 }
 
-
-body {
+#page{
     width: 800px;
+    margin: 0 auto
 }
 
 tr, td {
     border: 1px solid;
+}
+
+colgroup {
+    width: inherit;
 }
 
 .selectedGrid {
@@ -16,7 +20,7 @@ tr, td {
     display: inline-block;
     width: 300px;
     text-align: left;
-    height: 300px;
+    height: auto;
 }
 
 .selectedNodePanel {
@@ -27,7 +31,7 @@ tr, td {
     display: inline-block;
     border: 2px solid black;
     width: 300px;
-    height: 300px;
+    height: auto;
 }
 
 .buttonPanel {
@@ -39,7 +43,7 @@ tr, td {
 }
 
 .allNodesPanel {
-	width: 604px;
+    width: 604px;
     border: 2px solid black;
 }
 
