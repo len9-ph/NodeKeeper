@@ -54,8 +54,8 @@ public class NodeKeeper implements EntryPoint {
     
     @Override
     public void onModuleLoad() {
-        nodes.add(new Node(1, "Jora", "192.180.1.1", "4114"));
-        nodes.add(new Node(2, "Dasha", "192.141.2.2", "2222"));
+        nodes.add(new Node("Jora", "192.180.1.1", "4114"));
+        nodes.add(new Node("Dasha", "192.141.2.2", "2222"));
         
         // Upper panel assembly
         // TODO add tree implementation
@@ -70,6 +70,7 @@ public class NodeKeeper implements EntryPoint {
         selectedGrid.setText(2, 0, "name");
         selectedGrid.setText(3, 0, "ip");
         selectedGrid.setText(4, 0, "port");
+        idBox.setReadOnly(true);
         selectedGrid.setWidget(0, 1, idBox);
         selectedGrid.setWidget(1, 1, parentBox);
         selectedGrid.setWidget(2, 1, nameBox);
@@ -105,12 +106,26 @@ public class NodeKeeper implements EntryPoint {
             }
         });
         
+        editButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                editNode();
+            }
+        });
+        
+        deleteButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                deleteNode();
+            }
+        });
+        
         buttonPanel.setStyleName("buttonPanel");
         
         lowerPanel.add(buttonPanel);
         
         allNodesPanel.add(refreshButton);
-        allNodesGrid.setText(0, 0, "ip");
+        allNodesGrid.setText(0, 0, "id");
         allNodesGrid.setText(0, 1, "parentId");
         allNodesGrid.setText(0, 2, "name");
         allNodesGrid.setText(0, 3, "ip");
@@ -140,29 +155,43 @@ public class NodeKeeper implements EntryPoint {
     }
     
     private void addRootNode() {
-        String id = idBox.getText();
         String name = nameBox.getText();
         String ip = ipBox.getText();
         String port = portBox.getText();
                 
-        Node newNode = new Node(Integer.valueOf(id), name, ip, port);
+        Node newNode = new Node(name, ip, port);
         nodes.add(newNode);
     }
     
     private void addChildNode() {
-        String id = idBox.getText();
         String parentId = parentBox.getText();
         String name = nameBox.getText();
         String ip = ipBox.getText();
         String port = portBox.getText();
         
-        Node newNode = new Node(Integer.valueOf(id), Integer.valueOf(parentId), name, ip, port);
+        Node newNode = new Node(Integer.valueOf(parentId), name, ip, port);
         nodes.add(newNode);
+    }
+    
+    private void editNode() {
+        // TODO implement editing of selected element
+        
+        
+    }
+    
+    private void deleteNode() {
+        // TODO implement deleting node by id
+        int id = Integer.valueOf(selectedNodeTextBox.getText());
+        
+        for (Node node : nodes) {
+            if (node.getId() == id)
+                nodes.remove(node);
+        }
     }
     
     private void refreshAllNodesPanel() {
         allNodesGrid.resize(nodes.size() + 1, 5);
-        allNodesGrid.setText(0, 0, "ip");
+        allNodesGrid.setText(0, 0, "id");
         allNodesGrid.setText(0, 1, "parentId");
         allNodesGrid.setText(0, 2, "name");
         allNodesGrid.setText(0, 3, "ip");

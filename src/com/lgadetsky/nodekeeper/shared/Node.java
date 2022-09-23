@@ -6,22 +6,23 @@ package com.lgadetsky.nodekeeper.shared;
  *
  */
 public class Node {
+    private static int count = 0;
     private int id;
     private int parentId;
     private String name;
     private String ip;
     private String port;
     
-    public Node(int id, int parentId, String name, String ip, String port) {
-        this.id = id;
+    public Node(int parentId, String name, String ip, String port) {
+        this.id = count++;
         this.parentId = parentId;
         this.name = name;
         this.ip = ip;
         this.port = port;
     }
     
-    public Node(int id, String name, String ip, String port) {
-        this.id = id;
+    public Node(String name, String ip, String port) {
+        this.id = count++;
         this.parentId = -1;
         this.name = name;
         this.ip = ip;
