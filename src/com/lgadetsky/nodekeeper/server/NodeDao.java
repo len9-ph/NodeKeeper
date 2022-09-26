@@ -8,7 +8,7 @@ import com.lgadetsky.nodekeeper.shared.Node;
 
 public class NodeDao implements DAO<Node>{
     
-    private List<Node> nodes = new ArrayList<>();
+    private static List<Node> nodes = new ArrayList<>();
     
     @Override
     public Node get(int id) {

@@ -7,6 +7,11 @@
     margin: 0 auto
 }
 
+.gwt-Button {
+    background-color: white;
+    border-radius: 5px;
+}
+
 tr, td {
     border: 1px solid;
 }
@@ -17,26 +22,36 @@ colgroup {
 
 .selectedGrid {
     border: 2px solid black;
+    border-radius: 4px;
     display: inline-block;
     width: 300px;
     text-align: left;
     height: auto;
+    background-color: #f6f4df;
 }
 
 .selectedNodePanel {
     display: inline-block;
 }
 
-.treePanel {
-    display: inline-block;
+.treeScroll {
     border: 2px solid black;
     width: 300px;
-    height: auto;
+    max-height: 187px;
+    background-color: #f6f4df;
 }
+
+.treePanel {
+    display: flex;
+    flex-direction: column;
+}
+
 
 .buttonPanel {
     border: 2px solid black;
-    width: 604px;
+    border-radius: 4px;
+    width: 612px;
+    background-color: #f6f4df;
 }
 
 .panel {
@@ -47,12 +62,20 @@ colgroup {
 }
 
 .allNodesPanel {
-    width: 604px;
+    width: auto;
     border: 2px solid black;
+    border-radius: 4px;
+    background-color: #f6f4df;
 }
+/*
+.firsRowStyle {
+    border: 0px;
+    border-collapse: collapse;
+}*/
 
 .allNodesGrid {
     border: 1px solid black;
     width: 604px;
     text-align: center;
+    background-color: #f6f4df;
 }
