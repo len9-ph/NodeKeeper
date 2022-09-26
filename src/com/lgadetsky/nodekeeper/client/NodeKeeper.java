@@ -6,6 +6,8 @@ import java.util.HashMap;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
@@ -60,6 +62,7 @@ public class NodeKeeper implements EntryPoint {
     private FlowPanel allNodesTable = new FlowPanel();
     private Button refreshButton = new Button("Refresh");
     private Grid allNodesGrid = new Grid(1, 5);
+    private Tree mainTree;
     
     @Override
     public void onModuleLoad() {
@@ -72,8 +75,8 @@ public class NodeKeeper implements EntryPoint {
         treeNodes.add(new Node(3, "Ksenia", "192.141.2.2", "2222"));
 //        nodes.add(new Node(4, "Ira", "192.141.2.2", "2222"));
         // Upper panel assembly
-        // TODO add tree implementation
-        Tree mainTree = createTree();
+        // TODO add selector for tree
+        mainTree = createTree();
         
         
         //TextBox textStub = new TextBox();
@@ -115,6 +118,15 @@ public class NodeKeeper implements EntryPoint {
         buttonPanel.add(deleteButton);
         buttonPanel.add(selectedNodeLabel);
         buttonPanel.add(selectedNodeTextBox);
+        
+        mainTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
+            
+            @Override
+            public void onSelection(SelectionEvent<TreeItem> event) {
+                selectedNodeTextBox.setText(mainTree.getSelectedItem().getHTML());
+                
+            }
+        });
         
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
