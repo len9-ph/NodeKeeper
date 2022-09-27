@@ -13,6 +13,20 @@ public class Node {
     private String ip;
     private String port;
     
+    // Constructor for root node
+    public Node() {
+        this.id = count++;
+        this.parentId = -1;
+        this.name = "new root";
+    }
+    
+    // Constructor for child node
+    public Node(int parentId) {
+        this.id = count++;
+        this.parentId = parentId;
+        this.name = "new child";
+    }
+    
     public Node(int parentId, String name, String ip, String port) {
         this.id = count++;
         this.parentId = parentId;

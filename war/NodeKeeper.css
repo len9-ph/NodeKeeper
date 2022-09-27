@@ -46,6 +46,11 @@ colgroup {
     flex-direction: column;
 }
 
+.textBox {
+    background-color: #F6F4DE;
+    font-weight: bold;
+    border: 0px;
+}
 
 .buttonPanel {
     border: 2px solid black;
@@ -67,11 +72,6 @@ colgroup {
     border-radius: 4px;
     background-color: #f6f4df;
 }
-/*
-.firsRowStyle {
-    border: 0px;
-    border-collapse: collapse;
-}*/
 
 .allNodesGrid {
     border: 1px solid black;

@@ -2,6 +2,8 @@ package com.lgadetsky.nodekeeper.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -71,16 +73,45 @@ public class NodeKeeper implements EntryPoint {
         treeNodes.add(new Node(1, "Zhenya", "192.141.2.2", "2222"));
         treeNodes.add(new Node(0, "Dima", "192.141.2.2", "2222"));
         treeNodes.add(new Node("Kolya", "192.141.2.2", "2222"));
-        treeNodes.add(new Node(4,  "Liza", "192.141.2.2", "2222"));
-        treeNodes.add(new Node(3, "Ksenia", "192.141.2.2", "2222"));
-//        nodes.add(new Node(4, "Ira", "192.141.2.2", "2222"));
+        treeNodes.add(new Node(4,  "Liza", "192.141.2.2", "11232"));
+        treeNodes.add(new Node(3, "Ksenia", "192.141.2.2", "2525"));
+        treeNodes.add(new Node(4, "Ira", "192.141.2.2", "2442"));
+        
         // Upper panel assembly
-        // TODO add selector for tree
         mainTree = createTree();
         
+        mainTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
+            @Override
+            public void onSelection(SelectionEvent<TreeItem> event) {
+                TreeItem item = mainTree.getSelectedItem();
+                Set<Map.Entry<Integer, TreeItem>> entrySet = idItemMap.entrySet();
+                
+                //Integer id = null;
+                
+                for (Map.Entry<Integer, TreeItem> pair : entrySet) {
+                    if (item.equals(pair.getValue())) {
+                        Integer id = pair.getKey();
+                        selectedNodeTextBox.setText(id.toString());
+                        Node curNode = new Node();
+                        for (Node n : treeNodes)
+                            if (n.getId() == id)
+                                curNode = n;
+                        idBox.setText(String.valueOf(curNode.getId()));
+                        if (curNode.getParentId() > -1)
+                            parentBox.setText(String.valueOf(curNode.getParentId()));
+                        else
+                            parentBox.setText("");
+                        nameBox.setText(String.valueOf(curNode.getName()));
+                        ipBox.setText(String.valueOf(curNode.getIp()));
+                        portBox.setText(String.valueOf(curNode.getPort()));
+                        
+                        
+                    }
+                }
+                //selectedNodeTextBox.setText(id.toString());
+            }
+        });
         
-        //TextBox textStub = new TextBox();
-        //textStub.setText("TEXTSTUB");
         treeScroll.add(mainTree);
         treeScroll.setStyleName("treeScroll");
         treePanel.add(treeText);
@@ -95,18 +126,23 @@ public class NodeKeeper implements EntryPoint {
         selectedGrid.setText(3, 0, "ip");
         selectedGrid.setText(4, 0, "port");
         idBox.setReadOnly(true);
+        parentBox.setReadOnly(true);
         selectedGrid.setWidget(0, 1, idBox);
         selectedGrid.setWidget(1, 1, parentBox);
         selectedGrid.setWidget(2, 1, nameBox);
         selectedGrid.setWidget(3, 1, ipBox);
         selectedGrid.setWidget(4, 1, portBox);
         selectedNodeLabel.setStyleName("selectedNodePanel");
+//        idBox.setStyleName("textBox");
+//        parentBox.setStyleName("textBox");
+//        nameBox.setStyleName("textBox");
+//        ipBox.setStyleName("textBox");
+//        portBox.setStyleName("textBox");
         
         selectedPanel.add(selectedText);
         selectedPanel.add(selectedGrid);
         
         selectedGrid.setStyleName("selectedGrid");
-        //selectedPanel.setStyleName("panel");
         
         upperPanel.add(selectedPanel);
         upperPanel.setStyleName("panel");
@@ -119,14 +155,7 @@ public class NodeKeeper implements EntryPoint {
         buttonPanel.add(selectedNodeLabel);
         buttonPanel.add(selectedNodeTextBox);
         
-        mainTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
-            
-            @Override
-            public void onSelection(SelectionEvent<TreeItem> event) {
-                selectedNodeTextBox.setText(mainTree.getSelectedItem().getHTML());
-                
-            }
-        });
+        selectedNodeTextBox.setStyleName("textBox");
         
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
@@ -194,6 +223,7 @@ public class NodeKeeper implements EntryPoint {
         refreshAllNodesPanel();
     }
     
+    // Create tree from db data
     private Tree createTree() {
         Tree t = new Tree();
         for (Node n : treeNodes) {
@@ -214,24 +244,22 @@ public class NodeKeeper implements EntryPoint {
     
     
     private void addRootNode() {
-        // TODO add input validation
-        String name = nameBox.getText();
-        String ip = ipBox.getText();
-        String port = portBox.getText();
-                
-        Node newNode = new Node(name, ip, port);
+        Node newNode = new Node();
         treeNodes.add(newNode);
+        TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
+        idItemMap.put(newNode.getId(), newItem);
+        mainTree.addItem(newItem);
     }
     
     private void addChildNode() {
-        // TODO add input validation
-        String parentId = parentBox.getText();
-        String name = nameBox.getText();
-        String ip = ipBox.getText();
-        String port = portBox.getText();
+        // TODO add selector validator
         
-        Node newNode = new Node(Integer.valueOf(parentId), name, ip, port);
+        int parentId = Integer.valueOf(selectedNodeTextBox.getText());
+        Node newNode = new Node(parentId);
         treeNodes.add(newNode);
+        TreeItem item = new TreeItem(new HTML(newNode.getName()));
+        idItemMap.put(newNode.getId(), item);
+        idItemMap.get(parentId).addItem(item);
     }
     
     private void editNode() {
@@ -253,6 +281,9 @@ public class NodeKeeper implements EntryPoint {
     }
     
     private void refreshAllNodesPanel() {
+        Node newNode = treeNodes.get(0);
+        
+        
         allNodesGrid.resize(treeNodes.size() + 1, 5);
         allNodesGrid.setText(0, 0, "id");
         allNodesGrid.setText(0, 1, "parentId");
