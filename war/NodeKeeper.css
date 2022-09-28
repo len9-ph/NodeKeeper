@@ -12,6 +12,10 @@
     border-radius: 5px;
 }
 
+.gwt-Label {
+    font-weight: bold;
+}
+
 tr, td {
     border: 1px solid;
 }
@@ -36,7 +40,9 @@ colgroup {
 
 .treeScroll {
     border: 2px solid black;
+    border-radius: 4px;
     width: 300px;
+    min-height: 150px;
     max-height: 187px;
     background-color: #f6f4df;
 }

@@ -10,6 +10,7 @@ import com.lgadetsky.nodekeeper.shared.Node;
 public interface NodeKeeperService extends RemoteService{
     List<Node> getAllNodes();
     Node getNode(int id);
+    Node create(Node node);
     boolean update(Node node);
     boolean delete(int id);
 

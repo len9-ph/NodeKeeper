@@ -2,19 +2,25 @@ package com.lgadetsky.nodekeeper.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -27,9 +33,15 @@ import com.lgadetsky.nodekeeper.shared.Node;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class NodeKeeper implements EntryPoint {
-    // Stub array for data
-    private ArrayList<Node> treeNodes = new ArrayList<>();
-    HashMap<Integer, TreeItem> idItemMap = new HashMap<>();
+    private final NodeKeeperServiceAsync service = GWT.create(NodeKeeperService.class);
+    
+    // List with data for tree
+    private LinkedList<Node> treeNodes = new LinkedList<>();
+    
+    // Map that keeps data for tree
+    //private HashMap<Integer, Node> treeMap = new HashMap<>();
+    // Map for
+    private HashMap<Integer, TreeItem> idItemMap = new HashMap<>();
     
     
     // Two big blocks of layout
@@ -65,17 +77,32 @@ public class NodeKeeper implements EntryPoint {
     private Button refreshButton = new Button("Refresh");
     private Grid allNodesGrid = new Grid(1, 5);
     private Tree mainTree;
+    private FlowPanel popupPanel = new FlowPanel();
     
     @Override
     public void onModuleLoad() {
-        treeNodes.add(new Node("Jora", "192.180.1.1", "4114"));
-        treeNodes.add(new Node("Dasha", "192.141.2.2", "2222"));
-        treeNodes.add(new Node(1, "Zhenya", "192.141.2.2", "2222"));
-        treeNodes.add(new Node(0, "Dima", "192.141.2.2", "2222"));
-        treeNodes.add(new Node("Kolya", "192.141.2.2", "2222"));
-        treeNodes.add(new Node(4,  "Liza", "192.141.2.2", "11232"));
-        treeNodes.add(new Node(3, "Ksenia", "192.141.2.2", "2525"));
-        treeNodes.add(new Node(4, "Ira", "192.141.2.2", "2442"));
+//        service.create(new Node("Jora", "192.180.1.1", "4114"), new AsyncCallback<Node>() {
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                // TODO Auto-generated method stub
+//                Window.alert("fail");
+//            }
+//
+//            @Override
+//            public void onSuccess(Node result) {
+//                // TODO Auto-generated method stub
+//                Window.alert("success");
+//            }
+//            
+//        });
+//        treeNodes.add(new Node("Jora", "192.180.1.1", "4114"));
+//        treeNodes.add(new Node("Dasha", "192.141.2.2", "2222"));
+//        treeNodes.add(new Node(1, "Zhenya", "192.141.2.2", "2222"));
+//        treeNodes.add(new Node(0, "Dima", "192.141.2.2", "2222"));
+//        treeNodes.add(new Node("Kolya", "192.141.2.2", "2222"));
+//        treeNodes.add(new Node(4,  "Liza", "192.141.2.2", "11232"));
+//        treeNodes.add(new Node(3, "Ksenia", "192.141.2.2", "2525"));
+//        treeNodes.add(new Node(4, "Ira", "192.141.2.2", "2442"));
         
         // Upper panel assembly
         mainTree = createTree();
@@ -214,6 +241,10 @@ public class NodeKeeper implements EntryPoint {
         });
         
         lowerPanel.add(allNodesPanel);
+        
+//        lowerPanel.add(popupPanel);
+//        popupPanel.setStyleName("popupPanel");
+        
         lowerPanel.setStyleName("panel");
         
         RootPanel.get("page").add(upperPanel);
@@ -225,20 +256,40 @@ public class NodeKeeper implements EntryPoint {
     
     // Create tree from db data
     private Tree createTree() {
-        Tree t = new Tree();
-        for (Node n : treeNodes) {
-            if(n.getParentId() == -1) {
-                TreeItem item = new TreeItem(new HTML(n.getName()));
-                idItemMap.put(n.getId(), item);
-                t.addItem(item);
-            } else {
-                TreeItem item = new TreeItem(new HTML(n.getName()));
-                idItemMap.put(n.getId(), item);
-                TreeItem parent = idItemMap.get(n.getParentId());
-                parent.addItem(item);
+        final Tree t = new Tree();
+        service.getAllNodes(new AsyncCallback<List<Node>>() {
+            
+            @Override
+            public void onSuccess(List<Node> result) {
+                treeNodes.addAll(result);
+                
+                for (Node n : treeNodes) {
+                    if(n.getParentId() == -1) {
+                        TreeItem item = new TreeItem(new HTML(n.getName()));
+                        idItemMap.put(n.getId(), item);
+                        t.addItem(item);
+                    } else {
+                        TreeItem item = new TreeItem(new HTML(n.getName()));
+                        idItemMap.put(n.getId(), item);
+                        TreeItem parent = idItemMap.get(n.getParentId());
+                        parent.addItem(item);
+                    }
+                }
+                PopupPanel panel = new PopupPanel();
+                panel.setWidget(new Label("Tree initialization was successful"));
+                panel.setPopupPosition(0, Window.getClientHeight() - 40);
+                panel.show();
+                
             }
-        }
-        
+            @Override
+            public void onFailure(Throwable caught) {
+                PopupPanel panel = new PopupPanel();
+                panel.setWidget(new Label("Tree initialization failed"));
+                panel.setPopupPosition(0, Window.getClientHeight() - 40);
+                panel.show();
+                
+            }
+        });
         return t;
     }
     
@@ -281,8 +332,7 @@ public class NodeKeeper implements EntryPoint {
     }
     
     private void refreshAllNodesPanel() {
-        Node newNode = treeNodes.get(0);
-        
+        saveState();
         
         allNodesGrid.resize(treeNodes.size() + 1, 5);
         allNodesGrid.setText(0, 0, "id");
@@ -299,5 +349,35 @@ public class NodeKeeper implements EntryPoint {
             allNodesGrid.setText(i + 1, 4, treeNodes.get(i).getPort());
         }
     }
+    
+    private void saveState() {
+        //TreeItem selectedItem = mainTree.getSelectedItem();
+        // TODO find node by selected tree item
+        Node curNode = new Node(); // here should be node from map finded by nodeToItemMap
+        //curNode.setId(); // Initialize node formally add it to db
+        curNode.setName(nameBox.getText());
+        curNode.setIp(ipBox.getText());
+        curNode.setPort(portBox.getText());
+        service.create(curNode, new AsyncCallback<Node>() {
 
+            @Override
+            public void onFailure(Throwable caught) {
+                PopupPanel panel = new PopupPanel();
+                panel.setWidget(new Label("Node add failed"));
+                panel.setPopupPosition(0, Window.getClientHeight() - 40);
+                panel.show();
+            }
+
+            @Override
+            public void onSuccess(Node result) {
+                PopupPanel panel = new PopupPanel();
+                panel.setWidget(new Label("Node add success"));
+                panel.setPopupPosition(0, Window.getClientHeight() - 40);
+                panel.show();
+            }
+            
+        });
+    }
+    
+    
 }

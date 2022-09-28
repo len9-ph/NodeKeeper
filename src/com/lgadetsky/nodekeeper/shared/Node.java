@@ -1,11 +1,15 @@
 package com.lgadetsky.nodekeeper.shared;
 
+import java.io.Serializable;
+
 /**
  * Bean 
  * @author Leonid Gadetsky
  *
  */
-public class Node {
+public class Node implements Serializable{
+    private static final long serialVersionUID = 3927932427045891397L;
+    
     private static int count = 0;
     private int id;
     private int parentId;
@@ -15,14 +19,14 @@ public class Node {
     
     // Constructor for root node
     public Node() {
-        this.id = count++;
+        this.id = -1;
         this.parentId = -1;
         this.name = "new root";
     }
     
     // Constructor for child node
     public Node(int parentId) {
-        this.id = count++;
+        this.id = -1;
         this.parentId = parentId;
         this.name = "new child";
     }
@@ -41,6 +45,10 @@ public class Node {
         this.name = name;
         this.ip = ip;
         this.port = port;
+    }
+    
+    public void setId() {
+        this.id = count++;
     }
     
     public int getId() {

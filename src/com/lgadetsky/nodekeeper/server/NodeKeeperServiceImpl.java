@@ -12,6 +12,10 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
     
     private NodeDao nodeDao;
     
+    public NodeKeeperServiceImpl() {
+        nodeDao = new NodeDao();
+    }
+    
     @Override
     public List<Node> getAllNodes() {
         return nodeDao.getAll();
@@ -21,7 +25,13 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
     public Node getNode(int id) {
         return nodeDao.get(id);
     }
-
+    
+    @Override
+    public Node create(Node node) {
+        nodeDao.save(node);
+        return node;
+    }
+    
     @Override
     public boolean update(Node node) {
         Node res = nodeDao.update(node);
