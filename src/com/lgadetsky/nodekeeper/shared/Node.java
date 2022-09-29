@@ -11,11 +11,12 @@ public class Node implements Serializable{
     private static final long serialVersionUID = 3927932427045891397L;
     
     private static int count = 0;
-    private int id;
-    private int parentId;
+    private Integer id;
+    private Integer parentId;
     private String name;
     private String ip;
     private String port;
+    private boolean isDeleted;
     
     // Constructor for root node
     public Node() {
@@ -51,11 +52,11 @@ public class Node implements Serializable{
         this.id = count++;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
     

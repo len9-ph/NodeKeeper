@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.gargoylesoftware.htmlunit.javascript.host.svg.SVGEllipseElement;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -36,12 +37,17 @@ public class NodeKeeper implements EntryPoint {
     private final NodeKeeperServiceAsync service = GWT.create(NodeKeeperService.class);
     
     // List with data for tree
-    private LinkedList<Node> treeNodes = new LinkedList<>();
+    private LinkedList<Node> nodes = new LinkedList<>();
+    
+    private LinkedList<Node> changedNodes = new LinkedList<>();
     
     // Map that keeps data for tree
     //private HashMap<Integer, Node> treeMap = new HashMap<>();
     // Map for
     private HashMap<Integer, TreeItem> idItemMap = new HashMap<>();
+    
+    // Map that connect node items with their treeItem's
+    private HashMap<Node, TreeItem> nodeToTreeItemMap = new HashMap<>();
     
     
     // Two big blocks of layout
@@ -81,29 +87,6 @@ public class NodeKeeper implements EntryPoint {
     
     @Override
     public void onModuleLoad() {
-//        service.create(new Node("Jora", "192.180.1.1", "4114"), new AsyncCallback<Node>() {
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                // TODO Auto-generated method stub
-//                Window.alert("fail");
-//            }
-//
-//            @Override
-//            public void onSuccess(Node result) {
-//                // TODO Auto-generated method stub
-//                Window.alert("success");
-//            }
-//            
-//        });
-//        treeNodes.add(new Node("Jora", "192.180.1.1", "4114"));
-//        treeNodes.add(new Node("Dasha", "192.141.2.2", "2222"));
-//        treeNodes.add(new Node(1, "Zhenya", "192.141.2.2", "2222"));
-//        treeNodes.add(new Node(0, "Dima", "192.141.2.2", "2222"));
-//        treeNodes.add(new Node("Kolya", "192.141.2.2", "2222"));
-//        treeNodes.add(new Node(4,  "Liza", "192.141.2.2", "11232"));
-//        treeNodes.add(new Node(3, "Ksenia", "192.141.2.2", "2525"));
-//        treeNodes.add(new Node(4, "Ira", "192.141.2.2", "2442"));
-        
         // Upper panel assembly
         mainTree = createTree();
         
@@ -111,31 +94,20 @@ public class NodeKeeper implements EntryPoint {
             @Override
             public void onSelection(SelectionEvent<TreeItem> event) {
                 TreeItem item = mainTree.getSelectedItem();
-                Set<Map.Entry<Integer, TreeItem>> entrySet = idItemMap.entrySet();
+                Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
                 
-                //Integer id = null;
-                
-                for (Map.Entry<Integer, TreeItem> pair : entrySet) {
-                    if (item.equals(pair.getValue())) {
-                        Integer id = pair.getKey();
-                        selectedNodeTextBox.setText(id.toString());
-                        Node curNode = new Node();
-                        for (Node n : treeNodes)
-                            if (n.getId() == id)
-                                curNode = n;
-                        idBox.setText(String.valueOf(curNode.getId()));
-                        if (curNode.getParentId() > -1)
-                            parentBox.setText(String.valueOf(curNode.getParentId()));
+                for (Map.Entry<Node, TreeItem> pair : entrySet) {
+                    if(item.equals(pair.getValue())) {
+                        selectedNodeTextBox.setText(pair.getKey().getId().toString());
+                        if (pair.getKey().getParentId() > -1)
+                            parentBox.setText(pair.getKey().getParentId().toString());
                         else
                             parentBox.setText("");
-                        nameBox.setText(String.valueOf(curNode.getName()));
-                        ipBox.setText(String.valueOf(curNode.getIp()));
-                        portBox.setText(String.valueOf(curNode.getPort()));
-                        
-                        
+                        nameBox.setText(pair.getKey().getName());
+                        ipBox.setText(pair.getKey().getIp());
+                        portBox.setText(pair.getKey().getPort());
                     }
                 }
-                //selectedNodeTextBox.setText(id.toString());
             }
         });
         
@@ -251,7 +223,7 @@ public class NodeKeeper implements EntryPoint {
         RootPanel.get("page").add(lowerPanel);
         
         // Refresh allNodesPanel on loading
-        refreshAllNodesPanel();
+        // refreshAllNodesPanel();
     }
     
     // Create tree from db data
@@ -261,15 +233,17 @@ public class NodeKeeper implements EntryPoint {
             
             @Override
             public void onSuccess(List<Node> result) {
-                treeNodes.addAll(result);
+                nodes.addAll(result);
                 
-                for (Node n : treeNodes) {
+                for (Node n : nodes) {
                     if(n.getParentId() == -1) {
                         TreeItem item = new TreeItem(new HTML(n.getName()));
+                        nodeToTreeItemMap.put(n, item);
                         idItemMap.put(n.getId(), item);
                         t.addItem(item);
                     } else {
                         TreeItem item = new TreeItem(new HTML(n.getName()));
+                        nodeToTreeItemMap.put(n, item);
                         idItemMap.put(n.getId(), item);
                         TreeItem parent = idItemMap.get(n.getParentId());
                         parent.addItem(item);
@@ -296,57 +270,81 @@ public class NodeKeeper implements EntryPoint {
     
     private void addRootNode() {
         Node newNode = new Node();
-        treeNodes.add(newNode);
+        nodes.add(newNode);
         TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
-        idItemMap.put(newNode.getId(), newItem);
+        nodeToTreeItemMap.put(newNode, newItem);
         mainTree.addItem(newItem);
     }
     
     private void addChildNode() {
-        // TODO add selector validator
-        
-        int parentId = Integer.valueOf(selectedNodeTextBox.getText());
-        Node newNode = new Node(parentId);
-        treeNodes.add(newNode);
-        TreeItem item = new TreeItem(new HTML(newNode.getName()));
-        idItemMap.put(newNode.getId(), item);
-        idItemMap.get(parentId).addItem(item);
+        if (mainTree.getSelectedItem() != null) {
+            TreeItem parentItem = mainTree.getSelectedItem();
+            Node newNode = new Node(Integer.valueOf(selectedNodeTextBox.getText()));
+            TreeItem newItem = new TreeItem();
+            nodes.add(newNode);
+            nodeToTreeItemMap.put(newNode, newItem);
+            parentItem.addItem(newItem);
+        } else {
+            // PopUp window: parent item not found
+        }
     }
     
     private void editNode() {
-        // TODO implement editing of selected element
-     // TODO add input validation
-        
+        if (mainTree.getSelectedItem() != null) {
+            TreeItem selectedItem = mainTree.getSelectedItem();
+            
+            // Find node by treeItem and edit it
+            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+            
+            for (Map.Entry<Node, TreeItem> pair : entrySet) {
+                if(selectedItem.equals(pair.getValue())) {
+                    pair.getKey().setName(nameBox.getText());
+                    pair.getKey().setIp(ipBox.getText());
+                    pair.getKey().setPort(portBox.getText());
+                }
+            }
+            
+        } else {
+            // PopUp window: item was not selected
+        }
         
     }
     
     private void deleteNode() {
         // TODO implement deleting node by id
         // TODO add input validation
-        int id = Integer.valueOf(selectedNodeTextBox.getText());
-        
-        for (Node node : treeNodes) {
-            if (node.getId() == id)
-                treeNodes.remove(node);
+        if (mainTree.getSelectedItem() != null) {
+            TreeItem selectedItem = mainTree.getSelectedItem();
+            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+            
+            for (Map.Entry<Node, TreeItem> pair : entrySet) {
+                if (selectedItem.equals(pair.getValue())) {
+                    // Set id equal -2 that means element should be deleted than user press refresh
+                    pair.getKey().setId(-2);
+                }
+            }
+            selectedItem.remove();
+        } else {
+            // Popup window: item was not selected
         }
     }
     
     private void refreshAllNodesPanel() {
         saveState();
         
-        allNodesGrid.resize(treeNodes.size() + 1, 5);
+        allNodesGrid.resize(nodes.size() + 1, 5);
         allNodesGrid.setText(0, 0, "id");
         allNodesGrid.setText(0, 1, "parentId");
         allNodesGrid.setText(0, 2, "name");
         allNodesGrid.setText(0, 3, "ip");
         allNodesGrid.setText(0, 4, "port");
-        for(int i = 0; i < treeNodes.size(); i++) {
-            allNodesGrid.setText(i + 1, 0, String.valueOf(treeNodes.get(i).getId()));
-            if (treeNodes.get(i).getParentId() != -1) 
-                allNodesGrid.setText(i + 1, 1, String.valueOf(treeNodes.get(i).getParentId()));
-            allNodesGrid.setText(i + 1, 2, treeNodes.get(i).getName());
-            allNodesGrid.setText(i + 1, 3, treeNodes.get(i).getIp());
-            allNodesGrid.setText(i + 1, 4, treeNodes.get(i).getPort());
+        for(int i = 0; i < nodes.size(); i++) {
+            allNodesGrid.setText(i + 1, 0, String.valueOf(nodes.get(i).getId()));
+            if (nodes.get(i).getParentId() != -1) 
+                allNodesGrid.setText(i + 1, 1, String.valueOf(nodes.get(i).getParentId()));
+            allNodesGrid.setText(i + 1, 2, nodes.get(i).getName());
+            allNodesGrid.setText(i + 1, 3, nodes.get(i).getIp());
+            allNodesGrid.setText(i + 1, 4, nodes.get(i).getPort());
         }
     }
     
