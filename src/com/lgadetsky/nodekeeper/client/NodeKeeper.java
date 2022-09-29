@@ -208,7 +208,6 @@ public class NodeKeeper implements EntryPoint {
             @Override
             public void onClick(ClickEvent event) {
                 refreshAllNodesPanel();
-                
             }
         });
         
@@ -270,7 +269,7 @@ public class NodeKeeper implements EntryPoint {
     
     private void addRootNode() {
         Node newNode = new Node();
-        nodes.add(newNode);
+        changedNodes.add(newNode);
         TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
         nodeToTreeItemMap.put(newNode, newItem);
         mainTree.addItem(newItem);
@@ -281,7 +280,7 @@ public class NodeKeeper implements EntryPoint {
             TreeItem parentItem = mainTree.getSelectedItem();
             Node newNode = new Node(Integer.valueOf(selectedNodeTextBox.getText()));
             TreeItem newItem = new TreeItem();
-            nodes.add(newNode);
+            changedNodes.add(newNode);
             nodeToTreeItemMap.put(newNode, newItem);
             parentItem.addItem(newItem);
         } else {
@@ -301,6 +300,7 @@ public class NodeKeeper implements EntryPoint {
                     pair.getKey().setName(nameBox.getText());
                     pair.getKey().setIp(ipBox.getText());
                     pair.getKey().setPort(portBox.getText());
+                    changedNodes.add(pair.getKey());
                 }
             }
             
@@ -319,8 +319,15 @@ public class NodeKeeper implements EntryPoint {
             
             for (Map.Entry<Node, TreeItem> pair : entrySet) {
                 if (selectedItem.equals(pair.getValue())) {
-                    // Set id equal -2 that means element should be deleted than user press refresh
-                    pair.getKey().setId(-2);
+                    if (pair.getKey().getId().equals(-1)) {
+                        changedNodes.remove(pair.getKey());
+                        nodeToTreeItemMap.remove(pair.getKey());
+                    } else {
+                        nodeToTreeItemMap.remove(pair.getKey());
+                        pair.getKey().setDeleted(true);
+                        changedNodes.add(pair.getKey());
+                        //nodes.remove(pair.getKey());
+                    }
                 }
             }
             selectedItem.remove();
@@ -331,7 +338,10 @@ public class NodeKeeper implements EntryPoint {
     
     private void refreshAllNodesPanel() {
         saveState();
-        
+       
+    }
+    
+    private void drawAllNodesTable() {
         allNodesGrid.resize(nodes.size() + 1, 5);
         allNodesGrid.setText(0, 0, "id");
         allNodesGrid.setText(0, 1, "parentId");
@@ -348,34 +358,97 @@ public class NodeKeeper implements EntryPoint {
         }
     }
     
-    private void saveState() {
-        //TreeItem selectedItem = mainTree.getSelectedItem();
-        // TODO find node by selected tree item
-        Node curNode = new Node(); // here should be node from map finded by nodeToItemMap
-        //curNode.setId(); // Initialize node formally add it to db
-        curNode.setName(nameBox.getText());
-        curNode.setIp(ipBox.getText());
-        curNode.setPort(portBox.getText());
-        service.create(curNode, new AsyncCallback<Node>() {
-
+    private void refreshNodes() {
+        nodes.clear();
+        service.getAllNodes(new AsyncCallback<List<Node>>() {
+            
             @Override
-            public void onFailure(Throwable caught) {
-                PopupPanel panel = new PopupPanel();
-                panel.setWidget(new Label("Node add failed"));
-                panel.setPopupPosition(0, Window.getClientHeight() - 40);
-                panel.show();
-            }
-
-            @Override
-            public void onSuccess(Node result) {
-                PopupPanel panel = new PopupPanel();
-                panel.setWidget(new Label("Node add success"));
-                panel.setPopupPosition(0, Window.getClientHeight() - 40);
-                panel.show();
+            public void onSuccess(List<Node> result) {
+                // TODO Auto-generated method stub
+                nodes.addAll(result);
             }
             
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Auto-generated method stub
+                
+            }
         });
     }
+    
+    private void saveState() {
+        for (Node n : changedNodes) {
+            if (n.getId().equals(-1)) {
+                service.create(n, new AsyncCallback<Node>() {
+                    
+                    @Override
+                    public void onSuccess(Node result) {
+                        // TODO Auto-generated method stub
+                    }
+                    
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+            } else if (n.isDeleted()) {
+                service.delete(n.getId(), new AsyncCallback<Boolean>() {
+                    
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        // TODO Auto-generated method stub
+                    }
+                    
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+            } else {
+                service.update(n, new AsyncCallback<Boolean>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+            }
+        }
+    }
+    
+//    private void saveState() {
+//        //TreeItem selectedItem = mainTree.getSelectedItem();
+//        // TODO find node by selected tree item
+//        Node curNode = new Node(); // here should be node from map finded by nodeToItemMap
+//        //curNode.setId(); // Initialize node formally add it to db
+//        curNode.setName(nameBox.getText());
+//        curNode.setIp(ipBox.getText());
+//        curNode.setPort(portBox.getText());
+//        service.create(curNode, new AsyncCallback<Node>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                PopupPanel panel = new PopupPanel();
+//                panel.setWidget(new Label("Node add failed"));
+//                panel.setPopupPosition(0, Window.getClientHeight() - 40);
+//                panel.show();
+//            }
+//
+//            @Override
+//            public void onSuccess(Node result) {
+//                PopupPanel panel = new PopupPanel();
+//                panel.setWidget(new Label("Node add success"));
+//                panel.setPopupPosition(0, Window.getClientHeight() - 40);
+//                panel.show();
+//            }
+//            
+//        });
+//    }
     
     
 }

@@ -32,6 +32,14 @@ public class Node implements Serializable{
         this.name = "new child";
     }
     
+    public void setDeleted(boolean flag) {
+        this.isDeleted = flag;
+    }
+    
+    public boolean isDeleted() {
+        return this.isDeleted;
+    }
+    
     public Node(int parentId, String name, String ip, String port) {
         this.id = count++;
         this.parentId = parentId;
