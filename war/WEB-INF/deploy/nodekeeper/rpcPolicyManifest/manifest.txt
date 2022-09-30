@@ -1,3 +1,2 @@
 # Module nodekeeper
 # RPC service class, partial path of RPC policy file
-com.lgadetsky.nodekeeper.client.NodeKeeperService, 8AF1986D7CA909703DF444402D5BE7A0.gwt.rpc
