@@ -28,6 +28,7 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
     
     @Override
     public Node create(Node node) {
+        node.setId();
         nodeDao.save(node);
         return node;
     }
@@ -48,6 +49,22 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
             return false;
         else 
             return true;
+    }
+    
+    @Override
+    public boolean saveChanges(List<Node> changes) {
+        boolean status = true;
+        for (Node n : changes) {
+            if (n.getId().equals(-1)) 
+                create(n);
+            else if (n.isDeleted()) {
+                status = delete(n.getId());
+            }
+            else {
+                status = update(n);
+            }
+        }
+        return status;
     }
     
 }

@@ -166,6 +166,14 @@ public class NodeKeeper implements EntryPoint {
         // All nodes panel draw 
         allNodesPanel.add(allNodesText);
         allNodesTable.add(refreshButton);
+     // Refresh button assembly
+        refreshButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                saveState();
+            }
+        });
+        
         allNodesGrid.setText(0, 0, "id");
         allNodesGrid.setText(0, 1, "parentId");
         allNodesGrid.setText(0, 2, "name");
@@ -177,23 +185,20 @@ public class NodeKeeper implements EntryPoint {
         allNodesGrid.setStyleName("allNodesGrid");
         allNodesTable.setStyleName("allNodesPanel");
         
-        // Refresh button assembly
-        refreshButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                saveState();
-                redrawAllNodesTable();
-            }
-        });
         lowerPanel.add(allNodesPanel);
         
+        // Add panel to main panel
         RootPanel.get("page").add(upperPanel);
         RootPanel.get("page").add(lowerPanel);
-        initialize();
         
+        // Initialize page with data
+        initialize();
     }
     
-    // Get data from db and if request success init tree 
+
+    /**
+     * Get data from db and if request success init tree 
+     */
     private void initialize() {
         nodes.clear();
         service.getAllNodes(new AsyncCallback<List<Node>>() {
@@ -234,7 +239,10 @@ public class NodeKeeper implements EntryPoint {
         });
     }
     
-    // Create tree from db data
+    /**
+     * Function that create tree from nodes list
+     * @return - tree that contains all nodes from list
+     */
     private Tree createTree() {
         final Tree t = new Tree();
         
@@ -257,7 +265,9 @@ public class NodeKeeper implements EntryPoint {
         return t;
     }
     
-    
+    /**
+     * Function that create empty node, add it to tree and add it to changedNodes list
+     */
     private void addRootNode() {
         Node newNode = new Node();
         changedNodes.add(newNode);
@@ -266,11 +276,14 @@ public class NodeKeeper implements EntryPoint {
         mainTree.addItem(newItem);
     }
     
+    /**
+     * Function that create empty child node, dependes on selected item
+     */
     private void addChildNode() {
         if (mainTree.getSelectedItem() != null) {
             TreeItem parentItem = mainTree.getSelectedItem();
             Node newNode = new Node(Integer.valueOf(selectedNodeTextBox.getText()));
-            TreeItem newItem = new TreeItem();
+            TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
             changedNodes.add(newNode);
             nodeToTreeItemMap.put(newNode, newItem);
             parentItem.addItem(newItem);
@@ -279,6 +292,9 @@ public class NodeKeeper implements EntryPoint {
         }
     }
     
+    /**
+     * update node
+     */
     private void editNode() {
         if (mainTree.getSelectedItem() != null) {
             TreeItem selectedItem = mainTree.getSelectedItem();
@@ -291,7 +307,7 @@ public class NodeKeeper implements EntryPoint {
                     pair.getKey().setName(nameBox.getText());
                     pair.getKey().setIp(ipBox.getText());
                     pair.getKey().setPort(portBox.getText());
-                    pair.getValue().setHTML(nameBox.getName());
+                    pair.getValue().setHTML(pair.getKey().getName());
                     changedNodes.add(pair.getKey());
                 }
             }
@@ -302,6 +318,9 @@ public class NodeKeeper implements EntryPoint {
         
     }
     
+    /**
+     * delete node
+     */
     private void deleteNode() {
         if (mainTree.getSelectedItem() != null) {
             TreeItem selectedItem = mainTree.getSelectedItem();
@@ -325,8 +344,10 @@ public class NodeKeeper implements EntryPoint {
             // Popup window: item was not selected
         }
     }
-
     
+    /**
+     * Util func that redraw table with all nodes depend on nodes
+     */
     private void redrawAllNodesTable() {
         allNodesGrid.resize(nodes.size() + 1, 5);
         allNodesGrid.setText(0, 0, "id");
@@ -344,73 +365,65 @@ public class NodeKeeper implements EntryPoint {
         }
     }
     
-    private void refreshNodes() {
+    /**
+     * Func that saves changes and update db and nodes
+     */
+    private void saveState() {
+        if (!changedNodes.isEmpty()) {
+            service.saveChanges(changedNodes, new AsyncCallback<Boolean>() {
+                
+                @Override
+                public void onSuccess(Boolean result) {
+                    if (result) {
+                        refreshTree();
+                        
+                    }
+                }
+                @Override
+                public void onFailure(Throwable caught) {
+                    
+                }
+            });
+        } else {
+            // Popup window: nothing has been changed
+        }
+    }
+    
+    private void refreshTree() {
+        mainTree.clear();
+        nodeToTreeItemMap.clear();
         nodes.clear();
         service.getAllNodes(new AsyncCallback<List<Node>>() {
             
             @Override
             public void onSuccess(List<Node> result) {
-                // TODO Auto-generated method stub
                 nodes.addAll(result);
                 
-                mainTree = createTree();
+                for (Node n : nodes) {
+                    if (n.getParentId() == -1) {
+                        TreeItem item = new TreeItem(new HTML(n.getName()));
+                        nodeToTreeItemMap.put(n, item);
+                        mainTree.addItem(item);
+                    } else {
+                        TreeItem item = new TreeItem(new HTML(n.getName()));
+                        nodeToTreeItemMap.put(n, item);
+                        TreeItem parentItem = null;
+                        for (Node node : nodes) {
+                            if (node.getId().equals(n.getParentId()))
+                                parentItem = nodeToTreeItemMap.get(node);
+                        }
+                        parentItem.addItem(item);
+                    }
+                }
+                redrawAllNodesTable();
             }
             
             @Override
             public void onFailure(Throwable caught) {
                 // TODO Auto-generated method stub
-                
+                Window.alert("Error");
             }
         });
+        
     }
-    
-    private void saveState() {
-        if (changedNodes.isEmpty()) {
-            for (Node n : changedNodes) {
-                if (n.getId().equals(-1)) {
-                    service.create(n, new AsyncCallback<Node>() {
-                        
-                        @Override
-                        public void onSuccess(Node result) {
-                            // TODO Auto-generated method stub
-                        }
-                        
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            // TODO Auto-generated method stub
-                        }
-                    });
-                } else if (n.isDeleted()) {
-                    service.delete(n.getId(), new AsyncCallback<Boolean>() {
-                        
-                        @Override
-                        public void onSuccess(Boolean result) {
-                            // TODO Auto-generated method stub
-                        }
-                        
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            // TODO Auto-generated method stub
-                        }
-                    });
-                } else {
-                    service.update(n, new AsyncCallback<Boolean>() {
-
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            // TODO Auto-generated method stub
-                        }
-
-                        @Override
-                        public void onSuccess(Boolean result) {
-                            // TODO Auto-generated method stub
-                        }
-                    });
-                }
-            }
-        } else {
-            // Popup window: nothing has been changed
-        }
-    }
-
 }
