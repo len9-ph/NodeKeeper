@@ -1,6 +1,7 @@
 package com.lgadetsky.nodekeeper.client;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,7 @@ public class NodeKeeper implements EntryPoint {
     
     @Override
     public void onModuleLoad() {
+        
         // Main panel styles setting
         upperPanel.setStyleName("panel");
         lowerPanel.setStyleName("panel");
@@ -221,6 +223,7 @@ public class NodeKeeper implements EntryPoint {
                                     parentBox.setText(pair.getKey().getParentId().toString());
                                 else
                                     parentBox.setText("");
+                                idBox.setText(pair.getKey().getId().toString());
                                 nameBox.setText(pair.getKey().getName());
                                 ipBox.setText(pair.getKey().getIp());
                                 portBox.setText(pair.getKey().getPort());
@@ -309,6 +312,7 @@ public class NodeKeeper implements EntryPoint {
                     pair.getKey().setPort(portBox.getText());
                     pair.getValue().setHTML(pair.getKey().getName());
                     changedNodes.add(pair.getKey());
+                    mainTree.setFocus(true);
                 }
             }
             
@@ -325,21 +329,20 @@ public class NodeKeeper implements EntryPoint {
         if (mainTree.getSelectedItem() != null) {
             TreeItem selectedItem = mainTree.getSelectedItem();
             Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-            
+
             for (Map.Entry<Node, TreeItem> pair : entrySet) {
                 if (selectedItem.equals(pair.getValue())) {
                     if (pair.getKey().getId().equals(-1)) {
                         changedNodes.remove(pair.getKey());
                         nodeToTreeItemMap.remove(pair.getKey());
                     } else {
-                        nodeToTreeItemMap.remove(pair.getKey());
                         pair.getKey().setDeleted(true);
                         changedNodes.add(pair.getKey());
-                        //nodes.remove(pair.getKey());
+                        nodeToTreeItemMap.remove(pair.getKey());
                     }
                 }
             }
-            selectedItem.remove();
+            mainTree.removeItem(selectedItem);
         } else {
             // Popup window: item was not selected
         }
@@ -370,18 +373,18 @@ public class NodeKeeper implements EntryPoint {
      */
     private void saveState() {
         if (!changedNodes.isEmpty()) {
-            service.saveChanges(changedNodes, new AsyncCallback<Boolean>() {
+            service.saveChanges(changedNodes, new AsyncCallback<List<Node>>() {
                 
                 @Override
-                public void onSuccess(Boolean result) {
-                    if (result) {
-                        refreshTree();
-                        
-                    }
+                public void onSuccess(List<Node> result) {
+                    // TODO Auto-generated method stub
+                    refreshViewers(result);
                 }
+                
                 @Override
                 public void onFailure(Throwable caught) {
-                    
+                    // TODO Auto-generated method stub
+                    Window.alert("Error");
                 }
             });
         } else {
@@ -389,41 +392,30 @@ public class NodeKeeper implements EntryPoint {
         }
     }
     
-    private void refreshTree() {
+    private void refreshViewers(List<Node> newNodes) {
+        changedNodes.clear();
         mainTree.clear();
         nodeToTreeItemMap.clear();
         nodes.clear();
-        service.getAllNodes(new AsyncCallback<List<Node>>() {
-            
-            @Override
-            public void onSuccess(List<Node> result) {
-                nodes.addAll(result);
-                
-                for (Node n : nodes) {
-                    if (n.getParentId() == -1) {
-                        TreeItem item = new TreeItem(new HTML(n.getName()));
-                        nodeToTreeItemMap.put(n, item);
-                        mainTree.addItem(item);
-                    } else {
-                        TreeItem item = new TreeItem(new HTML(n.getName()));
-                        nodeToTreeItemMap.put(n, item);
-                        TreeItem parentItem = null;
-                        for (Node node : nodes) {
-                            if (node.getId().equals(n.getParentId()))
-                                parentItem = nodeToTreeItemMap.get(node);
-                        }
-                        parentItem.addItem(item);
-                    }
-                }
-                redrawAllNodesTable();
-            }
-            
-            @Override
-            public void onFailure(Throwable caught) {
-                // TODO Auto-generated method stub
-                Window.alert("Error");
-            }
-        });
         
+        nodes.addAll(newNodes);
+        for (Node n : nodes) {
+            if (n.getParentId() == -1) {
+                TreeItem item = new TreeItem(new HTML(n.getName()));
+                nodeToTreeItemMap.put(n, item);
+                mainTree.addItem(item);
+            } else {
+                TreeItem item = new TreeItem(new HTML(n.getName()));
+                nodeToTreeItemMap.put(n, item);
+                TreeItem parentItem = null;
+                for (Node node : nodes) {
+                    if (node.getId().equals(n.getParentId()))
+                        parentItem = nodeToTreeItemMap.get(node);
+                }
+                parentItem.addItem(item);
+            }
+        }
+        redrawAllNodesTable();
     }
 }
+

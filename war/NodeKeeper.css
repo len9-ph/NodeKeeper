@@ -12,6 +12,10 @@
     border-radius: 5px;
 }
 
+.gwt-Button:focus {
+    background-color: red;
+}
+
 .gwt-Label {
     font-weight: bold;
 }

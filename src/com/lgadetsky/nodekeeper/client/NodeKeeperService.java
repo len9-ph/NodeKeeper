@@ -13,5 +13,5 @@ public interface NodeKeeperService extends RemoteService{
     Node create(Node node);
     boolean update(Node node);
     boolean delete(int id);
-    boolean saveChanges(List<Node> changes);
+    List<Node> saveChanges(List<Node> changes);
 }

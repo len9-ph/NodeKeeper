@@ -45,26 +45,25 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
     @Override
     public boolean delete(int id) {
         int res = nodeDao.delete(id);
-        if (res < 0)
-            return false;
-        else 
+        if (res > 0)
             return true;
+        else 
+            return false;
     }
     
     @Override
-    public boolean saveChanges(List<Node> changes) {
-        boolean status = true;
+    public List<Node> saveChanges(List<Node> changes) {
         for (Node n : changes) {
             if (n.getId().equals(-1)) 
                 create(n);
             else if (n.isDeleted()) {
-                status = delete(n.getId());
+                delete(n.getId());
             }
             else {
-                status = update(n);
+                update(n);
             }
         }
-        return status;
+        return getAllNodes();
     }
     
 }

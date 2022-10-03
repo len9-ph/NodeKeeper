@@ -11,5 +11,5 @@ public interface NodeKeeperServiceAsync {
     void create(Node node, AsyncCallback<Node> callback);
     void update(Node node, AsyncCallback<Boolean> callback);
     void delete(int id, AsyncCallback<Boolean> callback);
-    void saveChanges(List<Node> changes, AsyncCallback<Boolean> callback);
+    void saveChanges(List<Node> changes, AsyncCallback<List<Node>> callback);
 }

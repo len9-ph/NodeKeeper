@@ -10,9 +10,9 @@ import java.util.List;
  * @param <T>
  */
 public interface DAO<T> {
-    T get(int id);
+    T get(Integer id);
     List<T> getAll();
     T save(T t);
     T update(T t);
-    int delete(int id);
+    Integer delete(Integer id);
 }
