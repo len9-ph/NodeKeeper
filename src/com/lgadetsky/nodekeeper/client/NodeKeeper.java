@@ -56,6 +56,7 @@ public class NodeKeeper implements EntryPoint {
     private FlowPanel treePanel = new FlowPanel();
     private ScrollPanel treeScroll = new ScrollPanel();
     private FlowPanel selectedPanel = new FlowPanel();
+    private FlowPanel selectedTable = new FlowPanel();
     private Label treeText = new Label("Tree"); 
     
     // Selected node panel
@@ -76,7 +77,7 @@ public class NodeKeeper implements EntryPoint {
     private Button editButton = new Button("Edit");
     private Button deleteButton = new Button("Delete");
     private Label selectedNodeLabel = new Label("Selected node: ");
-    private TextBox selectedNodeTextBox = new TextBox();
+    private Label selectedNodeTextLabel = new Label("");
     
     // All nodes panel
     private Label allNodesText = new Label("All nodes");
@@ -90,8 +91,8 @@ public class NodeKeeper implements EntryPoint {
     public void onModuleLoad() {
         
         // Main panel styles setting
-        upperPanel.setStyleName("panel");
-        lowerPanel.setStyleName("panel");
+        upperPanel.setStyleName("upperPanel");
+        lowerPanel.setStyleName("lowerPanel");
         
         // Tree panel draw
         treePanel.add(treeText);
@@ -116,10 +117,12 @@ public class NodeKeeper implements EntryPoint {
         selectedGrid.setWidget(3, 1, ipBox);
         selectedGrid.setWidget(4, 1, portBox);
         selectedGrid.setStyleName("selectedGrid");
-        selectedNodeLabel.setStyleName("selectedNodePanel");
+        selectedTable.setStyleName("selectedNodeTable");
+        selectedPanel.setStyleName("selectedNodePanel");
         
         selectedPanel.add(selectedText);
-        selectedPanel.add(selectedGrid);
+        selectedTable.add(selectedGrid);
+        selectedPanel.add(selectedTable);
         
         upperPanel.add(selectedPanel);
         
@@ -130,9 +133,10 @@ public class NodeKeeper implements EntryPoint {
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(selectedNodeLabel);
-        buttonPanel.add(selectedNodeTextBox);
-        selectedNodeTextBox.setStyleName("textBox");
+        buttonPanel.add(selectedNodeTextLabel);
         buttonPanel.setStyleName("buttonPanel");
+        selectedNodeTextLabel.setStyleName("selectedLabel");
+        selectedNodeLabel.setStyleName("selectedLabel");
         
         // Buttons handling
         addRootButton.addClickHandler(new ClickHandler() {
@@ -184,6 +188,7 @@ public class NodeKeeper implements EntryPoint {
         allNodesTable.add(allNodesGrid);
         allNodesPanel.add(allNodesTable);
         
+        allNodesGrid.getCellFormatter().addStyleName(0, 1, "firstLine");
         allNodesGrid.setStyleName("allNodesGrid");
         allNodesTable.setStyleName("allNodesPanel");
         
@@ -218,7 +223,7 @@ public class NodeKeeper implements EntryPoint {
                         
                         for (Map.Entry<Node, TreeItem> pair : entrySet) {
                             if(item.equals(pair.getValue())) {
-                                selectedNodeTextBox.setText(pair.getKey().getId().toString());
+                                selectedNodeTextLabel.setText(pair.getKey().getId().toString());
                                 if (pair.getKey().getParentId() > -1)
                                     parentBox.setText(pair.getKey().getParentId().toString());
                                 else
@@ -285,7 +290,7 @@ public class NodeKeeper implements EntryPoint {
     private void addChildNode() {
         if (mainTree.getSelectedItem() != null) {
             TreeItem parentItem = mainTree.getSelectedItem();
-            Node newNode = new Node(Integer.valueOf(selectedNodeTextBox.getText()));
+            Node newNode = new Node(Integer.valueOf(selectedNodeTextLabel.getText()));
             TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
             changedNodes.add(newNode);
             nodeToTreeItemMap.put(newNode, newItem);
