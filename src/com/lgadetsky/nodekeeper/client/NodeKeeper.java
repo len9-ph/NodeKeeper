@@ -11,6 +11,12 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Window;
@@ -62,8 +68,14 @@ public class NodeKeeper implements EntryPoint {
     // Selected node panel
     private Label selectedText = new Label("Selected");
     private Grid selectedGrid = new Grid(5, 2);
-    private TextBox idBox = new TextBox();
-    private TextBox parentBox = new TextBox();
+    
+    // Stub for refactoring
+    private Label idLabel = new Label();
+    private Label parentLabel = new Label();
+    private Label nameLabel = new Label();
+    private Label ipLabel = new Label();
+    private Label portLabel = new Label();
+    
     private TextBox nameBox = new TextBox();
     private TextBox ipBox = new TextBox();
     private TextBox portBox = new TextBox();
@@ -109,13 +121,34 @@ public class NodeKeeper implements EntryPoint {
         selectedGrid.setText(3, 0, "ip");
         selectedGrid.setText(4, 0, "port");
         
-        selectedGrid.setWidget(0, 1, idBox);
-        idBox.setReadOnly(true);
-        selectedGrid.setWidget(1, 1, parentBox);
-        parentBox.setReadOnly(true);
-        selectedGrid.setWidget(2, 1, nameBox);
-        selectedGrid.setWidget(3, 1, ipBox);
-        selectedGrid.setWidget(4, 1, portBox);
+        // Handle keyDown in boxes
+        nameBox.addKeyUpHandler(new KeyUpHandler() {
+            
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                // TODO Auto-generated method stub
+                refreshState(nameBox, 1);
+            }
+        });
+        
+        ipBox.addKeyUpHandler(new KeyUpHandler() {
+            
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                // TODO Auto-generated method stub
+                refreshState(ipBox, 2);
+            }
+        });
+        
+        portBox.addKeyUpHandler(new KeyUpHandler() {
+            
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                // TODO Auto-generated method stub
+                refreshState(portBox, 3);
+            }
+        });
+        
         selectedGrid.setStyleName("selectedGrid");
         selectedTable.setStyleName("selectedNodeTable");
         selectedPanel.setStyleName("selectedNodePanel");
@@ -156,7 +189,22 @@ public class NodeKeeper implements EntryPoint {
         editButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                editNode();
+                //editNode();
+                TreeItem selectedItem = mainTree.getSelectedItem();
+                Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+                
+                for (Map.Entry<Node, TreeItem> pair : entrySet) {
+                    if(selectedItem.equals(pair.getValue())) {
+                        nameBox.setText(pair.getKey().getName());
+                        ipBox.setText(pair.getKey().getIp());
+                        portBox.setText(pair.getKey().getPort());
+                        
+                        selectedGrid.setWidget(2, 1, nameBox);
+                        selectedGrid.setWidget(3, 1, ipBox);
+                        selectedGrid.setWidget(4, 1, portBox);
+                    }
+                }
+                
             }
         });
         
@@ -172,7 +220,7 @@ public class NodeKeeper implements EntryPoint {
         // All nodes panel draw 
         allNodesPanel.add(allNodesText);
         allNodesTable.add(refreshButton);
-     // Refresh button assembly
+        // Refresh button assembly
         refreshButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -224,14 +272,22 @@ public class NodeKeeper implements EntryPoint {
                         for (Map.Entry<Node, TreeItem> pair : entrySet) {
                             if(item.equals(pair.getValue())) {
                                 selectedNodeTextLabel.setText(pair.getKey().getId().toString());
+                                idLabel.setText(pair.getKey().getId().toString());
+                                parentLabel.setText(pair.getKey().getParentId().toString());
+                                nameLabel.setText(pair.getKey().getName());
+                                ipLabel.setText(pair.getKey().getIp());
+                                portLabel.setText(pair.getKey().getPort());
+                                
                                 if (pair.getKey().getParentId() > -1)
-                                    parentBox.setText(pair.getKey().getParentId().toString());
+                                    parentLabel.setText(pair.getKey().getParentId().toString());
                                 else
-                                    parentBox.setText("");
-                                idBox.setText(pair.getKey().getId().toString());
-                                nameBox.setText(pair.getKey().getName());
-                                ipBox.setText(pair.getKey().getIp());
-                                portBox.setText(pair.getKey().getPort());
+                                    parentLabel.setText("");
+                                
+                                selectedGrid.setWidget(0, 1, idLabel);
+                                selectedGrid.setWidget(1, 1, parentLabel);
+                                selectedGrid.setWidget(2, 1, nameLabel);
+                                selectedGrid.setWidget(3, 1, ipLabel);
+                                selectedGrid.setWidget(4, 1, portLabel);
                             }
                         }
                     }
@@ -300,32 +356,6 @@ public class NodeKeeper implements EntryPoint {
         }
     }
     
-    /**
-     * update node
-     */
-    private void editNode() {
-        if (mainTree.getSelectedItem() != null) {
-            TreeItem selectedItem = mainTree.getSelectedItem();
-            
-            // Find node by treeItem and edit it
-            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-            
-            for (Map.Entry<Node, TreeItem> pair : entrySet) {
-                if(selectedItem.equals(pair.getValue())) {
-                    pair.getKey().setName(nameBox.getText());
-                    pair.getKey().setIp(ipBox.getText());
-                    pair.getKey().setPort(portBox.getText());
-                    pair.getValue().setHTML(pair.getKey().getName());
-                    changedNodes.add(pair.getKey());
-                    mainTree.setFocus(true);
-                }
-            }
-            
-        } else {
-            // PopUp window: item was not selected
-        }
-        
-    }
     
     /**
      * delete node
@@ -394,6 +424,31 @@ public class NodeKeeper implements EntryPoint {
             });
         } else {
             // Popup window: nothing has been changed
+        }
+    }
+    
+    private void refreshState(TextBox box, int name) {
+        TreeItem selectedItem = mainTree.getSelectedItem();
+        Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+        for (Map.Entry<Node, TreeItem> pair : entrySet) {
+            if(selectedItem.equals(pair.getValue())) {
+                switch (name) {
+                    case 1:{
+                        pair.getKey().setName(box.getText());
+                        pair.getValue().setHTML(pair.getKey().getName());
+                        break;
+                    }
+                    case 2: {
+                        pair.getKey().setIp(box.getText());
+                        break;
+                    }
+                    case 3:{
+                        pair.getKey().setPort(box.getText());
+                        break;
+                    }
+                }
+                changedNodes.add(pair.getKey());
+            }
         }
     }
     
