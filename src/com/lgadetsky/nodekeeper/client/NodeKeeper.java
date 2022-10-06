@@ -432,6 +432,9 @@ public class NodeKeeper implements EntryPoint {
         Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
         for (Map.Entry<Node, TreeItem> pair : entrySet) {
             if(selectedItem.equals(pair.getValue())) {
+                // if contains delete old and add new else add
+                if (changedNodes.contains(pair.getKey()))
+                    changedNodes.remove(pair.getKey());
                 switch (name) {
                     case 1:{
                         pair.getKey().setName(box.getText());
