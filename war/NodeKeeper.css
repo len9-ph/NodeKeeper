@@ -1,6 +1,22 @@
 .gwt-Label {
   font-weight: bold;
 }
+.gwt-DecoratedPopupPanel {
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 3px;
+  background-color: #f6f4df;
+  width: 250px;
+  height: 60px ;
+  overflow: visible;
+  position: fixed !important;
+  left: 10px !important;
+  top: 90% !important;
+}
+.gwt-DecoratedPopupPanel .gwt-HTML {
+  font-size: large;
+  padding: 20px 20px 20px 20px;
+}
 .upperPanel {
   width: 600px;
   display: block;
@@ -52,7 +68,7 @@
 }
 .selectedGrid td {
   border: 1px solid;
-  width: 100%;
+  width: 10%;
   padding: 2px 2px 2px 2px;
 }
 .lowerPanel {

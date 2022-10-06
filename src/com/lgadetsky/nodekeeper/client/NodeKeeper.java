@@ -22,6 +22,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -48,6 +49,8 @@ public class NodeKeeper implements EntryPoint {
     
     // Map that connect node items with their treeItem's
     private HashMap<Node, TreeItem> nodeToTreeItemMap = new HashMap<>();
+    
+    private DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
     
     // Tree for tree panel
     private Tree mainTree;
@@ -101,6 +104,7 @@ public class NodeKeeper implements EntryPoint {
     
     @Override
     public void onModuleLoad() {
+        //simplePopup.setPopupPosition(0, Window.getClientHeight() - 50);
         
         // Main panel styles setting
         upperPanel.setStyleName("upperPanel");
@@ -126,7 +130,6 @@ public class NodeKeeper implements EntryPoint {
             
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                // TODO Auto-generated method stub
                 refreshState(nameBox, 1);
             }
         });
@@ -135,7 +138,6 @@ public class NodeKeeper implements EntryPoint {
             
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                // TODO Auto-generated method stub
                 refreshState(ipBox, 2);
             }
         });
@@ -144,7 +146,6 @@ public class NodeKeeper implements EntryPoint {
             
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                // TODO Auto-generated method stub
                 refreshState(portBox, 3);
             }
         });
@@ -190,20 +191,27 @@ public class NodeKeeper implements EntryPoint {
             @Override
             public void onClick(ClickEvent event) {
                 //editNode();
-                TreeItem selectedItem = mainTree.getSelectedItem();
-                Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-                
-                for (Map.Entry<Node, TreeItem> pair : entrySet) {
-                    if(selectedItem.equals(pair.getValue())) {
-                        nameBox.setText(pair.getKey().getName());
-                        ipBox.setText(pair.getKey().getIp());
-                        portBox.setText(pair.getKey().getPort());
-                        
-                        selectedGrid.setWidget(2, 1, nameBox);
-                        selectedGrid.setWidget(3, 1, ipBox);
-                        selectedGrid.setWidget(4, 1, portBox);
+                if (mainTree.getSelectedItem() != null) {
+                    TreeItem selectedItem = mainTree.getSelectedItem();
+                    Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+                    
+                    for (Map.Entry<Node, TreeItem> pair : entrySet) {
+                        if(selectedItem.equals(pair.getValue())) {
+                            nameBox.setText(pair.getKey().getName());
+                            ipBox.setText(pair.getKey().getIp());
+                            portBox.setText(pair.getKey().getPort());
+                            
+                            selectedGrid.setWidget(2, 1, nameBox);
+                            selectedGrid.setWidget(3, 1, ipBox);
+                            selectedGrid.setWidget(4, 1, portBox);
+                        }
                     }
+                } else {
+                    simplePopup.setWidget(new HTML("Item was not selected"));
+                    //simplePopup.setPopupPosition(editButton.getAbsoluteLeft() + 20, editButton.getAbsoluteTop() + 20);
+                    simplePopup.show();
                 }
+                
                 
             }
         });
@@ -353,6 +361,9 @@ public class NodeKeeper implements EntryPoint {
             parentItem.addItem(newItem);
         } else {
             // PopUp window: parent item not found
+            simplePopup.setWidget(new HTML("parent item not selected"));
+            //simplePopup.setPopupPosition(addChildButton.getAbsoluteLeft() + 20, addChildButton.getAbsoluteTop() + 20);
+            simplePopup.show();
         }
     }
     
@@ -380,6 +391,9 @@ public class NodeKeeper implements EntryPoint {
             mainTree.removeItem(selectedItem);
         } else {
             // Popup window: item was not selected
+            simplePopup.setWidget(new HTML("Item was not selected"));
+            //simplePopup.setPopupPosition(refreshButton.getAbsoluteLeft() + 20, refreshButton.getAbsoluteTop() + 20);
+            simplePopup.show();
         }
     }
     
@@ -412,18 +426,19 @@ public class NodeKeeper implements EntryPoint {
                 
                 @Override
                 public void onSuccess(List<Node> result) {
-                    // TODO Auto-generated method stub
                     refreshViewers(result);
                 }
                 
                 @Override
                 public void onFailure(Throwable caught) {
-                    // TODO Auto-generated method stub
                     Window.alert("Error");
                 }
             });
         } else {
             // Popup window: nothing has been changed
+            simplePopup.setWidget(new HTML("Everything is up to date"));
+            //simplePopup.setPopupPosition(deleteButton.getAbsoluteLeft() + 20, deleteButton.getAbsoluteTop() + 20);
+            simplePopup.show();
         }
     }
     
