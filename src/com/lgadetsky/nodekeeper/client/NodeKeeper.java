@@ -361,7 +361,7 @@ public class NodeKeeper implements EntryPoint {
             parentItem.addItem(newItem);
         } else {
             // PopUp window: parent item not found
-            simplePopup.setWidget(new HTML("parent item not selected"));
+            simplePopup.setWidget(new HTML("Parent item not selected"));
             //simplePopup.setPopupPosition(addChildButton.getAbsoluteLeft() + 20, addChildButton.getAbsoluteTop() + 20);
             simplePopup.show();
         }
