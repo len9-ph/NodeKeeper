@@ -41,6 +41,16 @@ import com.lgadetsky.nodekeeper.shared.Node;
 public class NodeKeeper implements EntryPoint {
     private final NodeKeeperServiceAsync service = GWT.create(NodeKeeperService.class);
     
+    private final String ITEM_WAS_NOT_SELECTED = "Item was not selected";
+    private final String PARENT_ITEM_WAS_NOT_SELECTED = "Parent item not selected";
+    private final String EVERYTHING_UP_TO_DATE = "Everything is up to date";
+    private final String ERROR = "Internal error";
+    private final String ID = "id";
+    private final String PARENT_ID = "parentId";
+    private final String NAME = "name";
+    private final String IP = "ip";
+    private final String PORT = "port";
+    
     // List with data for tree
     private LinkedList<Node> nodes = new LinkedList<>();
     
@@ -119,11 +129,11 @@ public class NodeKeeper implements EntryPoint {
         upperPanel.add(treePanel);
         
         // Selected panel draw
-        selectedGrid.setText(0, 0, "id");
-        selectedGrid.setText(1, 0, "parentId");
-        selectedGrid.setText(2, 0, "name");
-        selectedGrid.setText(3, 0, "ip");
-        selectedGrid.setText(4, 0, "port");
+        selectedGrid.setText(0, 0, ID);
+        selectedGrid.setText(1, 0, PARENT_ID);
+        selectedGrid.setText(2, 0, NAME);
+        selectedGrid.setText(3, 0, IP);
+        selectedGrid.setText(4, 0, PORT);
         
         // Handle keyDown in boxes
         nameBox.addKeyUpHandler(new KeyUpHandler() {
@@ -207,8 +217,7 @@ public class NodeKeeper implements EntryPoint {
                         }
                     }
                 } else {
-                    simplePopup.setWidget(new HTML("Item was not selected"));
-                    //simplePopup.setPopupPosition(editButton.getAbsoluteLeft() + 20, editButton.getAbsoluteTop() + 20);
+                    simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
                     simplePopup.show();
                 }
                 
@@ -236,11 +245,11 @@ public class NodeKeeper implements EntryPoint {
             }
         });
         
-        allNodesGrid.setText(0, 0, "id");
-        allNodesGrid.setText(0, 1, "parentId");
-        allNodesGrid.setText(0, 2, "name");
-        allNodesGrid.setText(0, 3, "ip");
-        allNodesGrid.setText(0, 4, "port");
+        allNodesGrid.setText(0, 0, ID);
+        allNodesGrid.setText(0, 1, PARENT_ID);
+        allNodesGrid.setText(0, 2, NAME);
+        allNodesGrid.setText(0, 3, IP);
+        allNodesGrid.setText(0, 4, PORT);
         allNodesTable.add(allNodesGrid);
         allNodesPanel.add(allNodesTable);
         
@@ -303,10 +312,10 @@ public class NodeKeeper implements EntryPoint {
                 treeScroll.add(mainTree);
                 redrawAllNodesTable();
             }
-            
+               
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("Internal error");
+                Window.alert(ERROR);
             }
         });
     }
@@ -361,8 +370,7 @@ public class NodeKeeper implements EntryPoint {
             parentItem.addItem(newItem);
         } else {
             // PopUp window: parent item not found
-            simplePopup.setWidget(new HTML("Parent item not selected"));
-            //simplePopup.setPopupPosition(addChildButton.getAbsoluteLeft() + 20, addChildButton.getAbsoluteTop() + 20);
+            simplePopup.setWidget(new HTML(PARENT_ITEM_WAS_NOT_SELECTED));
             simplePopup.show();
         }
     }
@@ -391,7 +399,7 @@ public class NodeKeeper implements EntryPoint {
             mainTree.removeItem(selectedItem);
         } else {
             // Popup window: item was not selected
-            simplePopup.setWidget(new HTML("Item was not selected"));
+            simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
             //simplePopup.setPopupPosition(refreshButton.getAbsoluteLeft() + 20, refreshButton.getAbsoluteTop() + 20);
             simplePopup.show();
         }
@@ -431,13 +439,12 @@ public class NodeKeeper implements EntryPoint {
                 
                 @Override
                 public void onFailure(Throwable caught) {
-                    Window.alert("Error");
+                    Window.alert(ERROR);
                 }
             });
         } else {
             // Popup window: nothing has been changed
-            simplePopup.setWidget(new HTML("Everything is up to date"));
-            //simplePopup.setPopupPosition(deleteButton.getAbsoluteLeft() + 20, deleteButton.getAbsoluteTop() + 20);
+            simplePopup.setWidget(new HTML(EVERYTHING_UP_TO_DATE));
             simplePopup.show();
         }
     }
