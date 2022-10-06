@@ -28,6 +28,7 @@
       <delete includeemptydirs="true">
         <fileset dir="${css.dir}" includes="*.css, **/*.css" defaultexcludes="false"/>
       </delete>
+      
       <apply dir="${css.dir}" executable="java" parallel="false" failonerror="true">
         <fileset dir="${css.dir}">
           <include name="*.less"/>
@@ -38,7 +39,7 @@
         <arg path="${tool.less}"/>
         
         <srcfile/>
-        <mapper type="glob" from=".less" to="${css.dir}/*.css"/>
+        <mapper type="glob" from="*.less" to="${css.dir}/*.css"/>
         <targetfile/>
       </apply>
   </target>
@@ -165,7 +166,7 @@ Test targets suppressed because -junit argument was not specified when running w
     <antcall target="test.prod" />
   </target>-->
 
-  <target name="build" depends="libs" description="Build this project" />
+  <target name="build" depends="libs, less" description="Build this project" />
 
   <target name="war" depends="build" description="Create a war file">
     <zip destfile="NodeKeeper.war" basedir="war"/>
