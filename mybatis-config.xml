@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properies resource="db.properties">
+    <property name="driver" value="${Dname}"/>
+    <property name="url" value="${URL}"/>
+    <property name="username" value="${Uname}"/>
+    <property name="password" value="${password}"/>
+</properies>
