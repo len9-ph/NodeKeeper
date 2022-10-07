@@ -43,6 +43,7 @@ public class NodeKeeper implements EntryPoint {
     
     private final String ITEM_WAS_NOT_SELECTED = "Item was not selected";
     private final String PARENT_ITEM_WAS_NOT_SELECTED = "Parent item not selected";
+    private final String PARENT_ITEM_NOT_VALID = "Parent has no id and cannot have children";
     private final String EVERYTHING_UP_TO_DATE = "Everything is up to date";
     private final String ERROR = "Internal error";
     private final String ID = "id";
@@ -363,11 +364,24 @@ public class NodeKeeper implements EntryPoint {
     private void addChildNode() {
         if (mainTree.getSelectedItem() != null) {
             TreeItem parentItem = mainTree.getSelectedItem();
-            Node newNode = new Node(Integer.valueOf(selectedNodeTextLabel.getText()));
-            TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
-            changedNodes.add(newNode);
-            nodeToTreeItemMap.put(newNode, newItem);
-            parentItem.addItem(newItem);
+            
+            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+            
+            for (Map.Entry<Node, TreeItem> pair : entrySet) {
+                if(parentItem.equals(pair.getValue())) {
+                    if (pair.getKey().getId() == -1) {
+                        simplePopup.setWidget(new HTML(PARENT_ITEM_NOT_VALID));
+                        simplePopup.show();
+                    }
+                    else {
+                        Node newNode = new Node(Integer.valueOf(selectedNodeTextLabel.getText()));
+                        TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
+                        changedNodes.add(newNode);
+                        nodeToTreeItemMap.put(newNode, newItem);
+                        parentItem.addItem(newItem);
+                    }
+                }
+            }
         } else {
             // PopUp window: parent item not found
             simplePopup.setWidget(new HTML(PARENT_ITEM_WAS_NOT_SELECTED));
