@@ -59,7 +59,7 @@ public class NodeKeeper implements EntryPoint {
     private LinkedList<Node> changedNodes = new LinkedList<>();
     
     // Map that connect node items with their treeItem's
-    private HashMap<Node, TreeItem> nodeToTreeItemMap = new HashMap<>();
+    private HashMap<TreeItem, Node> nodeToTreeItemMap = new HashMap<>();
     
     private DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
     
@@ -202,25 +202,40 @@ public class NodeKeeper implements EntryPoint {
             @Override
             public void onClick(ClickEvent event) {
                 //editNode();
-                if (mainTree.getSelectedItem() != null) {
+                
+                if(mainTree.getSelectedItem() != null) {
                     TreeItem selectedItem = mainTree.getSelectedItem();
-                    Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+                    nameBox.setText(nodeToTreeItemMap.get(selectedItem).getName());
+                    ipBox.setText(nodeToTreeItemMap.get(selectedItem).getIp());
+                    portBox.setText(nodeToTreeItemMap.get(selectedItem).getPort());
                     
-                    for (Map.Entry<Node, TreeItem> pair : entrySet) {
-                        if(selectedItem.equals(pair.getValue())) {
-                            nameBox.setText(pair.getKey().getName());
-                            ipBox.setText(pair.getKey().getIp());
-                            portBox.setText(pair.getKey().getPort());
-                            
-                            selectedGrid.setWidget(2, 1, nameBox);
-                            selectedGrid.setWidget(3, 1, ipBox);
-                            selectedGrid.setWidget(4, 1, portBox);
-                        }
-                    }
+                    selectedGrid.setWidget(2, 1, nameBox);
+                    selectedGrid.setWidget(3, 1, ipBox);
+                    selectedGrid.setWidget(4, 1, portBox);
                 } else {
                     simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
                     simplePopup.show();
                 }
+                
+//                if (mainTree.getSelectedItem() != null) {
+//                    TreeItem selectedItem = mainTree.getSelectedItem();
+//                    Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+//                    
+//                    for (Map.Entry<Node, TreeItem> pair : entrySet) {
+//                        if(selectedItem.equals(pair.getValue())) {
+//                            nameBox.setText(pair.getKey().getName());
+//                            ipBox.setText(pair.getKey().getIp());
+//                            portBox.setText(pair.getKey().getPort());
+//                            
+//                            selectedGrid.setWidget(2, 1, nameBox);
+//                            selectedGrid.setWidget(3, 1, ipBox);
+//                            selectedGrid.setWidget(4, 1, portBox);
+//                        }
+//                    }
+//                } else {
+//                    simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
+//                    simplePopup.show();
+//                }
                 
                 
             }
@@ -284,30 +299,49 @@ public class NodeKeeper implements EntryPoint {
                 mainTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
                     @Override
                     public void onSelection(SelectionEvent<TreeItem> event) {
-                        TreeItem item = mainTree.getSelectedItem();
-                        Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+                        TreeItem selectedItem = mainTree.getSelectedItem();
                         
-                        for (Map.Entry<Node, TreeItem> pair : entrySet) {
-                            if(item.equals(pair.getValue())) {
-                                selectedNodeTextLabel.setText(pair.getKey().getId().toString());
-                                idLabel.setText(pair.getKey().getId().toString());
-                                parentLabel.setText(pair.getKey().getParentId().toString());
-                                nameLabel.setText(pair.getKey().getName());
-                                ipLabel.setText(pair.getKey().getIp());
-                                portLabel.setText(pair.getKey().getPort());
-                                
-                                if (pair.getKey().getParentId() > -1)
-                                    parentLabel.setText(pair.getKey().getParentId().toString());
-                                else
-                                    parentLabel.setText("");
-                                
-                                selectedGrid.setWidget(0, 1, idLabel);
-                                selectedGrid.setWidget(1, 1, parentLabel);
-                                selectedGrid.setWidget(2, 1, nameLabel);
-                                selectedGrid.setWidget(3, 1, ipLabel);
-                                selectedGrid.setWidget(4, 1, portLabel);
-                            }
-                        }
+                        selectedNodeTextLabel.setText(nodeToTreeItemMap.get(selectedItem).getId().toString());
+                        idLabel.setText(nodeToTreeItemMap.get(selectedItem).getId().toString());
+                        parentLabel.setText(nodeToTreeItemMap.get(selectedItem).getParentId().toString());
+                        nameLabel.setText(nodeToTreeItemMap.get(selectedItem).getName());
+                        ipLabel.setText(nodeToTreeItemMap.get(selectedItem).getIp());
+                        portLabel.setText(nodeToTreeItemMap.get(selectedItem).getPort());
+                        
+                        if (nodeToTreeItemMap.get(selectedItem).getParentId() > -1)
+                            parentLabel.setText(nodeToTreeItemMap.get(selectedItem).getParentId().toString());
+                        else
+                            parentLabel.setText("");
+                        selectedGrid.setWidget(0, 1, idLabel);
+                        selectedGrid.setWidget(1, 1, parentLabel);
+                        selectedGrid.setWidget(2, 1, nameLabel);
+                        selectedGrid.setWidget(3, 1, ipLabel);
+                        selectedGrid.setWidget(4, 1, portLabel);
+                        
+//                        TreeItem item = mainTree.getSelectedItem();
+//                        Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+//                        
+//                        for (Map.Entry<Node, TreeItem> pair : entrySet) {
+//                            if(item.equals(pair.getValue())) {
+//                                selectedNodeTextLabel.setText(pair.getKey().getId().toString());
+//                                idLabel.setText(pair.getKey().getId().toString());
+//                                parentLabel.setText(pair.getKey().getParentId().toString());
+//                                nameLabel.setText(pair.getKey().getName());
+//                                ipLabel.setText(pair.getKey().getIp());
+//                                portLabel.setText(pair.getKey().getPort());
+//                                
+//                                if (pair.getKey().getParentId() > -1)
+//                                    parentLabel.setText(pair.getKey().getParentId().toString());
+//                                else
+//                                    parentLabel.setText("");
+//                                
+//                                selectedGrid.setWidget(0, 1, idLabel);
+//                                selectedGrid.setWidget(1, 1, parentLabel);
+//                                selectedGrid.setWidget(2, 1, nameLabel);
+//                                selectedGrid.setWidget(3, 1, ipLabel);
+//                                selectedGrid.setWidget(4, 1, portLabel);
+//                            }
+//                        }
                     }
                 });
                 treeScroll.add(mainTree);
@@ -331,15 +365,21 @@ public class NodeKeeper implements EntryPoint {
         for (Node n : nodes) {
             if (n.getParentId() == -1) {
                 TreeItem item = new TreeItem(new HTML(n.getName()));
-                nodeToTreeItemMap.put(n, item);
+                nodeToTreeItemMap.put(item, n);
                 t.addItem(item);
             } else {
                 TreeItem item = new TreeItem(new HTML(n.getName()));
-                nodeToTreeItemMap.put(n, item);
+                nodeToTreeItemMap.put(item, n);
                 TreeItem parentItem = null;
                 for (Node node : nodes) {
-                    if (node.getId().equals(n.getParentId()))
-                        parentItem = nodeToTreeItemMap.get(node);
+                    if (node.getId().equals(n.getParentId())) {
+                        Set<Map.Entry<TreeItem, Node>> entrySet = nodeToTreeItemMap.entrySet();
+                        
+                        for (Map.Entry<TreeItem, Node> pair : entrySet) {
+                            if(node.equals(pair.getValue())) 
+                                parentItem = pair.getKey();
+                        }
+                    }
                 }
                 parentItem.addItem(item);
             }
@@ -354,7 +394,7 @@ public class NodeKeeper implements EntryPoint {
         Node newNode = new Node();
         changedNodes.add(newNode);
         TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
-        nodeToTreeItemMap.put(newNode, newItem);
+        nodeToTreeItemMap.put(newItem, newNode);
         mainTree.addItem(newItem);
     }
     
@@ -365,28 +405,48 @@ public class NodeKeeper implements EntryPoint {
         if (mainTree.getSelectedItem() != null) {
             TreeItem parentItem = mainTree.getSelectedItem();
             
-            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-            
-            for (Map.Entry<Node, TreeItem> pair : entrySet) {
-                if(parentItem.equals(pair.getValue())) {
-                    if (pair.getKey().getId() == -1) {
-                        simplePopup.setWidget(new HTML(PARENT_ITEM_NOT_VALID));
-                        simplePopup.show();
-                    }
-                    else {
-                        Node newNode = new Node(Integer.valueOf(selectedNodeTextLabel.getText()));
-                        TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
-                        changedNodes.add(newNode);
-                        nodeToTreeItemMap.put(newNode, newItem);
-                        parentItem.addItem(newItem);
-                    }
-                }
+            Node curNode = nodeToTreeItemMap.get(parentItem);
+            if (curNode.getId().equals(-1)) {
+                simplePopup.setWidget(new HTML(PARENT_ITEM_NOT_VALID));
+                simplePopup.show();
+            } else {
+                Node newNode = new Node(Integer.valueOf(selectedNodeTextLabel.getText()));
+                TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
+                changedNodes.add(newNode);
+                nodeToTreeItemMap.put(newItem, newNode);
+                parentItem.addItem(newItem);
             }
         } else {
-            // PopUp window: parent item not found
             simplePopup.setWidget(new HTML(PARENT_ITEM_WAS_NOT_SELECTED));
             simplePopup.show();
         }
+        
+        
+//        if (mainTree.getSelectedItem() != null) {
+//            TreeItem parentItem = mainTree.getSelectedItem();
+//            
+//            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+//            
+//            for (Map.Entry<Node, TreeItem> pair : entrySet) {
+//                if(parentItem.equals(pair.getValue())) {
+//                    if (pair.getKey().getId() == -1) {
+//                        simplePopup.setWidget(new HTML(PARENT_ITEM_NOT_VALID));
+//                        simplePopup.show();
+//                    }
+//                    else {
+//                        Node newNode = new Node(Integer.valueOf(selectedNodeTextLabel.getText()));
+//                        TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
+//                        changedNodes.add(newNode);
+//                        nodeToTreeItemMap.put(newItem, new);
+//                        parentItem.addItem(newItem);
+//                    }
+//                }
+//            }
+//        } else {
+//            // PopUp window: parent item not found
+//            simplePopup.setWidget(new HTML(PARENT_ITEM_WAS_NOT_SELECTED));
+//            simplePopup.show();
+//        }
     }
     
     
@@ -396,27 +456,48 @@ public class NodeKeeper implements EntryPoint {
     private void deleteNode() {
         if (mainTree.getSelectedItem() != null) {
             TreeItem selectedItem = mainTree.getSelectedItem();
-            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-
-            for (Map.Entry<Node, TreeItem> pair : entrySet) {
-                if (selectedItem.equals(pair.getValue())) {
-                    if (pair.getKey().getId().equals(-1)) {
-                        changedNodes.remove(pair.getKey());
-                        nodeToTreeItemMap.remove(pair.getKey());
-                    } else {
-                        pair.getKey().setDeleted(true);
-                        changedNodes.add(pair.getKey());
-                        nodeToTreeItemMap.remove(pair.getKey());
-                    }
-                }
+            
+            Node curNode = nodeToTreeItemMap.get(selectedItem);
+            if (curNode.getId().equals(-1)) {
+                changedNodes.remove(curNode);
+                nodeToTreeItemMap.remove(selectedItem);
+            } else {
+                curNode.setDeleted(true);
+                changedNodes.add(curNode);
+                nodeToTreeItemMap.remove(selectedItem);
             }
-            mainTree.removeItem(selectedItem);
+            if (curNode.getParentId().equals(-1))
+                mainTree.removeItem(selectedItem);
+            else 
+                selectedItem.getParentItem().removeItem(selectedItem);
         } else {
-            // Popup window: item was not selected
             simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
-            //simplePopup.setPopupPosition(refreshButton.getAbsoluteLeft() + 20, refreshButton.getAbsoluteTop() + 20);
             simplePopup.show();
         }
+        
+//        if (mainTree.getSelectedItem() != null) {
+//            TreeItem selectedItem = mainTree.getSelectedItem();
+//            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+//
+//            for (Map.Entry<Node, TreeItem> pair : entrySet) {
+//                if (selectedItem.equals(pair.getValue())) {
+//                    if (pair.getKey().getId().equals(-1)) {
+//                        changedNodes.remove(pair.getKey());
+//                        nodeToTreeItemMap.remove(pair.getKey());
+//                    } else {
+//                        pair.getKey().setDeleted(true);
+//                        changedNodes.add(pair.getKey());
+//                        nodeToTreeItemMap.remove(pair.getKey());
+//                    }
+//                }
+//            }
+//            mainTree.removeItem(selectedItem);
+//        } else {
+//            // Popup window: item was not selected
+//            simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
+//            //simplePopup.setPopupPosition(refreshButton.getAbsoluteLeft() + 20, refreshButton.getAbsoluteTop() + 20);
+//            simplePopup.show();
+//        }
     }
     
     /**
@@ -465,30 +546,50 @@ public class NodeKeeper implements EntryPoint {
     
     private void refreshState(TextBox box, int name) {
         TreeItem selectedItem = mainTree.getSelectedItem();
-        Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-        for (Map.Entry<Node, TreeItem> pair : entrySet) {
-            if(selectedItem.equals(pair.getValue())) {
-                // if contains delete old and add new else add
-                if (changedNodes.contains(pair.getKey()))
-                    changedNodes.remove(pair.getKey());
-                switch (name) {
-                    case 1:{
-                        pair.getKey().setName(box.getText());
-                        pair.getValue().setHTML(pair.getKey().getName());
-                        break;
-                    }
-                    case 2: {
-                        pair.getKey().setIp(box.getText());
-                        break;
-                    }
-                    case 3:{
-                        pair.getKey().setPort(box.getText());
-                        break;
-                    }
-                }
-                changedNodes.add(pair.getKey());
-            }
+        
+        Node curNode = nodeToTreeItemMap.get(selectedItem);
+        if (changedNodes.contains(curNode))
+            changedNodes.remove(curNode);
+        
+        switch (name) {
+            case 1:
+                curNode.setName(box.getText());
+                selectedItem.setHTML(curNode.getName());
+                break;
+            case 2:
+                curNode.setIp(box.getText());
+                break;
+            case 3:
+                curNode.setPort(box.getText());
         }
+        changedNodes.add(curNode);
+        
+        
+//        TreeItem selectedItem = mainTree.getSelectedItem();
+//        Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
+//        for (Map.Entry<Node, TreeItem> pair : entrySet) {
+//            if(selectedItem.equals(pair.getValue())) {
+//                // if contains delete old and add new else add
+//                if (changedNodes.contains(pair.getKey()))
+//                    changedNodes.remove(pair.getKey());
+//                switch (name) {
+//                    case 1:{
+//                        pair.getKey().setName(box.getText());
+//                        pair.getValue().setHTML(pair.getKey().getName());
+//                        break;
+//                    }
+//                    case 2: {
+//                        pair.getKey().setIp(box.getText());
+//                        break;
+//                    }
+//                    case 3:{
+//                        pair.getKey().setPort(box.getText());
+//                        break;
+//                    }
+//                }
+//                changedNodes.add(pair.getKey());
+//            }
+//        }
     }
     
     private void refreshViewers(List<Node> newNodes) {
@@ -501,15 +602,21 @@ public class NodeKeeper implements EntryPoint {
         for (Node n : nodes) {
             if (n.getParentId() == -1) {
                 TreeItem item = new TreeItem(new HTML(n.getName()));
-                nodeToTreeItemMap.put(n, item);
+                nodeToTreeItemMap.put(item, n);
                 mainTree.addItem(item);
             } else {
                 TreeItem item = new TreeItem(new HTML(n.getName()));
-                nodeToTreeItemMap.put(n, item);
+                nodeToTreeItemMap.put(item, n);
                 TreeItem parentItem = null;
                 for (Node node : nodes) {
-                    if (node.getId().equals(n.getParentId()))
-                        parentItem = nodeToTreeItemMap.get(node);
+                    if (node.getId().equals(n.getParentId())) {
+                        Set<Map.Entry<TreeItem, Node>> entrySet = nodeToTreeItemMap.entrySet();
+                    
+                        for (Map.Entry<TreeItem, Node> pair : entrySet) {
+                            if(node.equals(pair.getValue())) 
+                                parentItem = pair.getKey();
+                        }
+                    }
                 }
                 parentItem.addItem(item);
             }
