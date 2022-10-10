@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<properies resource="db.properties">
-    <property name="driver" value="${Dname}"/>
-    <property name="url" value="${URL}"/>
-    <property name="username" value="${Uname}"/>
-    <property name="password" value="${password}"/>
-</properies>
+
+
+<configuration>
+    <properies resource="db.properties">
+        <property name="driver" value="${Dname}"/>
+        <property name="url" value="${URL}"/>
+        <property name="username" value="${Uname}"/>
+        <property name="password" value="${password}"/>
+    </properies>
+    
+    <mappers>
+        <package name="com.lgadetsky.nodekeeper.server.mapper"/>
+    </mappers>
+</configuration>
+
+
+

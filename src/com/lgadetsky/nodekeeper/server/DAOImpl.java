@@ -1,45 +1,42 @@
 package com.lgadetsky.nodekeeper.server;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.google.inject.Inject;
 import com.lgadetsky.nodekeeper.server.mapper.NodeMapper;
 import com.lgadetsky.nodekeeper.shared.Node;
 
-public class NodeDao implements DAO<Node>{
-    private HashMap<Integer, Node> data = new HashMap<Integer, Node>();
-
+public class DAOImpl implements DAO<Node> {
+    
     @Inject
-    private NodeMapper nodeMapper;
+    private NodeMapper mapper;
 
     @Override
     public Node get(Integer id) {
-        return nodeMapper.findById(id);
-//        return data.get(id);
+        return mapper.findById(id);
     }
 
     @Override
     public List<Node> getAll() {
-        return new LinkedList<>(data.values());
+        return mapper.findAll();
     }
 
     @Override
     public Node save(Node node) {
-        data.put(node.getId(), node);
+        mapper.insert(node);
         return node;
     }
 
     @Override
     public Node update(Node node) {
-        data.put(node.getId(), node);
+        mapper.update(node);
         return node;
     }
 
     @Override
     public Integer delete(Integer id) {
-        data.remove(id);
+        mapper.deleteById(id);
         return id;
     }
+    
 }

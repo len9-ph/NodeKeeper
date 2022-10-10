@@ -10,6 +10,7 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
 
     private static final long serialVersionUID = 1L;
     
+    
     private NodeDao nodeDao;
     
     public NodeKeeperServiceImpl() {

@@ -4,8 +4,23 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5"
          xmlns="http://JAVA.sun.com/xml/ns/javaee">
-
-  <!-- Servlets -->
+  
+  <listener>
+    <listener-class>NodeKeeper.src.com.lgadetsky.nodekeeper.boot.AppGuiceServletContextListener</listener-class>
+  </listener>
+  
+  <filter>
+    <filter-name>guiceFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>guiceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  
+  <!-- Servlets 
   <servlet>
     <servlet-name>nodeKeeperServiceImpl</servlet-name>
     <servlet-class>com.lgadetsky.nodekeeper.server.NodeKeeperServiceImpl</servlet-class>
@@ -14,13 +29,13 @@
   <servlet-mapping>
     <servlet-name>nodeKeeperServiceImpl</servlet-name>
     <url-pattern>/nodekeeper/nodekeeper</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   
   
   
-  <!-- Default page to serve -->
+  <!-- Default page to serve 
   <welcome-file-list>
     <welcome-file>NodeKeeper.html</welcome-file>
-  </welcome-file-list>
+  </welcome-file-list>-->
 
 </web-app>
