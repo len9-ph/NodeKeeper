@@ -20,7 +20,7 @@
                 select nextval('node_seq')
          </selectKey>
          insert into "node" (id, parent_id, name, ip, port)
-         values (#{id}, #{parentId}, #{name}, )
+         values (#{id}, #{parentId}, #{name}, #{ip}, #{port});
     </insert>
     
     <select id="findById"
@@ -38,7 +38,7 @@
     <update id="update"
             parameterType="com.lgadetsky.nodekeeper.shared.Node">
         update "node" set
-                        name = #{parentId},
+                        name = #{name},
                         ip = #{ip},
                         port = #{port}
                       where id = #{id};

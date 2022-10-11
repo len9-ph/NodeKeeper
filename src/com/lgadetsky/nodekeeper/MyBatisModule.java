@@ -28,17 +28,22 @@ import org.mybatis.guice.XMLMyBatisModule;
 
 
 public class MyBatisModule extends XMLMyBatisModule {
-    private static Properties props = new Properties();
     
-    static {
-        props.setProperty("JDBC.username", "root");
-        props.setProperty("JDBC.password", "123");
+    private final static Properties getConnectionPropeties(String schema) {
+        final Properties myBatisProperties = new Properties();
+        myBatisProperties.setProperty("JDBC.driver", "org.postgresql.Driver");
+        myBatisProperties.setProperty("JDBC.url", "jdbc:postgresql://localhost:5432/" + schema);
+        myBatisProperties.setProperty("JDBC.username", "root");
+        myBatisProperties.setProperty("JDBC.password", "123");
+        
+        return myBatisProperties;
     }
     
     @Override
     protected void initialize() {
         setClassPathResource("com/lgadetsky/nodekeeper/mybatis-config.xml");
-        addProperties(props);
+        addProperties(getConnectionPropeties("Node"));
+        setEnvironmentId("development");
     }
     
 }

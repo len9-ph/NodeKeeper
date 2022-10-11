@@ -366,33 +366,6 @@ public class NodeKeeper implements EntryPoint {
             simplePopup.setWidget(new HTML(PARENT_ITEM_WAS_NOT_SELECTED));
             simplePopup.show();
         }
-        
-        
-//        if (mainTree.getSelectedItem() != null) {
-//            TreeItem parentItem = mainTree.getSelectedItem();
-//            
-//            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-//            
-//            for (Map.Entry<Node, TreeItem> pair : entrySet) {
-//                if(parentItem.equals(pair.getValue())) {
-//                    if (pair.getKey().getId() == -1) {
-//                        simplePopup.setWidget(new HTML(PARENT_ITEM_NOT_VALID));
-//                        simplePopup.show();
-//                    }
-//                    else {
-//                        Node newNode = new Node(Integer.valueOf(selectedNodeTextLabel.getText()));
-//                        TreeItem newItem = new TreeItem(new HTML(newNode.getName()));
-//                        changedNodes.add(newNode);
-//                        nodeToTreeItemMap.put(newItem, new);
-//                        parentItem.addItem(newItem);
-//                    }
-//                }
-//            }
-//        } else {
-//            // PopUp window: parent item not found
-//            simplePopup.setWidget(new HTML(PARENT_ITEM_WAS_NOT_SELECTED));
-//            simplePopup.show();
-//        }
     }
     
     
@@ -409,6 +382,13 @@ public class NodeKeeper implements EntryPoint {
                 treeItemToNodeMap.remove(selectedItem);
             } else {
                 curNode.setDeleted(true);
+                for (Node n : nodes) {
+                    // if node has children remove them
+                    if (n.getParentId().equals(curNode.getId())) {
+                        n.setDeleted(true);
+                        changedNodes.add(n);
+                    }
+                }
                 changedNodes.add(curNode);
                 treeItemToNodeMap.remove(selectedItem);
             }
@@ -420,30 +400,6 @@ public class NodeKeeper implements EntryPoint {
             simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
             simplePopup.show();
         }
-        
-//        if (mainTree.getSelectedItem() != null) {
-//            TreeItem selectedItem = mainTree.getSelectedItem();
-//            Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-//
-//            for (Map.Entry<Node, TreeItem> pair : entrySet) {
-//                if (selectedItem.equals(pair.getValue())) {
-//                    if (pair.getKey().getId().equals(-1)) {
-//                        changedNodes.remove(pair.getKey());
-//                        nodeToTreeItemMap.remove(pair.getKey());
-//                    } else {
-//                        pair.getKey().setDeleted(true);
-//                        changedNodes.add(pair.getKey());
-//                        nodeToTreeItemMap.remove(pair.getKey());
-//                    }
-//                }
-//            }
-//            mainTree.removeItem(selectedItem);
-//        } else {
-//            // Popup window: item was not selected
-//            simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
-//            //simplePopup.setPopupPosition(refreshButton.getAbsoluteLeft() + 20, refreshButton.getAbsoluteTop() + 20);
-//            simplePopup.show();
-//        }
     }
     
     /**
@@ -509,33 +465,6 @@ public class NodeKeeper implements EntryPoint {
                 curNode.setPort(box.getText());
         }
         changedNodes.add(curNode);
-        
-        
-//        TreeItem selectedItem = mainTree.getSelectedItem();
-//        Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-//        for (Map.Entry<Node, TreeItem> pair : entrySet) {
-//            if(selectedItem.equals(pair.getValue())) {
-//                // if contains delete old and add new else add
-//                if (changedNodes.contains(pair.getKey()))
-//                    changedNodes.remove(pair.getKey());
-//                switch (name) {
-//                    case 1:{
-//                        pair.getKey().setName(box.getText());
-//                        pair.getValue().setHTML(pair.getKey().getName());
-//                        break;
-//                    }
-//                    case 2: {
-//                        pair.getKey().setIp(box.getText());
-//                        break;
-//                    }
-//                    case 3:{
-//                        pair.getKey().setPort(box.getText());
-//                        break;
-//                    }
-//                }
-//                changedNodes.add(pair.getKey());
-//            }
-//        }
     }
     
     private void refreshViewers(List<Node> newNodes) {

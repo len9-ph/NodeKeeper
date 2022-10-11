@@ -11,7 +11,7 @@ import com.lgadetsky.nodekeeper.shared.Node;
 public class DAOImpl implements DAO<Node> {
 
     @Inject
-    private static NodeMapper nodeMapper;
+    private NodeMapper nodeMapper;
 
     @Override
     public Node get(Integer id) {
