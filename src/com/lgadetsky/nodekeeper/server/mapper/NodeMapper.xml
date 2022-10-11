@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lgadetsky.nodekeeper.NodeMapper.java">
-    <resultMap type="com.lgade" id="nodeResultMap">
+<mapper namespace="com.lgadetsky.nodekeeper.server.mapper.NodeMapper">
+    <resultMap type="com.lgadetsky.nodekeeper.shared.Node" id="nodeResultMap">
         <result property="id" column="id"/>
         <result property="parentId" column="parent_id"/>
         <result property="name" column="name"/>
@@ -12,7 +12,7 @@
     </resultMap>
     
     <insert id="insert"
-            parameterType="com.lgadetsky.nodekeeper.share.Node"
+            parameterType="com.lgadetsky.nodekeeper.shared.Node"
             useGeneratedKeys="true">
         <selectKey keyProperty="id"
                    resultType="int"

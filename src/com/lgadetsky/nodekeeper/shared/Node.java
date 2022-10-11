@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Node implements Serializable{
     private static final long serialVersionUID = 3927932427045891397L;
     
-    private static int count = 0;
+    //private static int count = 0;
     private Integer id;
     private Integer parentId;
     private String name;
@@ -41,7 +41,7 @@ public class Node implements Serializable{
     }
     
     public Node(int parentId, String name, String ip, String port) {
-        this.id = count++;
+        //this.id = count++;
         this.parentId = parentId;
         this.name = name;
         this.ip = ip;
@@ -49,15 +49,18 @@ public class Node implements Serializable{
     }
     
     public Node(String name, String ip, String port) {
-        this.id = count++;
+        //this.id = count++;
         this.parentId = -1;
         this.name = name;
         this.ip = ip;
         this.port = port;
     }
     
-    public void setId() {
-        this.id = count++;
+    public boolean isEmpty() {
+        if (name.isEmpty() || ip.isEmpty() || port.isEmpty())
+            return true;
+        else 
+            return false;
     }
     
     public Integer getId() {

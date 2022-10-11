@@ -3,19 +3,17 @@ package com.lgadetsky.nodekeeper.server;
 import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.lgadetsky.nodekeeper.client.NodeKeeperService;
 import com.lgadetsky.nodekeeper.shared.Node;
 
+@Singleton
 public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeKeeperService{
-
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     
-    
-    private NodeDao nodeDao;
-    
-    public NodeKeeperServiceImpl() {
-        nodeDao = new NodeDao();
-    }
+    @Inject
+    private DAOImpl nodeDao;
     
     @Override
     public List<Node> getAllNodes() {
@@ -24,22 +22,30 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
 
     @Override
     public Node getNode(int id) {
+        if (nodeDao.get(id).isEmpty())
+            // Stub for exc
+            throw new RuntimeException();
+        
         return nodeDao.get(id);
     }
-    
+
     @Override
     public Node create(Node node) {
-        node.setId();
-        nodeDao.save(node);
-        return node;
+        if (node.isEmpty())
+            throw new RuntimeException();
+        
+        return nodeDao.save(node);
     }
-    
+
     @Override
     public boolean update(Node node) {
+        if (node.isEmpty())
+            throw new RuntimeException();
+        
         Node res = nodeDao.update(node);
         if (res == null)
             return false;
-        else
+        else 
             return true;
     }
 
@@ -48,23 +54,20 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
         int res = nodeDao.delete(id);
         if (res > 0)
             return true;
-        else 
+        else
             return false;
     }
-    
+
     @Override
     public List<Node> saveChanges(List<Node> changes) {
         for (Node n : changes) {
-            if (n.getId().equals(-1)) 
+            if (n.getId().equals(-1))
                 create(n);
             else if (n.isDeleted()) {
                 delete(n.getId());
-            }
-            else {
+            } else 
                 update(n);
-            }
         }
         return getAllNodes();
     }
-    
 }

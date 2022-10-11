@@ -6,8 +6,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.lgadetsky.nodekeeper.shared.Node;
 
-@RemoteServiceRelativePath("nodekeeper")
-public interface NodeKeeperService extends RemoteService{
+@RemoteServiceRelativePath("")
+public interface NodeKeeperService extends RemoteService {
     List<Node> getAllNodes();
     Node getNode(int id);
     Node create(Node node);

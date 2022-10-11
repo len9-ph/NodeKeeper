@@ -6,12 +6,13 @@
          xmlns="http://JAVA.sun.com/xml/ns/javaee">
   
   <listener>
-    <listener-class>NodeKeeper.src.com.lgadetsky.nodekeeper.boot.AppGuiceServletContextListener</listener-class>
+    <listener-class>com.lgadetsky.nodekeeper.server.AppGuiceServletContextListener</listener-class>
   </listener>
   
   <filter>
     <filter-name>guiceFilter</filter-name>
     <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    <async-supported>true</async-supported>
   </filter>
   
   <filter-mapping>
@@ -31,11 +32,9 @@
     <url-pattern>/nodekeeper/nodekeeper</url-pattern>
   </servlet-mapping> -->
   
-  
-  
-  <!-- Default page to serve 
+  <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>NodeKeeper.html</welcome-file>
-  </welcome-file-list>-->
+  </welcome-file-list>
 
 </web-app>

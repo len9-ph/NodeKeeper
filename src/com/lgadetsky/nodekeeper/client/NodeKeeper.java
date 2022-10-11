@@ -1,7 +1,6 @@
 package com.lgadetsky.nodekeeper.client;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +10,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -115,8 +110,6 @@ public class NodeKeeper implements EntryPoint {
     
     @Override
     public void onModuleLoad() {
-        //simplePopup.setPopupPosition(0, Window.getClientHeight() - 50);
-        
         // Main panel styles setting
         upperPanel.setStyleName("upperPanel");
         lowerPanel.setStyleName("lowerPanel");
@@ -216,28 +209,6 @@ public class NodeKeeper implements EntryPoint {
                     simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
                     simplePopup.show();
                 }
-                
-//                if (mainTree.getSelectedItem() != null) {
-//                    TreeItem selectedItem = mainTree.getSelectedItem();
-//                    Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-//                    
-//                    for (Map.Entry<Node, TreeItem> pair : entrySet) {
-//                        if(selectedItem.equals(pair.getValue())) {
-//                            nameBox.setText(pair.getKey().getName());
-//                            ipBox.setText(pair.getKey().getIp());
-//                            portBox.setText(pair.getKey().getPort());
-//                            
-//                            selectedGrid.setWidget(2, 1, nameBox);
-//                            selectedGrid.setWidget(3, 1, ipBox);
-//                            selectedGrid.setWidget(4, 1, portBox);
-//                        }
-//                    }
-//                } else {
-//                    simplePopup.setWidget(new HTML(ITEM_WAS_NOT_SELECTED));
-//                    simplePopup.show();
-//                }
-                
-                
             }
         });
         
@@ -317,31 +288,6 @@ public class NodeKeeper implements EntryPoint {
                         selectedGrid.setWidget(2, 1, nameLabel);
                         selectedGrid.setWidget(3, 1, ipLabel);
                         selectedGrid.setWidget(4, 1, portLabel);
-                        
-//                        TreeItem item = mainTree.getSelectedItem();
-//                        Set<Map.Entry<Node, TreeItem>> entrySet = nodeToTreeItemMap.entrySet();
-//                        
-//                        for (Map.Entry<Node, TreeItem> pair : entrySet) {
-//                            if(item.equals(pair.getValue())) {
-//                                selectedNodeTextLabel.setText(pair.getKey().getId().toString());
-//                                idLabel.setText(pair.getKey().getId().toString());
-//                                parentLabel.setText(pair.getKey().getParentId().toString());
-//                                nameLabel.setText(pair.getKey().getName());
-//                                ipLabel.setText(pair.getKey().getIp());
-//                                portLabel.setText(pair.getKey().getPort());
-//                                
-//                                if (pair.getKey().getParentId() > -1)
-//                                    parentLabel.setText(pair.getKey().getParentId().toString());
-//                                else
-//                                    parentLabel.setText("");
-//                                
-//                                selectedGrid.setWidget(0, 1, idLabel);
-//                                selectedGrid.setWidget(1, 1, parentLabel);
-//                                selectedGrid.setWidget(2, 1, nameLabel);
-//                                selectedGrid.setWidget(3, 1, ipLabel);
-//                                selectedGrid.setWidget(4, 1, portLabel);
-//                            }
-//                        }
                     }
                 });
                 treeScroll.add(mainTree);
