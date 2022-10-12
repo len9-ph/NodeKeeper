@@ -240,7 +240,6 @@ public class NodeKeeper implements EntryPoint {
         allNodesTable.add(allNodesGrid);
         allNodesPanel.add(allNodesTable);
         
-        allNodesGrid.getCellFormatter().addStyleName(0, 1, "firstLine");
         allNodesGrid.setStyleName("allNodesGrid");
         allNodesTable.setStyleName("allNodesPanel");
         
@@ -407,11 +406,6 @@ public class NodeKeeper implements EntryPoint {
      */
     private void redrawAllNodesTable() {
         allNodesGrid.resize(nodes.size() + 1, 5);
-        allNodesGrid.setText(0, 0, "id");
-        allNodesGrid.setText(0, 1, "parentId");
-        allNodesGrid.setText(0, 2, "name");
-        allNodesGrid.setText(0, 3, "ip");
-        allNodesGrid.setText(0, 4, "port");
         for(int i = 0; i < nodes.size(); i++) {
             allNodesGrid.setText(i + 1, 0, String.valueOf(nodes.get(i).getId()));
             if (nodes.get(i).getParentId() != -1) 
