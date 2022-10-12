@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.lgadetsky.nodekeeper.client.NodeKeeperServiceAsync;
 import com.lgadetsky.nodekeeper.client.event.ChangedNodeEvent;
 import com.lgadetsky.nodekeeper.client.event.ChangedNodeEventHandler;
@@ -14,7 +15,7 @@ import com.lgadetsky.nodekeeper.client.event.UpdateStateEventHandler;
 import com.lgadetsky.nodekeeper.client.presenter.AllNodesDisplay.AllNodesDisplayActionHandler;
 import com.lgadetsky.nodekeeper.shared.Node;
 
-public class AllNodesPresenter {
+public class AllNodesPresenter implements Presenter{
     private LinkedList<Node> nodes = new LinkedList<>();
     private LinkedList<Node> changedNodes = new LinkedList<>();
     
@@ -31,12 +32,13 @@ public class AllNodesPresenter {
         setUpLocalEventBus();
     }
     
-    void setUpLocalEventBus() {
+    public void setUpLocalEventBus() {
         eventBus.addHandler(UpdateStateEvent.TYPE, 
                 new UpdateStateEventHandler() {
                     @Override
                     public void onUpdate(UpdateStateEvent event) {
                         updateNodes(event.getNodes());
+                        allNodesDisplay.setData(nodes);
                     }
                 });
         eventBus.addHandler(ChangedNodeEvent.TYPE, 
@@ -50,7 +52,7 @@ public class AllNodesPresenter {
     }
     
     
-    void bind() {
+    public void bind() {
         allNodesDisplay.setDisplayActionHandler(new AllNodesDisplayActionHandler() {
             @Override
             public void onRefreshButtonClick(ClickEvent event) {
@@ -69,5 +71,10 @@ public class AllNodesPresenter {
         if(changedNodes.contains(oldNode))
             changedNodes.remove(oldNode);
         changedNodes.add(newNode);
+    }
+
+    @Override
+    public void go(HasWidgets container) {
+        
     }
 }

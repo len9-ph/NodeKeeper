@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Tree;
 import com.lgadetsky.nodekeeper.client.presenter.EditNodesDisplay;
 import com.lgadetsky.nodekeeper.shared.Node;
 
@@ -24,6 +25,7 @@ public class EditNodesView extends Composite implements EditNodesDisplay{
     private final String IP = "ip";
     private final String PORT = "port";
     
+    private Tree mainTree;
     private FlowPanel treePanel;
     private ScrollPanel treeScroll;
     private FlowPanel selectedPanel;
@@ -55,6 +57,8 @@ public class EditNodesView extends Composite implements EditNodesDisplay{
     
     public EditNodesView() {
         DecoratorPanel contentTableDecorator  = new DecoratorPanel();
+        
+        mainTree = new Tree();
         treePanel = new FlowPanel();
         treeText = new Label("Tree");
         treePanel.add(treeText);

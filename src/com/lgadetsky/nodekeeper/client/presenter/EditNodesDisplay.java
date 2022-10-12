@@ -22,4 +22,8 @@ public interface EditNodesDisplay {
     
     void setDisplayActionhandler(EditNodesDisplayActionHadler actionHadler);
     void setData(List<Node> data);
+    void setSelectedItem(Node selectedNode);
+    void setTreeItem(TreeItem item);
+    void setTreeItem(TreeItem parent, TreeItem item);
+    void editTreeItem(TreeItem item);
 }
