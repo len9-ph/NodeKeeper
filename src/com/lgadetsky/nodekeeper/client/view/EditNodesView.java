@@ -1,7 +1,6 @@
 package com.lgadetsky.nodekeeper.client.view;
 
-import java.util.List;
-
+import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -15,6 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.lgadetsky.nodekeeper.client.presenter.EditNodesDisplay;
 import com.lgadetsky.nodekeeper.shared.Node;
 
@@ -24,6 +24,8 @@ public class EditNodesView extends Composite implements EditNodesDisplay{
     private final String NAME = "name";
     private final String IP = "ip";
     private final String PORT = "port";
+    
+    private HashMap<Integer, TreeItem> nodeIdToTreeItemMap;
     
     private Tree mainTree;
     private FlowPanel treePanel;
@@ -91,26 +93,23 @@ public class EditNodesView extends Composite implements EditNodesDisplay{
         portBox = new TextBox();
         
         nameBox.addKeyUpHandler(new KeyUpHandler() {
-            
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                actionHandler.nameBoxPrinting(event);
+                actionHandler.nameBoxPrinting(event, nameBox.getText());
             }
         });
         
         ipBox.addKeyUpHandler(new KeyUpHandler() {
-            
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                actionHandler.ipBoxPrinting(event);
+                actionHandler.ipBoxPrinting(event, ipBox.getText());
             }
         });
         
         portBox.addKeyUpHandler(new KeyUpHandler() {
-            
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                actionHandler.portBoxPrinting(event);
+                actionHandler.portBoxPrinting(event, portBox.getText());
             }
         });
         
@@ -133,18 +132,22 @@ public class EditNodesView extends Composite implements EditNodesDisplay{
         selectedNodeLabel.setStyleName("selectedLabel");
         
         addRootButton.addClickHandler(new ClickHandler() {
-            
             @Override
             public void onClick(ClickEvent event) {
-                actionHandler.onAddRootButton(event);
+                TreeItem item = new TreeItem();
+                item.setText("new root");
+                mainTree.addItem(item);
+                actionHandler.onAddRootButton(event, item);
             }
         });
         
         addChildButton.addClickHandler(new ClickHandler() {
-            
             @Override
             public void onClick(ClickEvent event) {
-                actionHandler.onAddChildButton(event);
+                TreeItem item = new TreeItem();
+                item.setText("new child");
+                mainTree.getSelectedItem().addItem(item);
+                actionHandler.onAddChildButton(event, mainTree.getSelectedItem(), item);
             }
         });
         
@@ -152,6 +155,7 @@ public class EditNodesView extends Composite implements EditNodesDisplay{
             
             @Override
             public void onClick(ClickEvent event) {
+                // Refactor (not sending req in presenter)
                 actionHandler.onEditButton(event);
             }
         });
@@ -174,8 +178,50 @@ public class EditNodesView extends Composite implements EditNodesDisplay{
     
     
     @Override
-    public void setData(List<Node> data) {
+    public void setTree(Tree tree) {
         // initialize tree
+        // Set tree? setTree(Tree tree) 
+        mainTree.clear();
+        mainTree = tree;
+    }
+
+    @Override
+    public void setSelectedItem(Node selectedNode) {
+        idLabel.setText(selectedNode.getId().toString());
+        if(selectedNode.getParentId() > -1)
+            parentLabel.setText(selectedNode.getParentId().toString());
+        else 
+            parentLabel.setText("");
+        nameLabel.setText(selectedNode.getName());
+        ipLabel.setText(selectedNode.getIp());
+        portLabel.setText(selectedNode.getPort());
+        
+        selectedGrid.setWidget(0, 1, idLabel);
+        selectedGrid.setWidget(1, 1, parentLabel);
+        selectedGrid.setWidget(2, 1, nameLabel);
+        selectedGrid.setWidget(3, 1, ipLabel);
+        selectedGrid.setWidget(4, 1, portLabel);
+    }
+
+    @Override
+    public void editButtonPress(Node selectedNode) {
+        nameBox.setText(selectedNode.getName());
+        ipBox.setText(selectedNode.getIp());
+        portBox.setText(selectedNode.getPort());
+        
+        selectedGrid.setWidget(2, 1, nameBox);
+        selectedGrid.setWidget(3, 1, ipBox);
+        selectedGrid.setWidget(4, 1, portBox);
+    }
+
+    @Override
+    public void deleteTreeItem(TreeItem item) {
+        mainTree.removeItem(item);
+    }
+
+    @Override
+    public void deleteTreeItem(TreeItem parent, TreeItem item) {
+        parent.removeItem(item);
     }
 
 }

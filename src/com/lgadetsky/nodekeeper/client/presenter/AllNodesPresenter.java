@@ -56,7 +56,7 @@ public class AllNodesPresenter implements Presenter{
         allNodesDisplay.setDisplayActionHandler(new AllNodesDisplayActionHandler() {
             @Override
             public void onRefreshButtonClick(ClickEvent event) {
-                eventBus.fireEvent(new RefreshEvent());
+                eventBus.fireEvent(new RefreshEvent(changedNodes));
             }
         });
     }
