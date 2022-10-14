@@ -9,6 +9,8 @@ import com.lgadetsky.nodekeeper.client.event.DeleteEvent;
 import com.lgadetsky.nodekeeper.client.event.MessageEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEventHandler;
+import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
+import com.lgadetsky.nodekeeper.client.event.UpdateTreeEventHandler;
 import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay;
 import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay.TreeEditPanelActionHandler;
 import com.lgadetsky.nodekeeper.shared.Node;
@@ -65,6 +67,14 @@ public class TreeEditPanelPresenter implements Presenter {
                     @Override
                     public void onUpdate(UpdateStateEvent event) {
                         display.buildTree(event.getNodes());
+                    }
+                });
+        
+        eventBus.addHandler(UpdateTreeEvent.TYPE, 
+                new UpdateTreeEventHandler() {
+                    @Override
+                    public void onUpdateTree(UpdateTreeEvent event) {
+                        display.updateTree(event.getNewNode());
                     }
                 });
     }

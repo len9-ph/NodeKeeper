@@ -228,7 +228,9 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
             @Override
             public void onClick(ClickEvent event) {
                 if(mainTree.getSelectedItem() != null) {
-                    
+                    handler.onDeleteClick(treeItemtoNodeMap.get(mainTree.getSelectedItem()));
+                    treeItemtoNodeMap.remove(mainTree.getSelectedItem());
+                    mainTree.removeItem(mainTree.getSelectedItem());
                 } else 
                     handler.onSelectError("Item was not selected");
             }
