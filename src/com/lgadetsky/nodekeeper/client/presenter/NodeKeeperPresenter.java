@@ -73,11 +73,12 @@ public class NodeKeeperPresenter extends Presenter {
                         if (changeNodes.isEmpty())
                             display.showPopUpMessage("vse good");
                         else {
-                            rpcService.saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
+                            NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
                                 @Override
                                 public void onSuccess(List<Node> result) {
                                     nodes.addAll(result);
                                     eventBus.fireEvent(new UpdateStateEvent(nodes));
+                                    changeNodes.clear();
                                 }
                                 @Override
                                 public void onFailure(Throwable caught) {

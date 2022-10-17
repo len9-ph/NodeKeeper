@@ -43,7 +43,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
     private FlowPanel treePanel;
     private Label treeText;
     private ScrollPanel treeScroll;
-    private Tree mainTree;
+    private final Tree mainTree;
     
     // Selected panel elements
     private FlowPanel selectedPanel;

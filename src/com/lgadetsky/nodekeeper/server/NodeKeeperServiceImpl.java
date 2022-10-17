@@ -31,8 +31,8 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
 
     @Override
     public Node create(Node node) {
-        if (node.isEmpty())
-            throw new RuntimeException();
+//        if (node.isEmpty())
+//            throw new RuntimeException();
         
         return nodeDao.save(node);
     }
