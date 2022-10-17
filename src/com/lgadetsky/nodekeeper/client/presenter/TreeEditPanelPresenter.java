@@ -15,44 +15,44 @@ import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay;
 import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay.TreeEditPanelActionHandler;
 import com.lgadetsky.nodekeeper.shared.Node;
 
-public class TreeEditPanelPresenter implements Presenter {
+public class TreeEditPanelPresenter extends Presenter {
     private final HandlerManager eventBus;
     private final TreeEditPanelDisplay display;
-    
+
     public TreeEditPanelPresenter(HandlerManager eventBus, TreeEditPanelDisplay display) {
         this.eventBus = eventBus;
         this.display = display;
-        
+
         bind();
         setUpLocalEventBus();
     }
-    
+
     public void bind() {
         display.setTreeEditPanelActionHanlder(new TreeEditPanelActionHandler() {
-            
+
             @Override
             public void onSelectError(String message) {
                 // Send event to nodeKeeper to show popUp
                 eventBus.fireEvent(new MessageEvent(message));
             }
-            
+
             @Override
             public void onBoxChange(Node node, String field, String value) {
                 eventBus.fireEvent(new BoxChangeEvent(node, field, value));
             }
-            
+
             @Override
             public void onDeleteClick(Node node) {
                 // send event to nodekeeper to update changenodes
                 eventBus.fireEvent(new DeleteEvent(node));
             }
-            
+
             @Override
             public void onAddRootClick() {
                 // send event to nodekeeper to update changenodes
                 eventBus.fireEvent(new AddRootEvent());
             }
-            
+
             @Override
             public void onAddChildClick(Node parentNode) {
                 // send event to nodekeeper to update changenodes
@@ -60,7 +60,7 @@ public class TreeEditPanelPresenter implements Presenter {
             }
         });
     }
-    
+
     public void setUpLocalEventBus() {
         eventBus.addHandler(UpdateStateEvent.TYPE,
                 new UpdateStateEventHandler() {
@@ -69,8 +69,8 @@ public class TreeEditPanelPresenter implements Presenter {
                         display.buildTree(event.getNodes());
                     }
                 });
-        
-        eventBus.addHandler(UpdateTreeEvent.TYPE, 
+
+        eventBus.addHandler(UpdateTreeEvent.TYPE,
                 new UpdateTreeEventHandler() {
                     @Override
                     public void onUpdateTree(UpdateTreeEvent event) {
@@ -78,8 +78,7 @@ public class TreeEditPanelPresenter implements Presenter {
                     }
                 });
     }
-    
-    
+
     @Override
     public void go(HasWidgets container) {
         container.add(display.asWidget());

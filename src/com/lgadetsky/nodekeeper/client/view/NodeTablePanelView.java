@@ -50,10 +50,11 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
         allNodesGrid.setText(0, 2, NAME);
         allNodesGrid.setText(0, 3, IP);
         allNodesGrid.setText(0, 4, PORT);
+        allNodesGrid.setStyleName("allNodesGrid");
+        allNodesTable.setStyleName("allNodesPanel");
         
         allNodesTable.add(allNodesGrid);
         allNodesPanel.add(allNodesTable);	
-        handler.onRefreshClick();
     }
     
     @Override

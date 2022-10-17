@@ -8,19 +8,19 @@ import com.lgadetsky.nodekeeper.client.event.UpdateStateEventHandler;
 import com.lgadetsky.nodekeeper.client.view.NodesTablePanelDisplay;
 import com.lgadetsky.nodekeeper.client.view.NodesTablePanelDisplay.NodesTablePanelActionHandler;
 
-public class NodeTablePanelPresenter implements Presenter {
-    
+public class NodeTablePanelPresenter extends Presenter {
+
     private final HandlerManager eventBus;
     private final NodesTablePanelDisplay display;
-    
+
     public NodeTablePanelPresenter(HandlerManager eventBus, NodesTablePanelDisplay display) {
         this.eventBus = eventBus;
         this.display = display;
-        
+
         bind();
         setUpLocalEventBus();
     }
-    
+
     public void bind() {
         display.setNodesTablePanelHandler(new NodesTablePanelActionHandler() {
             @Override
@@ -29,9 +29,9 @@ public class NodeTablePanelPresenter implements Presenter {
             }
         });
     }
-    
+
     public void setUpLocalEventBus() {
-        eventBus.addHandler(UpdateStateEvent.TYPE, 
+        eventBus.addHandler(UpdateStateEvent.TYPE,
                 new UpdateStateEventHandler() {
                     @Override
                     public void onUpdate(UpdateStateEvent event) {
@@ -39,7 +39,7 @@ public class NodeTablePanelPresenter implements Presenter {
                     }
                 });
     }
-    
+
     @Override
     public void go(HasWidgets container) {
         container.add(display.asWidget());

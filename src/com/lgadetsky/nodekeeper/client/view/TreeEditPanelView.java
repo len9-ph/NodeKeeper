@@ -30,6 +30,11 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
     private final String IP = "ip";
     private final String PORT = "port";
     
+    private final String ITEM_WAS_NOT_SELECTED = "Item was not selected";
+    private final String PARENT_ITEM_WAS_NOT_SELECTED = "Parent item not selected";
+    private final String PARENT_ITEM_NOT_VALID = "Parent has no id and cannot have children";
+
+    
     // Panel that keeps tree panel and selected panel
     private FlowPanel upperPanel;
     
@@ -72,6 +77,8 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         FlowPanel treeEditPanel = new FlowPanel();
         initWidget(treeEditPanel);
         
+        treeItemtoNodeMap = new HashMap<TreeItem, Node>();
+        
         upperPanel = new FlowPanel();
         
         mainTree = new Tree();
@@ -106,7 +113,9 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         treePanel.add(treeText);
         treeScroll = new ScrollPanel();
         treeScroll.add(mainTree);
+        treeScroll.setStyleName("treeScroll");
         treePanel.add(treeScroll);
+        treePanel.setStyleName("treePanel");
         upperPanel.add(treePanel);
         
         // Selected panel
@@ -117,6 +126,9 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         selectedGrid = new Grid(5, 2);
         selectedTable.add(selectedGrid);
         selectedPanel.add(selectedTable);
+        selectedGrid.setStyleName("selectedGrid");
+        selectedTable.setStyleName("selectedNodeTable");
+        selectedPanel.setStyleName("selectedNodePanel");
         
         selectedGrid.setText(0, 0, ID);
         selectedGrid.setText(1, 0, PARENT_ID);
@@ -181,6 +193,10 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         deleteButton = new Button("Delete");
         selectedNodeLabel = new Label("Selected node:");
         selectedNodeTextLabel = new Label("");
+        buttonPanel.setStyleName("buttonPanel");
+        selectedNodeTextLabel.setStyleName("selectedLabel");
+        selectedNodeLabel.setStyleName("selectedLabel");
+        
         
         buttonPanel.add(addRootButton);
         buttonPanel.add(addChildButton);
@@ -203,9 +219,12 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
             @Override
             public void onClick(ClickEvent event) {
                 if (mainTree.getSelectedItem() != null) {
-                    handler.onAddChildClick(treeItemtoNodeMap.get(mainTree.getSelectedItem()));
+                    if (treeItemtoNodeMap.get(mainTree.getSelectedItem()).getId() > 0)
+                        handler.onAddChildClick(treeItemtoNodeMap.get(mainTree.getSelectedItem()));
+                    else
+                        handler.onSelectError(PARENT_ITEM_NOT_VALID);
                 } else 
-                    handler.onSelectError("Item was not selected");
+                    handler.onSelectError(PARENT_ITEM_WAS_NOT_SELECTED);
             }
         });
         
@@ -220,7 +239,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                     selectedGrid.setWidget(3, 1, ipBox);
                     selectedGrid.setWidget(4, 1, portBox);
                 } else 
-                    handler.onSelectError("Item was not selected");
+                    handler.onSelectError(ITEM_WAS_NOT_SELECTED);
             }
         });
         
@@ -232,7 +251,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                     treeItemtoNodeMap.remove(mainTree.getSelectedItem());
                     mainTree.removeItem(mainTree.getSelectedItem());
                 } else 
-                    handler.onSelectError("Item was not selected");
+                    handler.onSelectError(ITEM_WAS_NOT_SELECTED);
             }
         });
     }
@@ -246,6 +265,8 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
     @Override
     public void buildTree(List<Node> nodes) {
         mainTree.clear();
+        
+        treeItemtoNodeMap = new HashMap<TreeItem, Node>();
         
         for (Node n : nodes) {
             if (n.getParentId() == -1) {

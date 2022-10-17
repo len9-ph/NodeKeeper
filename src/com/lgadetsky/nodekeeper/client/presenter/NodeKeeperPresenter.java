@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.lgadetsky.nodekeeper.client.NodeKeeper;
 import com.lgadetsky.nodekeeper.client.NodeKeeperServiceAsync;
 import com.lgadetsky.nodekeeper.client.event.AddChildEvent;
 import com.lgadetsky.nodekeeper.client.event.AddChildEventHandler;
@@ -25,28 +26,31 @@ import com.lgadetsky.nodekeeper.client.view.NodeTablePanelView;
 import com.lgadetsky.nodekeeper.client.view.TreeEditPanelView;
 import com.lgadetsky.nodekeeper.shared.Node;
 
-public class NodeKeeperPresenter implements Presenter {
-    private final HandlerManager eventBus = new HandlerManager(null);
-    private final NodeKeeperDisplay display;
-    private final NodeKeeperServiceAsync rpcService;
+public class NodeKeeperPresenter extends Presenter {
+    private HandlerManager eventBus = new HandlerManager(null);
+    private NodeKeeperDisplay display;
+    private NodeKeeperServiceAsync rpcService;
     
     private List<Node> nodes = new LinkedList<Node>();
     private List<Node> changeNodes = new LinkedList<Node>();
     
-    public NodeKeeperPresenter(NodeKeeperServiceAsync rpcService, NodeKeeperDisplay display) {
+    public NodeKeeperPresenter(NodeKeeperDisplay display) {
         this.display = display;
+//        this.rpcService = rpcService;
         
-        this.rpcService = rpcService;
+        setUpLocalEventBus();
         
-        TreeEditPanelPresenter treePresenter = new TreeEditPanelPresenter(eventBus, 
+        Presenter treePresenter = new TreeEditPanelPresenter(eventBus, 
                 new TreeEditPanelView());
-        treePresenter.go((HasWidgets) display.asWidget());
         
-        NodeTablePanelPresenter tablePresenter = new NodeTablePanelPresenter(eventBus,
+        treePresenter.go(display.getContainer());
+
+        Presenter tablePresenter = new NodeTablePanelPresenter(eventBus,
                 new NodeTablePanelView());
-        tablePresenter.go((HasWidgets) display.asWidget());
-        
-        rpcService.getAllNodes(new AsyncCallback<List<Node>>() {
+
+        tablePresenter.go(display.getContainer());
+
+        NodeKeeper.getRpc().getAllNodes(new AsyncCallback<List<Node>>() {
             @Override
             public void onSuccess(List<Node> result) {
                 nodes.addAll(result);
@@ -60,22 +64,27 @@ public class NodeKeeperPresenter implements Presenter {
         
     }
     
-    public void setUpLocalEventBus() {
+    private void setUpLocalEventBus() {
         eventBus.addHandler(RefreshEvent.TYPE,
                 new RefreshEventHandler() {
                     @Override
                     public void onRefresh(RefreshEvent event) {
-                        rpcService.saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
-                            @Override
-                            public void onSuccess(List<Node> result) {
-                                nodes.addAll(result);
-                                eventBus.fireEvent(new UpdateStateEvent(nodes));
-                            }
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                Window.alert("Internal error");
-                            }
-                        });
+                        
+                        if (changeNodes.isEmpty())
+                            display.showPopUpMessage("vse good");
+                        else {
+                            rpcService.saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
+                                @Override
+                                public void onSuccess(List<Node> result) {
+                                    nodes.addAll(result);
+                                    eventBus.fireEvent(new UpdateStateEvent(nodes));
+                                }
+                                @Override
+                                public void onFailure(Throwable caught) {
+                                    Window.alert("Internal error");
+                                }
+                            });
+                        }
                     }
                 });
         
