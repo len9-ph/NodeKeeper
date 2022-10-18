@@ -8,7 +8,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.lgadetsky.nodekeeper.client.NodeKeeper;
-import com.lgadetsky.nodekeeper.client.NodeKeeperServiceAsync;
 import com.lgadetsky.nodekeeper.client.event.AddChildEvent;
 import com.lgadetsky.nodekeeper.client.event.AddChildEventHandler;
 import com.lgadetsky.nodekeeper.client.event.AddRootEvent;
@@ -29,14 +28,11 @@ import com.lgadetsky.nodekeeper.shared.Node;
 public class NodeKeeperPresenter extends Presenter {
     private HandlerManager eventBus = new HandlerManager(null);
     private NodeKeeperDisplay display;
-    private NodeKeeperServiceAsync rpcService;
-    
     private List<Node> nodes = new LinkedList<Node>();
     private List<Node> changeNodes = new LinkedList<Node>();
     
     public NodeKeeperPresenter(NodeKeeperDisplay display) {
         this.display = display;
-//        this.rpcService = rpcService;
         
         setUpLocalEventBus();
         
@@ -76,9 +72,10 @@ public class NodeKeeperPresenter extends Presenter {
                             NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
                                 @Override
                                 public void onSuccess(List<Node> result) {
+                                    nodes.clear();
                                     nodes.addAll(result);
-                                    eventBus.fireEvent(new UpdateStateEvent(nodes));
                                     changeNodes.clear();
+                                    eventBus.fireEvent(new UpdateStateEvent(nodes));
                                 }
                                 @Override
                                 public void onFailure(Throwable caught) {
@@ -113,9 +110,8 @@ public class NodeKeeperPresenter extends Presenter {
                 new BoxChangeEventHandler() {
                     @Override
                     public void onBoxChange(BoxChangeEvent event) {
-                        for (Node n : changeNodes) 
-                            if (n.getId().equals(event.getNode().getId()))
-                                changeNodes.remove(n);
+                        if (changeNodes.contains(event.getNode()))
+                            changeNodes.remove(event.getNode());
                         Node changedNode = event.getNode();
                         
                         switch (event.getField()) {

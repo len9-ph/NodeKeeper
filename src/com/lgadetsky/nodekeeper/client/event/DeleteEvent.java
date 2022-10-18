@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class DeleteEvent extends GwtEvent<DeleteEventHandler>{
-    public static Type<DeleteEventHandler> TYPE = new Type<DeleteEventHandler>();
+    public static final Type<DeleteEventHandler> TYPE = new Type<DeleteEventHandler>();
     private Node node;
     
     public DeleteEvent(Node node) {

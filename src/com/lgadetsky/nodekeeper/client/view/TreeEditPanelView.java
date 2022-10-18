@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -246,12 +247,21 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         deleteButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if(mainTree.getSelectedItem() != null) {
-                    handler.onDeleteClick(treeItemtoNodeMap.get(mainTree.getSelectedItem()));
-                    treeItemtoNodeMap.remove(mainTree.getSelectedItem());
-                    mainTree.removeItem(mainTree.getSelectedItem());
-                } else 
-                    handler.onSelectError(ITEM_WAS_NOT_SELECTED);
+                if (mainTree.getSelectedItem() != null) {
+                    TreeItem selectedItem = mainTree.getSelectedItem();
+                    Node curNode = treeItemtoNodeMap.get(selectedItem);
+                    // Delete elem from nodes in presenter
+                    handler.onDeleteClick(curNode);
+                    // Remove elem from tree
+                    if(curNode.getParentId().equals(-1))
+                        mainTree.removeItem(selectedItem);
+                    else
+                        selectedItem.getParentItem().removeItem(selectedItem);
+                    
+                } else {
+                    //PopUP 
+                    Window.alert(ITEM_WAS_NOT_SELECTED);
+                }
             }
         });
     }
@@ -296,6 +306,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
     public void updateTree(Node newNode) {
         TreeItem newTreeItem = new TreeItem(new HTML(newNode.getName()));
         treeItemtoNodeMap.put(newTreeItem, newNode);
+        
         if(newNode.getParentId().equals(-1))
             mainTree.addItem(newTreeItem);
         else 

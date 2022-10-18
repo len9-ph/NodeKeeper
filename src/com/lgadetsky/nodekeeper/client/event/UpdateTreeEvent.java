@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class UpdateTreeEvent extends GwtEvent<UpdateTreeEventHandler>{
-    public static Type<UpdateTreeEventHandler> TYPE = new Type<UpdateTreeEventHandler>();
+    public static final Type<UpdateTreeEventHandler> TYPE = new Type<UpdateTreeEventHandler>();
     private final Node newNode;
     
     public UpdateTreeEvent(Node node) {
@@ -17,12 +17,12 @@ public class UpdateTreeEvent extends GwtEvent<UpdateTreeEventHandler>{
     
     @Override
     public Type<UpdateTreeEventHandler> getAssociatedType() {
-        return null;
+        return TYPE;
     }
 
     @Override
     protected void dispatch(UpdateTreeEventHandler handler) {
-        
+        handler.onUpdateTree(this);
     }
 
 }
