@@ -16,6 +16,8 @@ import com.lgadetsky.nodekeeper.client.event.BoxChangeEvent;
 import com.lgadetsky.nodekeeper.client.event.BoxChangeEventHandler;
 import com.lgadetsky.nodekeeper.client.event.DeleteEvent;
 import com.lgadetsky.nodekeeper.client.event.DeleteEventHandler;
+import com.lgadetsky.nodekeeper.client.event.MessageEvent;
+import com.lgadetsky.nodekeeper.client.event.MessageEventHandler;
 import com.lgadetsky.nodekeeper.client.event.RefreshEvent;
 import com.lgadetsky.nodekeeper.client.event.RefreshEventHandler;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
@@ -67,7 +69,7 @@ public class NodeKeeperPresenter extends Presenter {
                     public void onRefresh(RefreshEvent event) {
                         
                         if (changeNodes.isEmpty())
-                            display.showPopUpMessage("vse good");
+                            display.showPopUpMessage("Everything is up to date");
                         else {
                             NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
                                 @Override
@@ -150,6 +152,14 @@ public class NodeKeeperPresenter extends Presenter {
                             changeNodes.add(deletedNode);
                         }
                 
+                    }
+                });
+        
+        eventBus.addHandler(MessageEvent.TYPE, 
+                new MessageEventHandler() {
+                    @Override
+                    public void onMessageSend(MessageEvent event) {
+                        display.showPopUpMessage(event.getMessage());
                     }
                 });
     }

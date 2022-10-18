@@ -7,7 +7,7 @@ import com.lgadetsky.nodekeeper.shared.Node;
 
 public interface TreeEditPanelDisplay {
     interface TreeEditPanelActionHandler{
-        void onSelectError(String message);
+        void onError(String message);
         void onBoxChange(Node node, String field, String value);
         void onAddRootClick();
         void onAddChildClick(Node parentNode);

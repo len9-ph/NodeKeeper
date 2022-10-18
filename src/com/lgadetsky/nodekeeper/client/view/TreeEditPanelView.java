@@ -11,7 +11,6 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -223,9 +222,9 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                     if (treeItemtoNodeMap.get(mainTree.getSelectedItem()).getId() > 0)
                         handler.onAddChildClick(treeItemtoNodeMap.get(mainTree.getSelectedItem()));
                     else
-                        handler.onSelectError(PARENT_ITEM_NOT_VALID);
+                        handler.onError(PARENT_ITEM_NOT_VALID);
                 } else 
-                    handler.onSelectError(PARENT_ITEM_WAS_NOT_SELECTED);
+                    handler.onError(PARENT_ITEM_WAS_NOT_SELECTED);
             }
         });
         
@@ -240,7 +239,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                     selectedGrid.setWidget(3, 1, ipBox);
                     selectedGrid.setWidget(4, 1, portBox);
                 } else 
-                    handler.onSelectError(ITEM_WAS_NOT_SELECTED);
+                    handler.onError(ITEM_WAS_NOT_SELECTED);
             }
         });
         
@@ -258,10 +257,8 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                     else
                         selectedItem.getParentItem().removeItem(selectedItem);
                     
-                } else {
-                    //PopUP 
-                    Window.alert(ITEM_WAS_NOT_SELECTED);
-                }
+                } else 
+                    handler.onError(ITEM_WAS_NOT_SELECTED);
             }
         });
     }

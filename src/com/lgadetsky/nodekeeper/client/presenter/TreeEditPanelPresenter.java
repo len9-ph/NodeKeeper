@@ -31,7 +31,7 @@ public class TreeEditPanelPresenter extends Presenter {
         display.setTreeEditPanelActionHanlder(new TreeEditPanelActionHandler() {
 
             @Override
-            public void onSelectError(String message) {
+            public void onError(String message) {
                 // Send event to nodeKeeper to show popUp
                 eventBus.fireEvent(new MessageEvent(message));
             }
