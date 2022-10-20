@@ -32,7 +32,7 @@ public class TreeRow extends Composite{
             }
         });
         
-        
+        button.addStyleName("hidden");
         treeItemText = new Label(name);
         treeItemText.setStyleName("rowText");
         
@@ -52,12 +52,13 @@ public class TreeRow extends Composite{
     }
     
     public void addChild(TreeRow row) {
+        button.removeStyleName("hidden");
         childs.add(row);
     }
-    
-    public void addChilds(List<TreeRow> rows) {
-        childs.addAll(rows);
-    }
+//    
+//    public void addChilds(List<TreeRow> rows) {
+//        childs.addAll(rows);
+//    }
     
     public boolean isParent() {
         if (childs.isEmpty())

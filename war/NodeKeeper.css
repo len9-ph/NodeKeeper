@@ -11,6 +11,12 @@
 .treeTable td {
   padding: 0px 0px 0px 0px;
 }
+
+.hidden {
+    visibility: hidden;
+}
+
+
 .rowToggleButton {
   display: inline-block;
   width: 16px;
