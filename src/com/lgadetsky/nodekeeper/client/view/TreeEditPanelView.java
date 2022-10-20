@@ -309,4 +309,16 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         else 
             mainTree.getSelectedItem().addItem(newTreeItem);
     }
+
+    @Override
+    public void setNode(Node node) {
+        idLabel.setText(node.getId().toString());
+        if (node.getParentId().equals(-1))
+            parentLabel.setText("");
+        else
+            parentLabel.setText(node.getParentId().toString());
+        nameLabel.setText(node.getName());
+        ipLabel.setText(node.getIp());
+        portLabel.setText(node.getPort());
+    }
 }

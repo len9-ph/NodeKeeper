@@ -11,6 +11,8 @@ import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEventHandler;
 import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateTreeEventHandler;
+import com.lgadetsky.nodekeeper.client.view.CustomTreePanelDisplay;
+import com.lgadetsky.nodekeeper.client.view.CustomTreePanelDisplay.CustomTreePanelActionHanlder;
 import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay;
 import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay.TreeEditPanelActionHandler;
 import com.lgadetsky.nodekeeper.shared.Node;
@@ -18,10 +20,13 @@ import com.lgadetsky.nodekeeper.shared.Node;
 public class TreeEditPanelPresenter extends Presenter {
     private final HandlerManager eventBus;
     private final TreeEditPanelDisplay display;
+    private final CustomTreePanelDisplay treePanelDisplay;
 
-    public TreeEditPanelPresenter(HandlerManager eventBus, TreeEditPanelDisplay display) {
+    public TreeEditPanelPresenter(HandlerManager eventBus, TreeEditPanelDisplay display,
+            CustomTreePanelDisplay treePanelDisplay) {
         this.eventBus = eventBus;
         this.display = display;
+        this.treePanelDisplay = treePanelDisplay;
 
         bind();
         setUpLocalEventBus();
@@ -59,6 +64,13 @@ public class TreeEditPanelPresenter extends Presenter {
                 eventBus.fireEvent(new AddChildEvent(parentNode));
             }
         });
+        
+        treePanelDisplay.setCustomTreePanelActionHanlder(new CustomTreePanelActionHanlder() {
+            @Override
+            public void onSelect(Node selectedNode) {
+                display.setNode(selectedNode);
+            }
+        });
     }
 
     public void setUpLocalEventBus() {
@@ -67,6 +79,7 @@ public class TreeEditPanelPresenter extends Presenter {
                     @Override
                     public void onUpdate(UpdateStateEvent event) {
                         display.buildTree(event.getNodes());
+                        treePanelDisplay.buildTree(event.getNodes());
                     }
                 });
 
@@ -75,6 +88,7 @@ public class TreeEditPanelPresenter extends Presenter {
                     @Override
                     public void onUpdateTree(UpdateTreeEvent event) {
                         display.updateTree(event.getNewNode());
+                        treePanelDisplay.updateTree(event.getNewNode());
                     }
                 });
     }
@@ -82,5 +96,6 @@ public class TreeEditPanelPresenter extends Presenter {
     @Override
     public void go(HasWidgets container) {
         container.add(display.asWidget());
+        container.add(treePanelDisplay.asWidget());
     }
 }

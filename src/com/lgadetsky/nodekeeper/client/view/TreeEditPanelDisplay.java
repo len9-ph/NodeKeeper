@@ -14,6 +14,7 @@ public interface TreeEditPanelDisplay {
         void onDeleteClick(Node node);
     }
     
+    void setNode(Node node);
     void setTreeEditPanelActionHanlder(TreeEditPanelActionHandler handler);
     void updateTree(Node newNode);
     void buildTree(List<Node> nodes);

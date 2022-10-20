@@ -2,6 +2,39 @@
   border: 1px solid;
   border-radius: 4px;
 }
+.show {
+  display: inline-block;
+}
+.hide {
+  display: none;
+}
+.treeTable td {
+  padding: 0px 0px 0px 0px;
+}
+.rowToggleButton {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 2px 2px 2px 2px;
+}
+.rowToggleButton-up {
+  background: url(open-button-small.png) no-repeat;
+}
+.rowToggleButton-up-hovering {
+  background: url(open-button-small.png) no-repeat;
+}
+.rowToggleButton-down {
+  background: url(close-button-small.png) no-repeat;
+}
+.rowToggleButton-down-hovering {
+  background: url(close-button-small.png) no-repeat;
+}
+.rowText {
+  display: inline-block;
+  margin: 2px 2px 2px 2px;
+  width: 50px;
+  height: 20px;
+}
 .gwt-Label {
   font-weight: bold;
 }
