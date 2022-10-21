@@ -163,11 +163,11 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         // Button Panel
         buttonPanel = new FlowPanel();
         
-        addRootButton = new Button("Add root");
-        addChildButton = new Button("Add child");
-        editButton = new Button("Edit");
-        deleteButton = new Button("Delete");
-        selectedNodeLabel = new Label("Selected node:");
+        addRootButton = new Button(StringConstants.ADD_ROOT);
+        addChildButton = new Button(StringConstants.ADD_CHILD);
+        editButton = new Button(StringConstants.EDIT);
+        deleteButton = new Button(StringConstants.DELETE);
+        selectedNodeLabel = new Label(StringConstants.SELECTED);
         selectedNodeTextLabel = new Label("");
         buttonPanel.setStyleName("buttonPanel");
         selectedNodeTextLabel.setStyleName("selectedLabel");

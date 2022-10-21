@@ -29,7 +29,7 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
         allNodesPanel.add(allNodesText);
         
         // Button assembly
-        refreshButton = new Button("Refresh");
+        refreshButton = new Button(StringConstants.REFRESH);
         allNodesPanel.add(refreshButton);
         refreshButton.addClickHandler(new ClickHandler() {
             @Override
