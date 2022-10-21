@@ -14,6 +14,6 @@ public interface CustomTreePanelDisplay {
     void buildTree(List<Node> nodes);
     void updateTree(Node newNode);
     void onDelete();
-    void onBoxChange();
+    void onBoxChange(String name);
     Widget asWidget();
 }

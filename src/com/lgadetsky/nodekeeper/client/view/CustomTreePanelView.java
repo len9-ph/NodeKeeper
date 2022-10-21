@@ -40,7 +40,6 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
                 Cell cell = table.getTreeTable().getCellForEvent(event);
                 indexOfSelected = cell.getRowIndex();
                 selectedRow = (TreeRow) table.getTreeTable().getWidget(indexOfSelected, 0);
-//                selectedRow.addStyleName("gwt-TreeItem-selected");
                 handler.onSelect(treeRowToNodeMap.get(selectedRow));
             }
         });
@@ -103,8 +102,8 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
     }
 
     @Override
-    public void onBoxChange() {
-        
+    public void onBoxChange(String name) {
+        selectedRow.setName(name);
     }
     
 }

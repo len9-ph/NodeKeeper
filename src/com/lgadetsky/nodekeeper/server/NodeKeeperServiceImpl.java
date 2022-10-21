@@ -22,25 +22,20 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
 
     @Override
     public Node getNode(int id) {
-        if (nodeDao.get(id).isEmpty())
-            // Stub for exc
-            throw new RuntimeException();
         
         return nodeDao.get(id);
     }
 
     @Override
     public Node create(Node node) {
-//        if (node.isEmpty())
-//            throw new RuntimeException();
         
         return nodeDao.save(node);
     }
 
     @Override
     public boolean update(Node node) {
-        if (node.isEmpty())
-            throw new RuntimeException();
+//        if (node.isEmpty())
+//            throw new RuntimeException();
         
         Node res = nodeDao.update(node);
         if (res == null)

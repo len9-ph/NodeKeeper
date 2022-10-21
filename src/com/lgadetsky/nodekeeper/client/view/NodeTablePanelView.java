@@ -28,6 +28,7 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
     public NodeTablePanelView() {
         FlowPanel allNodesPanel = new FlowPanel();
         initWidget(allNodesPanel);
+        allNodesPanel.addStyleName("lowerPanel");
         
         allNodesText = new Label("All nodes");
         allNodesPanel.add(allNodesText);

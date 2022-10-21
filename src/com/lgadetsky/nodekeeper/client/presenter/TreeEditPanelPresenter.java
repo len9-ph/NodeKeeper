@@ -44,7 +44,8 @@ public class TreeEditPanelPresenter extends Presenter {
             @Override
             public void onBoxChange(Node node, String field, String value) {
                 eventBus.fireEvent(new BoxChangeEvent(node, field, value));
-                treePanelDisplay.onBoxChange();
+                if (field.equals("name"))
+                    treePanelDisplay.onBoxChange(value);
             }
 
             @Override

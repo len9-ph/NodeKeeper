@@ -60,6 +60,6 @@ public class TreeTable extends Composite {
     }
     
     public void clear() {
-        treeTable.clear();
+        treeTable.removeAllRows();
     }
 }

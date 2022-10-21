@@ -57,12 +57,13 @@ public class Node implements Serializable{
         this.port = port;
     }
     
-    public boolean isEmpty() {
-        if (name.isEmpty() || ip.isEmpty() || port.isEmpty())
-            return true;
-        else 
-            return false;
-    }
+//    public boolean isEmpty() {
+////        if (name.isEmpty() || ip.isEmpty() || port.isEmpty())
+////            return true;
+////        else 
+////            return false;
+//        return false;
+//    }
     
     public Integer getId() {
         return id;

@@ -43,6 +43,10 @@ public class TreeRow extends Composite{
         initWidget(panel);
     }
     
+    public void setName(String name) {
+        this.treeItemText.setText(name);
+    }
+    
     public Integer getLevel() {
         return this.level;
     }

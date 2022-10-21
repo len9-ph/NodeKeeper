@@ -77,6 +77,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
     public TreeEditPanelView() {
         FlowPanel treeEditPanel = new FlowPanel();
         initWidget(treeEditPanel);
+        treeEditPanel.addStyleName("upperPanel");
         
         treeItemtoNodeMap = new HashMap<TreeItem, Node>();
         

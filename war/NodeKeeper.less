@@ -15,8 +15,8 @@
     display: none;
 }
 
-.treeTable td {
-    padding: 0px 0px 0px 0px;
+.hidden {
+    visibility: hidden;
 }
 
 .rowToggleButton {
@@ -144,8 +144,19 @@
     display: block;
 }
 
+.customTree {
+    .treeScroll();
+    height: 150px;
+    margin: 0px 0px 0px 0px;
+    width: 602px;
+}
+
+.treeTable td {
+    padding: 0px 0px 0px 0px;
+}
+
 .buttonPanel {
-    width: 100%;
+    width: 602px;
     height: 30px;
     margin-top: 2px;
     margin-bottom: 2px;
