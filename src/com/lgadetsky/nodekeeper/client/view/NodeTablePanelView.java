@@ -9,15 +9,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
+import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class NodeTablePanelView extends Composite implements NodesTablePanelDisplay{
-    private final String ID = "id";
-    private final String PARENT_ID = "parentId";
-    private final String NAME = "name";
-    private final String IP = "ip";
-    private final String PORT = "port";
-    
     private Label allNodesText;
     private FlowPanel allNodesTable;
     private Button refreshButton;
@@ -46,11 +41,11 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
         // Table assembly
         allNodesTable = new FlowPanel();
         allNodesGrid = new Grid(1, 5);
-        allNodesGrid.setText(0, 0, ID);
-        allNodesGrid.setText(0, 1, PARENT_ID);
-        allNodesGrid.setText(0, 2, NAME);
-        allNodesGrid.setText(0, 3, IP);
-        allNodesGrid.setText(0, 4, PORT);
+        allNodesGrid.setText(0, 0, StringConstants.ID);
+        allNodesGrid.setText(0, 1, StringConstants.PARENT_ID);
+        allNodesGrid.setText(0, 2, StringConstants.NAME);
+        allNodesGrid.setText(0, 3, StringConstants.IP);
+        allNodesGrid.setText(0, 4, StringConstants.PORT);
         allNodesGrid.setStyleName("allNodesGrid");
         allNodesTable.setStyleName("allNodesPanel");
         

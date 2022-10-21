@@ -22,20 +22,10 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay{
-	private final String ID = "id";
-    private final String PARENT_ID = "parentId";
-    private final String NAME = "name";
-    private final String IP = "ip";
-    private final String PORT = "port";
-    
-    private final String ITEM_WAS_NOT_SELECTED = "Item was not selected";
-    private final String PARENT_ITEM_WAS_NOT_SELECTED = "Parent item not selected";
-    private final String PARENT_ITEM_NOT_VALID = "Parent has no id and cannot have children";
-
-    
     // Panel that keeps tree panel and selected panel
     private FlowPanel upperPanel;
     
@@ -117,11 +107,11 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         selectedTable.setStyleName("selectedNodeTable");
         selectedPanel.setStyleName("selectedNodePanel");
         
-        selectedGrid.setText(0, 0, ID);
-        selectedGrid.setText(1, 0, PARENT_ID);
-        selectedGrid.setText(2, 0, NAME);
-        selectedGrid.setText(3, 0, IP);
-        selectedGrid.setText(4, 0, PORT);
+        selectedGrid.setText(0, 0, StringConstants.ID);
+        selectedGrid.setText(1, 0, StringConstants.PARENT_ID);
+        selectedGrid.setText(2, 0, StringConstants.NAME);
+        selectedGrid.setText(3, 0, StringConstants.IP);
+        selectedGrid.setText(4, 0, StringConstants.PORT);
         
         idLabel = new Label();
         parentLabel = new Label();
@@ -158,7 +148,6 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
         });
         
         portBox.addKeyUpHandler(new KeyUpHandler() {
-            
             @Override
             public void onKeyUp(KeyUpEvent event) {
                 handler.onBoxChange(treeItemtoNodeMap.get(mainTree.getSelectedItem()),
@@ -209,9 +198,9 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                     if (treeItemtoNodeMap.get(mainTree.getSelectedItem()).getId() > 0)
                         handler.onAddChildClick(treeItemtoNodeMap.get(mainTree.getSelectedItem()));
                     else
-                        handler.onError(PARENT_ITEM_NOT_VALID);
+                        handler.onError(StringConstants.PARENT_ITEM_NOT_VALID);
                 } else 
-                    handler.onError(PARENT_ITEM_WAS_NOT_SELECTED);
+                    handler.onError(StringConstants.PARENT_ITEM_WAS_NOT_SELECTED);
             }
         });
         
@@ -226,7 +215,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                     selectedGrid.setWidget(3, 1, ipBox);
                     selectedGrid.setWidget(4, 1, portBox);
                 } else 
-                    handler.onError(ITEM_WAS_NOT_SELECTED);
+                    handler.onError(StringConstants.ITEM_WAS_NOT_SELECTED);
             }
         });
         
@@ -245,7 +234,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
                         selectedItem.getParentItem().removeItem(selectedItem);
                     
                 } else 
-                    handler.onError(ITEM_WAS_NOT_SELECTED);
+                    handler.onError(StringConstants.ITEM_WAS_NOT_SELECTED);
             }
         });
     }

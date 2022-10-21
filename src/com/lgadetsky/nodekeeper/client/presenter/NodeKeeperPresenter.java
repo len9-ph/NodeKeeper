@@ -22,6 +22,7 @@ import com.lgadetsky.nodekeeper.client.event.RefreshEvent;
 import com.lgadetsky.nodekeeper.client.event.RefreshEventHandler;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
+import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.client.view.CustomTreePanelView;
 import com.lgadetsky.nodekeeper.client.view.NodeKeeperDisplay;
 import com.lgadetsky.nodekeeper.client.view.NodeTablePanelView;
@@ -57,7 +58,7 @@ public class NodeKeeperPresenter extends Presenter {
             }
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("Internal error");
+                Window.alert(StringConstants.ERROR);
             }
         });
         
@@ -70,7 +71,7 @@ public class NodeKeeperPresenter extends Presenter {
                     public void onRefresh(RefreshEvent event) {
                         
                         if (changeNodes.isEmpty())
-                            display.showPopUpMessage("Everything is up to date");
+                            display.showPopUpMessage(StringConstants.UP_TO_DATE);
                         else {
                             NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
                                 @Override
@@ -82,7 +83,7 @@ public class NodeKeeperPresenter extends Presenter {
                                 }
                                 @Override
                                 public void onFailure(Throwable caught) {
-                                    Window.alert("Internal error");
+                                    Window.alert(StringConstants.ERROR);
                                 }
                             });
                         }
@@ -118,13 +119,13 @@ public class NodeKeeperPresenter extends Presenter {
                         Node changedNode = event.getNode();
                         
                         switch (event.getField()) {
-                            case "name":
+                            case StringConstants.NAME:
                                 changedNode.setName(event.getValue());
                                 break;
-                            case "ip":
+                            case StringConstants.IP:
                                 changedNode.setIp(event.getValue());
                                 break;
-                            case "port":
+                            case StringConstants.PORT:
                                 changedNode.setPort(event.getValue());
                                 break;
                             default:
