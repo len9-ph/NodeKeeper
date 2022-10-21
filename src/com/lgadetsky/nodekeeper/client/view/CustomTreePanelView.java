@@ -20,7 +20,11 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
     private TreeTable table;
     private HashMap<TreeRow, Node> treeRowToNodeMap;
     
+    private Integer indexOfSelected;
+    private TreeRow selectedRow;
+    
     private CustomTreePanelActionHanlder handler;
+    
     
     public CustomTreePanelView() {
         table = new TreeTable();
@@ -34,7 +38,8 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
             @Override
             public void onClick(ClickEvent event) {
                 Cell cell = table.getTreeTable().getCellForEvent(event);
-                TreeRow selectedRow = (TreeRow) table.getTreeTable().getWidget(cell.getRowIndex(), 0);
+                indexOfSelected = cell.getRowIndex();
+                selectedRow = (TreeRow) table.getTreeTable().getWidget(indexOfSelected, 0);
                 handler.onSelect(treeRowToNodeMap.get(selectedRow));
             }
         });
@@ -68,27 +73,6 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
             }
             
         }
-//        for (Node n : nodes) {
-//            // build communication within treeRow and node
-//            TreeRow newRow = new TreeRow(n.getName());
-//            treeRowToNodeMap.put(newRow, n);
-//            
-//            // sort parents and childs 
-//            parentToChilds.put(newRow, new LinkedList<TreeRow>());
-//            
-//            if (n.getParentId() > 0) {
-//                Set<Map.Entry<TreeRow, Node>> entrySet = treeRowToNodeMap.entrySet();
-//                TreeRow parentRow;
-//                // Find parent row
-//                for (Map.Entry<TreeRow, Node> pair : entrySet) {
-//                    if (n.getParentId().equals(pair.getValue().getParentId())) {
-//                        parentRow = pair.getKey();
-//                        newRow.increaseLevel(parentRow.getLevel());
-//                        parentToChilds.get(parentRow).add(newRow);
-//                    }
-//                }
-//            }
-//        }
         
         table.initialize(rootNodes);
     }
@@ -100,8 +84,11 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
         
         if (newNode.getParentId().equals(-1))
             table.addRootRow(newRow);
-//        else
-//            table.addChildRow(newRow);
+        else {
+            newRow.increaseLevel(selectedRow.getLevel());
+            selectedRow.addChild(newRow);
+            table.addChildRow(newRow, indexOfSelected);
+        }
     }
     
 }

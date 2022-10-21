@@ -88,22 +88,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
             public void onSelection(SelectionEvent<TreeItem> event) {
                 TreeItem selectedItem = mainTree.getSelectedItem();
                 
-                selectedNodeTextLabel.setText(treeItemtoNodeMap.get(selectedItem).getId().toString());
-                idLabel.setText(treeItemtoNodeMap.get(selectedItem).getId().toString());
-                parentLabel.setText(treeItemtoNodeMap.get(selectedItem).getParentId().toString());
-                nameLabel.setText(treeItemtoNodeMap.get(selectedItem).getName());
-                ipLabel.setText(treeItemtoNodeMap.get(selectedItem).getIp());
-                portLabel.setText(treeItemtoNodeMap.get(selectedItem).getPort());
-                
-                if (treeItemtoNodeMap.get(selectedItem).getParentId() > -1)
-                    parentLabel.setText(treeItemtoNodeMap.get(selectedItem).getParentId().toString());
-                else
-                    parentLabel.setText("");
-                selectedGrid.setWidget(0, 1, idLabel);
-                selectedGrid.setWidget(1, 1, parentLabel);
-                selectedGrid.setWidget(2, 1, nameLabel);
-                selectedGrid.setWidget(3, 1, ipLabel);
-                selectedGrid.setWidget(4, 1, portLabel);
+                setSelectedItem(treeItemtoNodeMap.get(selectedItem));
             }
         });
         
@@ -312,13 +297,32 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
 
     @Override
     public void setNode(Node node) {
-        idLabel.setText(node.getId().toString());
-        if (node.getParentId().equals(-1))
-            parentLabel.setText("");
+        Set<Map.Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
+        
+        for (Map.Entry<TreeItem, Node> pair : entrySet) {
+            if(node.equals(pair.getValue()))
+                mainTree.setSelectedItem(pair.getKey());
+        }
+        
+        setSelectedItem(node);
+    }
+    
+    private void setSelectedItem(Node selectedNode) {
+        selectedNodeTextLabel.setText(selectedNode.getId().toString());
+        idLabel.setText(selectedNode.getId().toString());
+        nameLabel.setText(selectedNode.getName());
+        ipLabel.setText(selectedNode.getIp());
+        portLabel.setText(selectedNode.getPort());
+        
+        if (selectedNode.getParentId() > -1)
+            parentLabel.setText(selectedNode.getParentId().toString());
         else
-            parentLabel.setText(node.getParentId().toString());
-        nameLabel.setText(node.getName());
-        ipLabel.setText(node.getIp());
-        portLabel.setText(node.getPort());
+            parentLabel.setText("");
+        
+        selectedGrid.setWidget(0, 1, idLabel);
+        selectedGrid.setWidget(1, 1, parentLabel);
+        selectedGrid.setWidget(2, 1, nameLabel);
+        selectedGrid.setWidget(3, 1, ipLabel);
+        selectedGrid.setWidget(4, 1, portLabel);
     }
 }
