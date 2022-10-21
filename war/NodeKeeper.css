@@ -80,7 +80,7 @@
   cursor: hand;
   cursor: pointer;
 }
-.gwt-Tree .gwt-TreeItem-selected {
+.gwt-TreeItem-selected {
   color: #005C53;
   font-weight: bolder;
 }

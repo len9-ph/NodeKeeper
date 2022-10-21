@@ -37,9 +37,14 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
         table.getTreeTable().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (selectedRow != null)
+                    selectedRow.removeSelected();
+                
                 Cell cell = table.getTreeTable().getCellForEvent(event);
                 indexOfSelected = cell.getRowIndex();
+                
                 selectedRow = (TreeRow) table.getTreeTable().getWidget(indexOfSelected, 0);
+                selectedRow.setSelected();
                 handler.onSelect(treeRowToNodeMap.get(selectedRow));
             }
         });

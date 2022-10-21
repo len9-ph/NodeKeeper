@@ -43,6 +43,14 @@ public class TreeRow extends Composite{
         initWidget(panel);
     }
     
+    public void setSelected() {
+        treeItemText.addStyleName("gwt-TreeItem-selected");
+    }
+    
+    public void removeSelected() {
+        treeItemText.removeStyleName("gwt-TreeItem-selected");
+    }
+    
     public void setName(String name) {
         this.treeItemText.setText(name);
     }
