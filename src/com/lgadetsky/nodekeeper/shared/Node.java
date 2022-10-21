@@ -1,6 +1,7 @@
 package com.lgadetsky.nodekeeper.shared;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Bean 
@@ -56,12 +57,13 @@ public class Node implements Serializable{
         this.port = port;
     }
     
-    public boolean isEmpty() {
-        if (name.isEmpty() || ip.isEmpty() || port.isEmpty())
-            return true;
-        else 
-            return false;
-    }
+//    public boolean isEmpty() {
+////        if (name.isEmpty() || ip.isEmpty() || port.isEmpty())
+////            return true;
+////        else 
+////            return false;
+//        return false;
+//    }
     
     public Integer getId() {
         return id;
@@ -102,4 +104,11 @@ public class Node implements Serializable{
     public void setPort(String port) {
         this.port = port;
     }
+    
+    public static final Comparator<Node> COMPARE_BY_ID = new Comparator<Node>() {
+        @Override
+        public int compare(Node o1, Node o2) {
+            return o1.getId().compareTo(o2.getId());
+        }
+    };
 }
