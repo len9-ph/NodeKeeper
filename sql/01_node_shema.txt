@@ -1,0 +1,12 @@
+create SEQUENCE node_seq start with 1000 increment by 1;
+
+create table "node" (
+    id  integer,
+    parent_id integer,
+    name varchar(64),
+    ip varchar(64),
+    port varchar(24)
+);
+
+alter table "node" add constraint node_id_pk primary key (id);
+create index node_pk_idx on "node"(id);
