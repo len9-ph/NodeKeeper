@@ -95,6 +95,7 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
     @Override
     public void onDelete() {
         if (selectedRow.isParent()) {
+            table.remove(indexOfSelected);
             for (int i = 0; i < selectedRow.countChilds(); i++)
                 table.remove(indexOfSelected);
         } else 

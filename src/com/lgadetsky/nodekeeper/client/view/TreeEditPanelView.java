@@ -267,11 +267,9 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
             TreeItem item = new TreeItem(new HTML(n.getName()));
             treeItemtoNodeMap.put(item, n);
             if (n.getParentId() == -1) {
-
                 mainTree.addItem(item);
             } else {
                 TreeItem parentItem = null;
-                
                 for (Node node : nodes) {
                     if (node.getId().equals(n.getParentId())) {
                         Set<Map.Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
