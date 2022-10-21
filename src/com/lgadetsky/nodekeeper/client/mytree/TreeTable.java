@@ -55,6 +55,9 @@ public class TreeTable extends Composite {
         }
     }
     
+    public void remove(Integer indexOfSelected ) {
+        treeTable.removeRow(indexOfSelected);
+    }
     
     public void clear() {
         treeTable.clear();

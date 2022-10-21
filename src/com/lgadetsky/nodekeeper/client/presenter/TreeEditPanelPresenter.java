@@ -44,12 +44,14 @@ public class TreeEditPanelPresenter extends Presenter {
             @Override
             public void onBoxChange(Node node, String field, String value) {
                 eventBus.fireEvent(new BoxChangeEvent(node, field, value));
+                treePanelDisplay.onBoxChange();
             }
 
             @Override
             public void onDeleteClick(Node node) {
                 // send event to nodekeeper to update changenodes
                 eventBus.fireEvent(new DeleteEvent(node));
+                treePanelDisplay.onDelete();
             }
 
             @Override

@@ -61,6 +61,18 @@ public class TreeRow extends Composite{
             return false;
         else 
             return true;
+    }
+    
+    public Integer countChilds() {
+        return countUtil(getChilds());
+    }
+    
+    private Integer countUtil(List<TreeRow> list) {
+        for (TreeRow row : list) 
+            if (row.isParent())
+                return 1 + row.getChilds().size() + countUtil(row.getChilds());
+        
+        return list.size();
         
     }
     

@@ -1,5 +1,6 @@
 package com.lgadetsky.nodekeeper.client.view;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -258,17 +259,19 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
     public void buildTree(List<Node> nodes) {
         mainTree.clear();
         
+        Collections.sort(nodes, Node.COMPARE_BY_ID);
+        
         treeItemtoNodeMap = new HashMap<TreeItem, Node>();
         
         for (Node n : nodes) {
+            TreeItem item = new TreeItem(new HTML(n.getName()));
+            treeItemtoNodeMap.put(item, n);
             if (n.getParentId() == -1) {
-                TreeItem item = new TreeItem(new HTML(n.getName()));
-                treeItemtoNodeMap.put(item, n);
+
                 mainTree.addItem(item);
             } else {
-                TreeItem item = new TreeItem(new HTML(n.getName()));
-                treeItemtoNodeMap.put(item, n);
                 TreeItem parentItem = null;
+                
                 for (Node node : nodes) {
                     if (node.getId().equals(n.getParentId())) {
                         Set<Map.Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();

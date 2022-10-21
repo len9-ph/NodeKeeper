@@ -40,6 +40,7 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
                 Cell cell = table.getTreeTable().getCellForEvent(event);
                 indexOfSelected = cell.getRowIndex();
                 selectedRow = (TreeRow) table.getTreeTable().getWidget(indexOfSelected, 0);
+//                selectedRow.addStyleName("gwt-TreeItem-selected");
                 handler.onSelect(treeRowToNodeMap.get(selectedRow));
             }
         });
@@ -89,6 +90,20 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
             selectedRow.addChild(newRow);
             table.addChildRow(newRow, indexOfSelected);
         }
+    }
+
+    @Override
+    public void onDelete() {
+        if (selectedRow.isParent()) {
+            for (int i = 0; i < selectedRow.countChilds(); i++)
+                table.remove(indexOfSelected);
+        } else 
+            table.remove(indexOfSelected);
+    }
+
+    @Override
+    public void onBoxChange() {
+        
     }
     
 }
