@@ -1,15 +1,12 @@
 @main-color: #f6f4df;
 @width: 600px;
 @popup-color: #857F5E;
+@margin-value: 4px;
 
 .bordered {
     border: 1px solid;
     border-radius: 4px;
 }
-
-/*.show {
-    display: inline-block;
-}*/
 
 .hide {
     display: none;
@@ -17,14 +14,6 @@
 
 .hidden {
     visibility: hidden;
-}
-
-.rowToggleButton {
-    display: inline-block;
-    
-    width: 16px;
-    height: 16px;
-    margin: 2px 2px 2px 2px;
 }
 
 .rowToggleButton-up {
@@ -38,16 +27,8 @@
     background: url(close-button-small.png) no-repeat;
 }
 
-
 .rowToggleButton-down-hovering {
     background: url(close-button-small.png) no-repeat;
-}
-
-.rowText {
-    display: inline-block;
-    margin: 2px 2px 2px 2px;
-    width: 50px;
-    height: 20px;
 }
 
 .gwt-Label {
@@ -67,7 +48,7 @@
     
     .gwt-HTML {
         font-size: larger;
-        padding: 20px 20px 20px 20px;
+        padding: 20px;
         font-weight: bold;
     }
 }
@@ -87,7 +68,7 @@
 .treeScroll {
     .bordered();
     height: 75%;
-    margin: 2px 4px 2px 4px;
+    margin: @margin-value;
     background-color: @main-color;
     overflow-y: scroll !important;
 }
@@ -112,8 +93,6 @@
     width: 60%;
     vertical-align: top;
     margin: 2px 4px 2px 4px;
-    
-
 }
 
 .selectedNodeTable {
@@ -125,7 +104,6 @@
 .selectedGrid {
     display: block;
     border-collapse: collapse;
-    //border-radius: 4px;
     width: 98%;
     table-layout: fixed;
     margin: 5px 8px 5px 8px;
@@ -148,12 +126,38 @@
 .customTree {
     .treeScroll();
     height: 150px;
-    margin: 0px 0px 0px 0px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 0px;
     width: 602px;
+    
+    .treeTable {
+        border-collapse: collapse;
+    
+        td {
+            padding: 0px;
+        }
+        
+        .rowToggleButton {
+            display: inline-block;
+            width: @margin-value * 4;
+            height: @margin-value * 4;
+            margin: @margin-value;
+        }
+        
+        .rowText {
+            display: inline-block;
+            margin: @margin-value;
+            width: 50px;
+            height: 20px;
+            vertical-align: 7px;
+        }
+    }
 }
 
-.treeTable td {
-    padding: 0px 0px 0px 0px;
+.gwt-Button {
+    margin-top: @margin-value / 2;
+    margin-bottom: @margin-value;
 }
 
 .buttonPanel {
@@ -167,7 +171,7 @@
 
 .buttonPanel > * {
     display: inline-block;
-    margin: 5px 4px 5px 4px;
+    margin: @margin-value;
 }
 
 .selectedLabel {
@@ -181,12 +185,10 @@
     background-color: @main-color;
 }
 
-.allNodesPanel > .gwt-Button {
-    margin: 5px 2px 2px 5px;
-}
+
 
 .allNodesGrid {
-    margin: 4px 5px 4px 5px;
+    margin: 4px 6px 4px 6px;
     width: 98%;
     table-layout: fixed;
     border: 1px solid;
@@ -195,34 +197,6 @@
     
     td {
         border: 1px solid;
-        padding: 2px 2px 2px 2px;
+        padding: @margin-value;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
 
 public class TreeTable extends Composite {
     private FlexTable treeTable;
@@ -14,9 +13,7 @@ public class TreeTable extends Composite {
         treeTable = new FlexTable();
         treeTable.setStyleName("treeTable");
         
-        FlowPanel panel = new FlowPanel();
-        initWidget(panel);
-        panel.add(treeTable);
+        initWidget(treeTable);
     }
     
     // if we insert root row
