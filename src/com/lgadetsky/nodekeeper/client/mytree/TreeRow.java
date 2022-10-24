@@ -113,13 +113,11 @@ public class TreeRow extends Composite{
     }
     
     private void hide() {
-        this.removeStyleName("show");
         this.setStyleName("hide");
     }
     
     private void show() {
         this.removeStyleName("hide");
-        this.setStyleName("show");
     }
 }
 
