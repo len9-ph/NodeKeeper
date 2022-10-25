@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.view;
+package com.lgadetsky.nodekeeper.client.gui.nodestable;
 
 import java.util.List;
 

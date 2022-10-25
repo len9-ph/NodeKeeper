@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.view;
+package com.lgadetsky.nodekeeper.client.gui.treeedit;
 
 import java.util.Collections;
 import java.util.HashMap;

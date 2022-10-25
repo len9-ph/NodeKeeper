@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.view;
+package com.lgadetsky.nodekeeper.client.gui.node_keeper;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;

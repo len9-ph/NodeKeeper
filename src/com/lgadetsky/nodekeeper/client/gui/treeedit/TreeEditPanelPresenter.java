@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.presenter;
+package com.lgadetsky.nodekeeper.client.gui.treeedit;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -11,10 +11,9 @@ import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEventHandler;
 import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateTreeEventHandler;
-import com.lgadetsky.nodekeeper.client.view.CustomTreePanelDisplay;
-import com.lgadetsky.nodekeeper.client.view.CustomTreePanelDisplay.CustomTreePanelActionHanlder;
-import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay;
-import com.lgadetsky.nodekeeper.client.view.TreeEditPanelDisplay.TreeEditPanelActionHandler;
+import com.lgadetsky.nodekeeper.client.gui.Presenter;
+import com.lgadetsky.nodekeeper.client.gui.treeedit.CustomTreePanelDisplay.CustomTreePanelActionHanlder;
+import com.lgadetsky.nodekeeper.client.gui.treeedit.TreeEditPanelDisplay.TreeEditPanelActionHandler;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class TreeEditPanelPresenter extends Presenter {

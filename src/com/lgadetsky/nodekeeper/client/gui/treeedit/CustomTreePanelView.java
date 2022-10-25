@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.view;
+package com.lgadetsky.nodekeeper.client.gui.treeedit;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,8 +11,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.lgadetsky.nodekeeper.client.mytree.TreeRow;
-import com.lgadetsky.nodekeeper.client.mytree.TreeTable;
+import com.lgadetsky.nodekeeper.client.gui.widgets.customtree.TreeRow;
+import com.lgadetsky.nodekeeper.client.gui.widgets.customtree.TreeTable;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class CustomTreePanelView extends Composite implements CustomTreePanelDisplay{

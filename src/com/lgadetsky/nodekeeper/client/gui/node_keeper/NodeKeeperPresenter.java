@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.presenter;
+package com.lgadetsky.nodekeeper.client.gui.node_keeper;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,11 +22,13 @@ import com.lgadetsky.nodekeeper.client.event.RefreshEvent;
 import com.lgadetsky.nodekeeper.client.event.RefreshEventHandler;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
+import com.lgadetsky.nodekeeper.client.gui.Presenter;
+import com.lgadetsky.nodekeeper.client.gui.nodestable.NodeTablePanelPresenter;
+import com.lgadetsky.nodekeeper.client.gui.nodestable.NodeTablePanelView;
+import com.lgadetsky.nodekeeper.client.gui.treeedit.CustomTreePanelView;
+import com.lgadetsky.nodekeeper.client.gui.treeedit.TreeEditPanelPresenter;
+import com.lgadetsky.nodekeeper.client.gui.treeedit.TreeEditPanelView;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
-import com.lgadetsky.nodekeeper.client.view.CustomTreePanelView;
-import com.lgadetsky.nodekeeper.client.view.NodeKeeperDisplay;
-import com.lgadetsky.nodekeeper.client.view.NodeTablePanelView;
-import com.lgadetsky.nodekeeper.client.view.TreeEditPanelView;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class NodeKeeperPresenter extends Presenter {

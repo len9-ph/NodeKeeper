@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.mytree;
+package com.lgadetsky.nodekeeper.client.gui.widgets.customtree;
 
 import java.util.LinkedList;
 import java.util.List;
