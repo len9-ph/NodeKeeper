@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.lgadetsky.nodekeeper.client.NodeKeeper;
@@ -28,6 +27,7 @@ import com.lgadetsky.nodekeeper.client.gui.nodestable.NodeTablePanelView;
 import com.lgadetsky.nodekeeper.client.gui.treeedit.CustomTreePanelView;
 import com.lgadetsky.nodekeeper.client.gui.treeedit.TreeEditPanelPresenter;
 import com.lgadetsky.nodekeeper.client.gui.treeedit.TreeEditPanelView;
+import com.lgadetsky.nodekeeper.client.gui.widgets.customnotification.NotificationType;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.shared.Node;
 
@@ -60,7 +60,7 @@ public class NodeKeeperPresenter extends Presenter {
             }
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert(StringConstants.ERROR);
+                NodeKeeperPresenter.this.display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
             }
         });
         
@@ -73,7 +73,7 @@ public class NodeKeeperPresenter extends Presenter {
                     public void onRefresh(RefreshEvent event) {
                         
                         if (changeNodes.isEmpty())
-                            display.showPopUpMessage(StringConstants.UP_TO_DATE);
+                            display.showPopUpMessage(StringConstants.UP_TO_DATE, NotificationType.DEFAULT);
                         else {
                             NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
                                 @Override
@@ -85,7 +85,7 @@ public class NodeKeeperPresenter extends Presenter {
                                 }
                                 @Override
                                 public void onFailure(Throwable caught) {
-                                    Window.alert(StringConstants.ERROR);
+                                    display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
                                 }
                             });
                         }
@@ -163,7 +163,7 @@ public class NodeKeeperPresenter extends Presenter {
                 new MessageEventHandler() {
                     @Override
                     public void onMessageSend(MessageEvent event) {
-                        display.showPopUpMessage(event.getMessage());
+                        display.showPopUpMessage(event.getMessage(), NotificationType.DEFAULT);
                     }
                 });
     }

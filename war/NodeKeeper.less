@@ -53,6 +53,29 @@
     }
 }
 
+.customPopUp {
+    .bordered();
+    padding: 3px;
+    background-color: @popup-color;
+    width: 250px;
+    height: 60px ;
+    overflow: visible;
+    position: fixed !important;
+    left: 10px !important;
+    top: 90% !important;
+    
+    .defaultMessage {
+        font-size: larger;
+        padding: 20px;
+        font-weight: bold;
+    }
+    
+    .errorMessage {
+        .defaultMessage();
+        color: red;
+    }
+}
+
 .upperPanel {
     width: @width + 10;
     display: block;
@@ -152,8 +175,14 @@
             height: 20px;
             vertical-align: 7px;
         }
+        
+        .rowText:hover {
+            cursor: default;
+        }
     }
 }
+
+
 
 .gwt-Button {
     margin-top: @margin-value / 2;
