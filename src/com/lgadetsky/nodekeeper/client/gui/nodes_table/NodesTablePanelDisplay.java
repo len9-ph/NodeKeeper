@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.gui.nodestable;
+package com.lgadetsky.nodekeeper.client.gui.nodes_table;
 
 import java.util.List;
 
@@ -9,8 +9,10 @@ public interface NodesTablePanelDisplay {
     interface NodesTablePanelActionHandler {
         void onRefreshClick();
     }
-    
+
     void setNodesTablePanelHandler(NodesTablePanelActionHandler handler);
+
     void setData(List<Node> nodes);
+
     Widget asWidget();
 }

@@ -22,12 +22,12 @@ import com.lgadetsky.nodekeeper.client.event.RefreshEventHandler;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
 import com.lgadetsky.nodekeeper.client.gui.Presenter;
-import com.lgadetsky.nodekeeper.client.gui.nodestable.NodeTablePanelPresenter;
-import com.lgadetsky.nodekeeper.client.gui.nodestable.NodeTablePanelView;
-import com.lgadetsky.nodekeeper.client.gui.treeedit.CustomTreePanelView;
-import com.lgadetsky.nodekeeper.client.gui.treeedit.TreeEditPanelPresenter;
-import com.lgadetsky.nodekeeper.client.gui.treeedit.TreeEditPanelView;
-import com.lgadetsky.nodekeeper.client.gui.widgets.customnotification.NotificationType;
+import com.lgadetsky.nodekeeper.client.gui.nodes_table.NodeTablePanelPresenter;
+import com.lgadetsky.nodekeeper.client.gui.nodes_table.NodeTablePanelView;
+import com.lgadetsky.nodekeeper.client.gui.tree_edit.CustomTreePanelView;
+import com.lgadetsky.nodekeeper.client.gui.tree_edit.TreeEditPanelPresenter;
+import com.lgadetsky.nodekeeper.client.gui.tree_edit.TreeEditPanelView;
+import com.lgadetsky.nodekeeper.client.gui.widgets.custom_notification.NotificationType;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.shared.Node;
 
@@ -36,15 +36,15 @@ public class NodeKeeperPresenter extends Presenter {
     private NodeKeeperDisplay display;
     private List<Node> nodes = new LinkedList<Node>();
     private List<Node> changeNodes = new LinkedList<Node>();
-    
+
     public NodeKeeperPresenter(NodeKeeperDisplay display) {
         this.display = display;
-        
+
         setUpLocalEventBus();
-        
-        Presenter treePresenter = new TreeEditPanelPresenter(eventBus, 
+
+        Presenter treePresenter = new TreeEditPanelPresenter(eventBus,
                 new TreeEditPanelView(), new CustomTreePanelView());
-        
+
         treePresenter.go(display.getContainer());
 
         Presenter tablePresenter = new NodeTablePanelPresenter(eventBus,
@@ -58,20 +58,21 @@ public class NodeKeeperPresenter extends Presenter {
                 nodes.addAll(result);
                 eventBus.fireEvent(new UpdateStateEvent(nodes));
             }
+
             @Override
             public void onFailure(Throwable caught) {
                 NodeKeeperPresenter.this.display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
             }
         });
-        
+
     }
-    
+
     private void setUpLocalEventBus() {
         eventBus.addHandler(RefreshEvent.TYPE,
                 new RefreshEventHandler() {
                     @Override
                     public void onRefresh(RefreshEvent event) {
-                        
+
                         if (changeNodes.isEmpty())
                             display.showPopUpMessage(StringConstants.UP_TO_DATE, NotificationType.DEFAULT);
                         else {
@@ -83,6 +84,7 @@ public class NodeKeeperPresenter extends Presenter {
                                     changeNodes.clear();
                                     eventBus.fireEvent(new UpdateStateEvent(nodes));
                                 }
+
                                 @Override
                                 public void onFailure(Throwable caught) {
                                     display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
@@ -91,7 +93,7 @@ public class NodeKeeperPresenter extends Presenter {
                         }
                     }
                 });
-        
+
         eventBus.addHandler(AddRootEvent.TYPE,
                 new AddRootEventHandler() {
                     @Override
@@ -101,8 +103,8 @@ public class NodeKeeperPresenter extends Presenter {
                         eventBus.fireEvent(new UpdateTreeEvent(newNode));
                     }
                 });
-        
-        eventBus.addHandler(AddChildEvent.TYPE, 
+
+        eventBus.addHandler(AddChildEvent.TYPE,
                 new AddChildEventHandler() {
                     @Override
                     public void onAddChild(AddChildEvent event) {
@@ -111,7 +113,7 @@ public class NodeKeeperPresenter extends Presenter {
                         eventBus.fireEvent(new UpdateTreeEvent(newNode));
                     }
                 });
-        
+
         eventBus.addHandler(BoxChangeEvent.TYPE,
                 new BoxChangeEventHandler() {
                     @Override
@@ -119,7 +121,7 @@ public class NodeKeeperPresenter extends Presenter {
                         if (changeNodes.contains(event.getNode()))
                             changeNodes.remove(event.getNode());
                         Node changedNode = event.getNode();
-                        
+
                         switch (event.getField()) {
                             case StringConstants.NAME:
                                 changedNode.setName(event.getValue());
@@ -136,14 +138,14 @@ public class NodeKeeperPresenter extends Presenter {
                         changeNodes.add(changedNode);
                     }
                 });
-        
-        eventBus.addHandler(DeleteEvent.TYPE, 
+
+        eventBus.addHandler(DeleteEvent.TYPE,
                 new DeleteEventHandler() {
                     @Override
                     public void onDelete(DeleteEvent event) {
                         Node deletedNode = event.getNode();
-                       
-                        if (deletedNode.getId().equals(-1)) 
+
+                        if (deletedNode.getId().equals(-1))
                             changeNodes.remove(deletedNode);
                         else {
                             deletedNode.setDeleted(true);
@@ -155,11 +157,11 @@ public class NodeKeeperPresenter extends Presenter {
                             }
                             changeNodes.add(deletedNode);
                         }
-                
+
                     }
                 });
-        
-        eventBus.addHandler(MessageEvent.TYPE, 
+
+        eventBus.addHandler(MessageEvent.TYPE,
                 new MessageEventHandler() {
                     @Override
                     public void onMessageSend(MessageEvent event) {
@@ -167,7 +169,7 @@ public class NodeKeeperPresenter extends Presenter {
                     }
                 });
     }
-    
+
     @Override
     public void go(HasWidgets container) {
         container.add(display.asWidget());

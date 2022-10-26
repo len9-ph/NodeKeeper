@@ -11,8 +11,12 @@ import java.util.List;
  */
 public interface DAO<T> {
     T get(Integer id);
+
     List<T> getAll();
+
     T save(T t);
+
     T update(T t);
+
     Integer delete(Integer id);
 }

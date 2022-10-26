@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.gui.nodestable;
+package com.lgadetsky.nodekeeper.client.gui.nodes_table;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -6,7 +6,7 @@ import com.lgadetsky.nodekeeper.client.event.RefreshEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEvent;
 import com.lgadetsky.nodekeeper.client.event.UpdateStateEventHandler;
 import com.lgadetsky.nodekeeper.client.gui.Presenter;
-import com.lgadetsky.nodekeeper.client.gui.nodestable.NodesTablePanelDisplay.NodesTablePanelActionHandler;
+import com.lgadetsky.nodekeeper.client.gui.nodes_table.NodesTablePanelDisplay.NodesTablePanelActionHandler;
 
 public class NodeTablePanelPresenter extends Presenter {
 

@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.gui.treeedit;
+package com.lgadetsky.nodekeeper.client.gui.tree_edit;
 
 import java.util.List;
 
@@ -10,10 +10,16 @@ public interface CustomTreePanelDisplay {
         void onSelect(Node selectedNode);
 
     }
+
     void setCustomTreePanelActionHanlder(CustomTreePanelActionHanlder handler);
+
     void buildTree(List<Node> nodes);
+
     void updateTree(Node newNode);
+
     void onDelete();
+
     void onBoxChange(String name);
+
     Widget asWidget();
 }

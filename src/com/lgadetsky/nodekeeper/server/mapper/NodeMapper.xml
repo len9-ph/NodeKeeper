@@ -26,13 +26,21 @@
     <select id="findById"
             parameterType="int"
             resultMap="nodeResultMap">
-        select * from "node" n
+        select id,
+               parent_id,
+               name,
+               ip,
+               port from "node" n
             where n.id = #{id};
     </select>
     
     <select id="findAll"
             resultMap="nodeResultMap">
-        select * from "node";
+        select id,
+               parent_id,
+               name,
+               ip,
+               port from "node";
     </select>
     
     <update id="update"

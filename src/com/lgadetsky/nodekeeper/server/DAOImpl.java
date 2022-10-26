@@ -40,5 +40,5 @@ public class DAOImpl implements DAO<Node> {
         nodeMapper.deleteById(id);
         return id;
     }
-    
+
 }

@@ -1,4 +1,5 @@
 package com.lgadetsky.nodekeeper.server;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -10,13 +11,9 @@ public class AppGuiceServletContextListener extends GuiceServletContextListener 
 
     @Override
     protected Injector getInjector() {
-        return Guice.createInjector( new Module[] {
+        return Guice.createInjector(new Module[] {
                 new MyAppModule(),
-                new MyBatisModule() }
-                );
+                new MyBatisModule() });
     }
-    
+
 }
-
-
-

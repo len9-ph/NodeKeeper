@@ -9,12 +9,12 @@ import com.lgadetsky.nodekeeper.client.NodeKeeperService;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 @Singleton
-public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeKeeperService{
+public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeKeeperService {
     private static final long serialVersionUID = 2L;
-    
+
     @Inject
     private DAOImpl nodeDao;
-    
+
     @Override
     public List<Node> getAllNodes() {
         return nodeDao.getAll();
@@ -22,25 +22,22 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
 
     @Override
     public Node getNode(int id) {
-        
+
         return nodeDao.get(id);
     }
 
     @Override
     public Node create(Node node) {
-        
+
         return nodeDao.save(node);
     }
 
     @Override
     public boolean update(Node node) {
-//        if (node.isEmpty())
-//            throw new RuntimeException();
-        
         Node res = nodeDao.update(node);
         if (res == null)
             return false;
-        else 
+        else
             return true;
     }
 
@@ -60,7 +57,7 @@ public class NodeKeeperServiceImpl extends RemoteServiceServlet implements NodeK
                 create(n);
             else if (n.isDeleted()) {
                 delete(n.getId());
-            } else 
+            } else
                 update(n);
         }
         return getAllNodes();

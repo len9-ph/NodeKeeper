@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.gui.nodestable;
+package com.lgadetsky.nodekeeper.client.gui.nodes_table;
 
 import java.util.List;
 
@@ -10,24 +10,25 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
+import com.lgadetsky.nodekeeper.client.util.StylesNames;
 import com.lgadetsky.nodekeeper.shared.Node;
 
-public class NodeTablePanelView extends Composite implements NodesTablePanelDisplay{
+public class NodeTablePanelView extends Composite implements NodesTablePanelDisplay {
     private Label allNodesText;
     private FlowPanel allNodesTable;
     private Button refreshButton;
     private Grid allNodesGrid;
-    
+
     private NodesTablePanelActionHandler handler;
-    
+
     public NodeTablePanelView() {
         FlowPanel allNodesPanel = new FlowPanel();
         initWidget(allNodesPanel);
-        allNodesPanel.addStyleName("lowerPanel");
-        
-        allNodesText = new Label("All nodes");
+        allNodesPanel.addStyleName(StylesNames.LOWER_PANEL);
+
+        allNodesText = new Label(StringConstants.ALL_NODES);
         allNodesPanel.add(allNodesText);
-        
+
         // Button assembly
         refreshButton = new Button(StringConstants.REFRESH);
         allNodesPanel.add(refreshButton);
@@ -37,7 +38,7 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
                 handler.onRefreshClick();
             }
         });
-        
+
         // Table assembly
         allNodesTable = new FlowPanel();
         allNodesGrid = new Grid(1, 5);
@@ -46,13 +47,13 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
         allNodesGrid.setText(0, 2, StringConstants.NAME);
         allNodesGrid.setText(0, 3, StringConstants.IP);
         allNodesGrid.setText(0, 4, StringConstants.PORT);
-        allNodesGrid.setStyleName("allNodesGrid");
-        allNodesTable.setStyleName("allNodesPanel");
-        
+        allNodesGrid.setStyleName(StylesNames.ALL_NODES_GRID);
+        allNodesTable.setStyleName(StylesNames.ALL_NODES_PANEL);
+
         allNodesTable.add(allNodesGrid);
-        allNodesPanel.add(allNodesTable);	
+        allNodesPanel.add(allNodesTable);
     }
-    
+
     @Override
     public void setNodesTablePanelHandler(NodesTablePanelActionHandler handler) {
         this.handler = handler;
@@ -61,10 +62,10 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
     @Override
     public void setData(List<Node> nodes) {
         allNodesGrid.resize(nodes.size() + 1, 5);
-        
-        for(int i = 0; i < nodes.size(); i++) {
-            allNodesGrid.setText(i + 1, 0, String.valueOf(nodes.get(i).getId()));
-            if (nodes.get(i).getParentId() != -1) 
+
+        for (int i = 0; i < nodes.size(); i++) {
+            allNodesGrid.setText(i + 1, 0, nodes.get(i).getId().toString());
+            if (nodes.get(i).getParentId() != -1)
                 allNodesGrid.setText(i + 1, 1, nodes.get(i).getParentId().toString());
             allNodesGrid.setText(i + 1, 2, nodes.get(i).getName());
             allNodesGrid.setText(i + 1, 3, nodes.get(i).getIp());
