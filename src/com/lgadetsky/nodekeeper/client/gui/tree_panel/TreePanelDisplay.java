@@ -30,5 +30,7 @@ public interface TreePanelDisplay {
 
     void onNameBoxChange(String name);
 
+    void onDelete();
+
     Widget asWidget();
 }

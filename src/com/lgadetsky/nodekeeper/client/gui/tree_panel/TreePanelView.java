@@ -26,7 +26,7 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
     private ScrollPanel treeScroll;
     private final Tree mainTree;
 
-    TreePanelActionHandler handler;
+    private TreePanelActionHandler handler;
 
     public TreePanelView() {
 
@@ -110,6 +110,23 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
 
     @Override
     public void onNameBoxChange(String name) {
-
+    	mainTree.getSelectedItem().setHTML(name);
     }
+
+	@Override
+	public void onDelete() {
+		if (mainTree.getSelectedItem() != null) {
+            TreeItem selectedItem = mainTree.getSelectedItem();
+            Node curNode = treeItemtoNodeMap.get(selectedItem);
+            // Delete elem from nodes in presenter
+            handler.onDeleteClick(curNode);
+            // Remove elem from tree
+            if (curNode.getParentId().equals(-1))
+                mainTree.removeItem(selectedItem);
+            else
+                selectedItem.getParentItem().removeItem(selectedItem);
+
+        } else
+            handler.onMessage(StringConstants.ITEM_WAS_NOT_SELECTED);}
 }
+
