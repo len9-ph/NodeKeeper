@@ -8,22 +8,22 @@
 .hidden {
   visibility: hidden;
 }
-.rowToggleButton-up {
+.row-toggle-button-up {
   background: url(open-button-small.png) no-repeat;
 }
-.rowToggleButton-up-hovering {
+.row-toggle-button-up-hovering {
   background: url(open-button-small.png) no-repeat;
 }
-.rowToggleButton-down {
+.row-toggle-button-down {
   background: url(close-button-small.png) no-repeat;
 }
-.rowToggleButton-down-hovering {
+.row-toggle-button-down-hovering {
   background: url(close-button-small.png) no-repeat;
 }
 .gwt-Label {
   font-weight: bold;
 }
-.gwt-DecoratedPopupPanel {
+.notification-widget-popup {
   border: 1px solid;
   border-radius: 4px;
   padding: 3px;
@@ -35,45 +35,28 @@
   left: 10px !important;
   top: 90% !important;
 }
-.gwt-DecoratedPopupPanel .gwt-HTML {
+.notification-widget-popup .default-message {
   font-size: larger;
   padding: 20px;
   font-weight: bold;
 }
-.customPopUp {
-  border: 1px solid;
-  border-radius: 4px;
-  padding: 3px;
-  background-color: #857f5e;
-  width: 250px;
-  height: 60px ;
-  overflow: visible;
-  position: fixed !important;
-  left: 10px !important;
-  top: 90% !important;
-}
-.customPopUp .defaultMessage {
-  font-size: larger;
-  padding: 20px;
-  font-weight: bold;
-}
-.customPopUp .errorMessage {
+.notification-widget-popup .error-message {
   font-size: larger;
   padding: 20px;
   font-weight: bold;
   color: red;
 }
-.upperPanel {
+.upper-panel {
   width: 610px;
   display: block;
 }
-.treePanel {
+.tree-panel {
   display: inline-block;
   width: 38%;
   height: 150px;
   vertical-align: top;
 }
-.treeScroll {
+.tree-scroll {
   border: 1px solid;
   border-radius: 4px;
   height: 75%;
@@ -92,39 +75,39 @@
   color: #005C53;
   font-weight: bolder;
 }
-.selectedNodePanel {
+.selected-node-panel {
   display: inline-block;
   width: 60%;
   vertical-align: top;
   margin: 2px 4px 2px 4px;
 }
-.selectedNodeTable {
+.selected-node-table {
   height: auto;
   border: 1px solid;
   border-radius: 4px;
   background-color: #f6f4df;
 }
-.selectedGrid {
+.selected-grid {
   display: block;
   border-collapse: collapse;
   width: 98%;
   table-layout: fixed;
   margin: 5px 8px 5px 8px;
 }
-.selectedGrid td {
+.selected-grid td {
   border: 1px solid;
   height: 27px;
   width: 169px;
   padding: 2px 2px 2px 2px;
 }
-.selectedGrid td .gwt-TextBox {
+.selected-grid td .gwt-TextBox {
   width: 160px;
 }
-.lowerPanel {
+.lower-panel {
   width: 600px;
   display: block;
 }
-.customTree {
+.custom-tree {
   border: 1px solid;
   border-radius: 4px;
   height: 75%;
@@ -137,33 +120,33 @@
   margin-left: 0px;
   width: 600px;
 }
-.customTree .treeTable {
+.custom-tree .tree-table {
   border-collapse: collapse;
 }
-.customTree .treeTable td {
+.custom-tree .tree-table td {
   padding: 0px;
 }
-.customTree .treeTable .rowToggleButton {
+.custom-tree .tree-table .row-toggle-button {
   display: inline-block;
   width: 16px;
   height: 16px;
   margin: 4px;
 }
-.customTree .treeTable .rowText {
+.custom-tree .tree-table .row-text {
   display: inline-block;
   margin: 4px;
   width: 90px;
   height: 20px;
   vertical-align: 7px;
 }
-.customTree .treeTable .rowText:hover {
+.custom-tree .tree-table .row-text:hover {
   cursor: default;
 }
 .gwt-Button {
   margin-top: 2px;
   margin-bottom: 4px;
 }
-.buttonPanel {
+.button-panel {
   width: 600px;
   height: 30px;
   margin-top: 2px;
@@ -172,21 +155,21 @@
   border-radius: 4px;
   background-color: #f6f4df;
 }
-.buttonPanel > * {
+.button-panel > * {
   display: inline-block;
   margin: 4px;
 }
-.selectedLabel {
+.selected-label {
   font-weight: normal;
 }
-.allNodesPanel {
+.all-nodes-panel {
   height: auto;
   width: 100%;
   border: 1px solid;
   border-radius: 4px;
   background-color: #f6f4df;
 }
-.allNodesGrid {
+.all-nodes-grid {
   margin: 4px 6px 4px 6px;
   width: 98%;
   table-layout: fixed;
@@ -194,7 +177,7 @@
   border-collapse: collapse;
   align-content: center;
 }
-.allNodesGrid td {
+.all-nodes-grid td {
   border: 1px solid;
   padding: 4px;
 }

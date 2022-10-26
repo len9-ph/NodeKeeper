@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 
 public class NotificationWidget extends Composite {
-    private static FlowPanel popUpPanel;
+    private FlowPanel popUpPanel;
     private Label popUpMessage;
 
     public NotificationWidget() {

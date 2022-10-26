@@ -24,7 +24,7 @@ import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
 import com.lgadetsky.nodekeeper.client.gui.Presenter;
 import com.lgadetsky.nodekeeper.client.gui.nodes_table.NodeTablePanelPresenter;
 import com.lgadetsky.nodekeeper.client.gui.nodes_table.NodeTablePanelView;
-import com.lgadetsky.nodekeeper.client.gui.tree_edit.CustomTreePanelView;
+import com.lgadetsky.nodekeeper.client.gui.tree_edit.OldCustomTreePanelView;
 import com.lgadetsky.nodekeeper.client.gui.tree_edit.TreeEditPanelPresenter;
 import com.lgadetsky.nodekeeper.client.gui.tree_edit.TreeEditPanelView;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_notification.NotificationType;
@@ -43,7 +43,7 @@ public class NodeKeeperPresenter extends Presenter {
         setUpLocalEventBus();
 
         Presenter treePresenter = new TreeEditPanelPresenter(eventBus,
-                new TreeEditPanelView(), new CustomTreePanelView());
+                new TreeEditPanelView(), new OldCustomTreePanelView());
 
         treePresenter.go(display.getContainer());
 

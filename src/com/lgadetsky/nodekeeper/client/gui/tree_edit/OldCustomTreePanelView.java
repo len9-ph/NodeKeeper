@@ -16,7 +16,7 @@ import com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree.TreeTable;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 import com.lgadetsky.nodekeeper.shared.Node;
 
-public class CustomTreePanelView extends Composite implements CustomTreePanelDisplay {
+public class OldCustomTreePanelView extends Composite implements CustomTreePanelDisplay {
 
     private TreeTable table;
     private HashMap<TreeRow, Node> treeRowToNodeMap;
@@ -26,7 +26,7 @@ public class CustomTreePanelView extends Composite implements CustomTreePanelDis
 
     private CustomTreePanelActionHanlder handler;
 
-    public CustomTreePanelView() {
+    public OldCustomTreePanelView() {
         table = new TreeTable();
         treeRowToNodeMap = new HashMap<TreeRow, Node>();
         ScrollPanel panel = new ScrollPanel();

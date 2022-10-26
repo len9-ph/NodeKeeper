@@ -8,7 +8,6 @@ import com.lgadetsky.nodekeeper.shared.Node;
 public interface CustomTreePanelDisplay {
     interface CustomTreePanelActionHanlder {
         void onSelect(Node selectedNode);
-
     }
 
     void setCustomTreePanelActionHanlder(CustomTreePanelActionHanlder handler);
