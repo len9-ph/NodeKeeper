@@ -9,6 +9,8 @@ public interface TreePanelDisplay {
     interface TreePanelActionHandler {
         void onMessage(String message);
 
+        void onSelect(Node node);
+
         void onBoxChange(Node node, String field, String value);
 
         void onAddRootClick();
@@ -18,7 +20,7 @@ public interface TreePanelDisplay {
         void onDeleteClick(Node node);
     }
 
-    void setSelectedNode(Node node);
+    void setSelectedItem(Node node);
 
     void setTreePanelActionHandler(TreePanelActionHandler handler);
 

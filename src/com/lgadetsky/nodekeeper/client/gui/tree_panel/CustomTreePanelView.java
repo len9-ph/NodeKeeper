@@ -8,7 +8,7 @@ import com.lgadetsky.nodekeeper.shared.Node;
 public class CustomTreePanelView extends Composite implements TreePanelDisplay{
 
     @Override
-    public void setSelectedNode(Node node) {
+    public void setSelectedItem(Node node) {
         
     }
 
