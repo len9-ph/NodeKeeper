@@ -1,6 +1,5 @@
 package com.lgadetsky.nodekeeper.client.gui.tree_panel;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +53,14 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
 
     @Override
     public void setSelectedItem(Node node) {
+
         Set<Map.Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
 
         for (Map.Entry<TreeItem, Node> pair : entrySet) {
-            if (node.equals(pair.getValue()))
-                mainTree.setSelectedItem(pair.getKey());
+            if (node.equals(pair.getValue())) {
+                mainTree.setSelectedItem(null);
+                mainTree.setSelectedItem(pair.getKey(), false);
+            }
         }
     }
 
@@ -74,15 +76,16 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
 
         if (newNode.getParentId().equals(-1))
             mainTree.addItem(newTreeItem);
-        else
+        else {
+            mainTree.getSelectedItem().setState(true);
             mainTree.getSelectedItem().addItem(newTreeItem);
+        }
+            
     }
 
     @Override
     public void buildTree(List<Node> nodes) {
         mainTree.clear();
-
-        Collections.sort(nodes, Node.COMPARE_BY_ID);
 
         treeItemtoNodeMap = new HashMap<TreeItem, Node>();
 
@@ -110,23 +113,14 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
 
     @Override
     public void onNameBoxChange(String name) {
-    	mainTree.getSelectedItem().setHTML(name);
+        mainTree.getSelectedItem().setHTML(name);
     }
 
-	@Override
-	public void onDelete() {
-		if (mainTree.getSelectedItem() != null) {
-            TreeItem selectedItem = mainTree.getSelectedItem();
-            Node curNode = treeItemtoNodeMap.get(selectedItem);
-            // Delete elem from nodes in presenter
-            handler.onDeleteClick(curNode);
-            // Remove elem from tree
-            if (curNode.getParentId().equals(-1))
-                mainTree.removeItem(selectedItem);
-            else
-                selectedItem.getParentItem().removeItem(selectedItem);
-
-        } else
-            handler.onMessage(StringConstants.ITEM_WAS_NOT_SELECTED);}
+    @Override
+    public void onDelete() {
+        if (treeItemtoNodeMap.get(mainTree.getSelectedItem()).getParentId().equals(-1))
+            mainTree.removeItem(mainTree.getSelectedItem());
+        else 
+            mainTree.getSelectedItem().getParentItem().removeItem(mainTree.getSelectedItem());
+    }
 }
-

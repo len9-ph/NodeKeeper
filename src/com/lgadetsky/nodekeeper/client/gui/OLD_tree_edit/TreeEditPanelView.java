@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.gui.tree_edit;
+package com.lgadetsky.nodekeeper.client.gui.OLD_tree_edit;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -282,6 +282,7 @@ public class TreeEditPanelView extends Composite implements TreeEditPanelDisplay
             mainTree.addItem(newTreeItem);
         else
             mainTree.getSelectedItem().addItem(newTreeItem);
+        
     }
 
     @Override

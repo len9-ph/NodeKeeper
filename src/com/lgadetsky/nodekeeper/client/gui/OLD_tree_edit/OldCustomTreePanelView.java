@@ -1,4 +1,4 @@
-package com.lgadetsky.nodekeeper.client.gui.tree_edit;
+package com.lgadetsky.nodekeeper.client.gui.OLD_tree_edit;
 
 import java.util.HashMap;
 import java.util.LinkedList;

@@ -10,14 +10,6 @@ public interface TreePanelDisplay {
         void onMessage(String message);
 
         void onSelect(Node node);
-
-        void onBoxChange(Node node, String field, String value);
-
-        void onAddRootClick();
-
-        void onAddChildClick(Node parentNode);
-
-        void onDeleteClick(Node node);
     }
 
     void setSelectedItem(Node node);

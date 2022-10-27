@@ -11,12 +11,37 @@ import com.lgadetsky.nodekeeper.client.util.StylesNames;
 public class TreeTable extends Composite {
     private FlexTable treeTable;
 
+//    private Integer indexOfSelected;
+//    private TreeRow selectedRow;
+
     public TreeTable() {
         treeTable = new FlexTable();
         treeTable.setStyleName(StylesNames.TREE_TABLE);
-
         initWidget(treeTable);
+
+//        this.treeTable.addClickHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                if (selectedRow != null)
+//                    selectedRow.removeSelected();
+//
+//                Cell cell = treeTable.getCellForEvent(event);
+//                indexOfSelected = cell.getRowIndex();
+//
+//                selectedRow = (TreeRow) treeTable.getWidget(indexOfSelected, 0);
+//                selectedRow.setSelected();
+//            }
+//        });
     }
+
+//    public TreeRow getSelectedRow() {
+//        return selectedRow;
+//    }
+//
+//    public Integer getIndexOfSelectedRow() {
+//        return indexOfSelected;
+//    }
 
     public void addRootRow(TreeRow row) {
         treeTable.insertRow(treeTable.getRowCount());
@@ -25,6 +50,8 @@ public class TreeTable extends Composite {
 
     public void addChildRow(TreeRow row, Integer index) {
         row.getElement().getStyle().setPaddingLeft(row.getLevel() * NumberConstants.PADDING_VALUE, Unit.PX);
+        TreeRow parentRow = (TreeRow) treeTable.getWidget(index, 0);
+        parentRow.pressButton();
         treeTable.insertRow(index + 1);
         treeTable.setWidget(index + 1, 0, row);
     }
@@ -33,7 +60,6 @@ public class TreeTable extends Composite {
         for (TreeRow row : rootElements) {
             initializeUtil(row);
         }
-
     }
 
     public FlexTable getTreeTable() {
@@ -59,5 +85,13 @@ public class TreeTable extends Composite {
 
     public void clear() {
         treeTable.removeAllRows();
+    }
+
+    public Integer getIndexOfRow(TreeRow row) {
+        for (int i = 0; i < treeTable.getRowCount(); i++) {
+            if (treeTable.getWidget(i, 0).equals(row))
+                return i;
+        }
+        return null;
     }
 }

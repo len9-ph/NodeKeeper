@@ -88,7 +88,13 @@ public class TreeRow extends Composite {
         return list.size();
 
     }
-
+    
+    public void pressButton() {
+        button.setValue(true);
+        
+        showChilds();
+    }
+    
     public List<TreeRow> getChilds() {
         return this.childs;
     }

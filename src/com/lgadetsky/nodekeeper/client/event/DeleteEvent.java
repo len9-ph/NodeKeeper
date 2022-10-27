@@ -1,18 +1,12 @@
 package com.lgadetsky.nodekeeper.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.lgadetsky.nodekeeper.shared.Node;
 
 public class DeleteEvent extends GwtEvent<DeleteEventHandler> {
     public static final Type<DeleteEventHandler> TYPE = new Type<DeleteEventHandler>();
-    private Node node;
 
-    public DeleteEvent(Node node) {
-        this.node = node;
-    }
-
-    public Node getNode() {
-        return node;
+    public DeleteEvent() {
+        super();
     }
 
     @Override
