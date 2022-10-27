@@ -59,7 +59,11 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
         for (Map.Entry<TreeItem, Node> pair : entrySet) {
             if (node.equals(pair.getValue())) {
                 mainTree.setSelectedItem(null);
+                
+                if (pair.getKey().getParentItem() != null)
+                	pair.getKey().getParentItem().setState(true);
                 mainTree.setSelectedItem(pair.getKey(), false);
+                break;
             }
         }
     }

@@ -20,6 +20,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
     private TreeTable table;
     private HashMap<TreeRow, Node> treeRowToNodeMap;
+    private ScrollPanel panel;
 
     private Integer indexOfSelected;
     private TreeRow selectedRow;
@@ -30,7 +31,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         table = new TreeTable();
         treeRowToNodeMap = new HashMap<TreeRow, Node>();
 
-        ScrollPanel panel = new ScrollPanel();
+        panel = new ScrollPanel();
         panel.setStyleName(StylesNames.CUSTOM_TREE);
         panel.add(table);
         initWidget(panel);
@@ -64,6 +65,8 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
                 selectedRow = pair.getKey();
                 selectedRow.setSelected();
                 indexOfSelected = table.getIndexOfRow(selectedRow);
+                
+                panel.setVerticalScrollPosition(selectedRow.getAbsoluteTop());
             }
         }
 
