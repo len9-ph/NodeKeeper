@@ -66,6 +66,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
                 selectedRow.setSelected();
                 indexOfSelected = table.getIndexOfRow(selectedRow);
                 
+                // TODO fix it
                 panel.setVerticalScrollPosition(selectedRow.getAbsoluteTop());
             }
         }

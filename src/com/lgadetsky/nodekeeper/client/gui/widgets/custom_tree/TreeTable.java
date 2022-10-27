@@ -52,8 +52,8 @@ public class TreeTable extends Composite {
         row.getElement().getStyle().setPaddingLeft(row.getLevel() * NumberConstants.PADDING_VALUE, Unit.PX);
         TreeRow parentRow = (TreeRow) treeTable.getWidget(index, 0);
         parentRow.pressButton();
-        treeTable.insertRow(index + 1);
-        treeTable.setWidget(index + 1, 0, row);
+        treeTable.insertRow(index + parentRow.countChilds());
+        treeTable.setWidget(index + parentRow.countChilds(), 0, row);
     }
 
     public void initialize(List<TreeRow> rootElements) {
