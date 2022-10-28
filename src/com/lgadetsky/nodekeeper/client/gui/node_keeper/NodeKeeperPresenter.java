@@ -110,8 +110,12 @@ public class NodeKeeperPresenter extends Presenter {
                                     changeNodes.clear();
                                     Collections.sort(nodes, Node.COMPARE_BY_ID);
                                     eventBus.fireEvent(new UpdateStateEvent(nodes));
-                                    if (!selectedNode.equals(null))
+                                    
+                                    
+                                    if (selectUtil(selectedNode) != null) {
+                                        selectedNode = selectUtil(selectedNode);
                                         eventBus.fireEvent(new SelectEvent(selectedNode));
+                                    }
                                 }
 
                                 @Override
@@ -219,11 +223,24 @@ public class NodeKeeperPresenter extends Presenter {
     private void deleteUtil(Integer parentId) {
         for (Node n : nodes) {
             if (n.getParentId().equals(parentId) && !n.isDeleted()) {
-
                 n.setDeleted(true);
                 changeNodes.add(n);
                 deleteUtil(n.getId());
             }
         }
+    }
+    
+    private Node selectUtil(Node oldSelectedNode) {
+        if (!selectedNode.equals(null)) {
+            for (Node n : nodes)
+                if (n.getId().equals(oldSelectedNode.getId()))
+                    return n;
+                else if (n.getParentId().equals(oldSelectedNode.getParentId()) &
+                        n.getIp().equals(oldSelectedNode.getIp()) &
+                        n.getName().equals(oldSelectedNode.getName()) &
+                        n.getPort().equals(oldSelectedNode.getPort()))
+                    return n;
+        }
+        return null;
     }
 }
