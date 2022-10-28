@@ -36,6 +36,14 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         panel.add(table);
         initWidget(panel);
 
+        //        table.addHandler(new ClickHandler() {
+        //            
+        //            @Override
+        //            public void onClick(ClickEvent event) {
+        //                // TODO Auto-generated method stub
+        //                
+        //            }
+        //        });
         table.getTreeTable().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -47,7 +55,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
                 selectedRow = (TreeRow) table.getTreeTable().getWidget(indexOfSelected, 0);
                 selectedRow.setSelected();
-                
+
                 handler.onSelect(treeRowToNodeMap.get(selectedRow));
             }
         });
@@ -64,10 +72,11 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
                     selectedRow.removeSelected();
                 selectedRow = pair.getKey();
                 selectedRow.setSelected();
-                indexOfSelected = table.getIndexOfRow(selectedRow);
-                
-                // TODO fix it
-                panel.setVerticalScrollPosition(selectedRow.getAbsoluteTop());
+                //                if (node.getParentId() != -1)
+                //                    indexOfSelected = table.getIndexOfRow(selectedRow);
+
+                // TODO verticalScroll position on selected element
+                //                panel.setVerticalScrollPosition(selectedRow.getAbsoluteTop());
             }
         }
 
@@ -90,6 +99,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
             selectedRow.addChild(newRow);
             table.addChildRow(newRow, indexOfSelected);
         }
+        setSelectedItem(newNode);
     }
 
     @Override
@@ -115,7 +125,6 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
             }
 
         }
-
         table.initialize(rootNodes);
     }
 
@@ -132,6 +141,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
                 table.remove(indexOfSelected);
         } else
             table.remove(indexOfSelected);
+
     }
 
 }

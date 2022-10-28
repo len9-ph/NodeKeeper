@@ -11,37 +11,57 @@ import com.lgadetsky.nodekeeper.client.util.StylesNames;
 public class TreeTable extends Composite {
     private FlexTable treeTable;
 
-//    private Integer indexOfSelected;
-//    private TreeRow selectedRow;
+        private Integer indexOfSelected;
+        private TreeRow selectedRow;
 
     public TreeTable() {
         treeTable = new FlexTable();
         treeTable.setStyleName(StylesNames.TREE_TABLE);
         initWidget(treeTable);
 
-//        this.treeTable.addClickHandler(new ClickHandler() {
-//
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                if (selectedRow != null)
-//                    selectedRow.removeSelected();
-//
-//                Cell cell = treeTable.getCellForEvent(event);
-//                indexOfSelected = cell.getRowIndex();
-//
-//                selectedRow = (TreeRow) treeTable.getWidget(indexOfSelected, 0);
-//                selectedRow.setSelected();
-//            }
-//        });
+        //        treeTable.addClickHandler(new ClickHandler() {
+        //
+        //            @Override
+        //            public void onClick(ClickEvent event) {
+        //                if (selectedRow != null)
+        //                    selectedRow.removeSelected();
+        //
+        //                Cell cell = treeTable.getCellForEvent(event);
+        //                indexOfSelected = cell.getRowIndex();
+        //
+        //                selectedRow = (TreeRow) treeTable.getWidget(indexOfSelected, 0);
+        //                selectedRow.setSelected();
+        //
+        //                handler.onClick(event);
+        //            }
+        //        });
+        //        this.treeTable.addClickHandler(new ClickHandler() {
+        //
+        //            @Override
+        //            public void onClick(ClickEvent event) {
+        //                if (selectedRow != null)
+        //                    selectedRow.removeSelected();
+        //
+        //                Cell cell = treeTable.getCellForEvent(event);
+        //                indexOfSelected = cell.getRowIndex();
+        //
+        //                selectedRow = (TreeRow) treeTable.getWidget(indexOfSelected, 0);
+        //                selectedRow.setSelected();
+        //            }
+        //        });
     }
 
-//    public TreeRow getSelectedRow() {
-//        return selectedRow;
+//    public void addHandler(ClickHandler handler) {
+//        this.treeTable.addClickHandler(handler);
 //    }
-//
-//    public Integer getIndexOfSelectedRow() {
-//        return indexOfSelected;
-//    }
+    
+    //    public TreeRow getSelectedRow() {
+    //        return selectedRow;
+    //    }
+    //
+    //    public Integer getIndexOfSelectedRow() {
+    //        return indexOfSelected;
+    //    }
 
     public void addRootRow(TreeRow row) {
         treeTable.insertRow(treeTable.getRowCount());

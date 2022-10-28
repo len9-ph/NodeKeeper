@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.lgadetsky.nodekeeper.client.event.AddChildEvent;
 import com.lgadetsky.nodekeeper.client.event.AddRootEvent;
 import com.lgadetsky.nodekeeper.client.event.DeleteEvent;
+import com.lgadetsky.nodekeeper.client.event.DeleteEventHandler;
 import com.lgadetsky.nodekeeper.client.event.EditEvent;
 import com.lgadetsky.nodekeeper.client.event.SelectEvent;
 import com.lgadetsky.nodekeeper.client.event.SelectEventHandler;
@@ -55,6 +56,15 @@ public class ManagerPanelPresenter extends Presenter {
                         display.setSelectedId(event.getSelectedNode().getId());
                     }
                 });
+        
+        eventBus.addHandler(DeleteEvent.TYPE, new DeleteEventHandler() {
+            
+            @Override
+            public void onDelete(DeleteEvent event) {
+                display.setSelectedId(0);
+            }
+        });
+        
     }
 
     @Override

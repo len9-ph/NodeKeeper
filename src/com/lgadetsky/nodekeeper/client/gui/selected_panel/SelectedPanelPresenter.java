@@ -3,6 +3,8 @@ package com.lgadetsky.nodekeeper.client.gui.selected_panel;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.lgadetsky.nodekeeper.client.event.BoxChangeEvent;
+import com.lgadetsky.nodekeeper.client.event.DeleteEvent;
+import com.lgadetsky.nodekeeper.client.event.DeleteEventHandler;
 import com.lgadetsky.nodekeeper.client.event.EditEvent;
 import com.lgadetsky.nodekeeper.client.event.EditEventHandler;
 import com.lgadetsky.nodekeeper.client.event.MessageEvent;
@@ -50,6 +52,14 @@ public class SelectedPanelPresenter extends Presenter {
             @Override
             public void onEdit(EditEvent event) {
                 display.setEditState();
+            }
+        });
+        
+        eventBus.addHandler(DeleteEvent.TYPE, new DeleteEventHandler() {
+            
+            @Override
+            public void onDelete(DeleteEvent event) {
+                display.clearPanel();
             }
         });
     }

@@ -60,7 +60,7 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
             if (node.equals(pair.getValue())) {
                 mainTree.setSelectedItem(null);
                 if (pair.getKey().getParentItem() != null)
-                	pair.getKey().getParentItem().setState(true);
+                    pair.getKey().getParentItem().setState(true);
                 mainTree.setSelectedItem(pair.getKey(), false);
                 break;
             }
@@ -83,7 +83,7 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
             mainTree.getSelectedItem().setState(true);
             mainTree.getSelectedItem().addItem(newTreeItem);
         }
-            
+        mainTree.setSelectedItem(newTreeItem);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
     public void onDelete() {
         if (treeItemtoNodeMap.get(mainTree.getSelectedItem()).getParentId().equals(-1))
             mainTree.removeItem(mainTree.getSelectedItem());
-        else 
+        else
             mainTree.getSelectedItem().getParentItem().removeItem(mainTree.getSelectedItem());
     }
 }

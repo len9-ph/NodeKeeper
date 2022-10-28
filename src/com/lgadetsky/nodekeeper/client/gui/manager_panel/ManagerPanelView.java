@@ -78,7 +78,10 @@ public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
 
     @Override
     public void setSelectedId(Integer id) {
-        selectedNodeTextLabel.setText(id.toString());
+        if (id != 0)
+            selectedNodeTextLabel.setText(id.toString());
+        else
+            selectedNodeTextLabel.setText("");
     }
 
 }

@@ -12,7 +12,6 @@ import com.lgadetsky.nodekeeper.client.util.StylesNames;
 import com.lgadetsky.nodekeeper.shared.Node;
 
 public class SelectedPanelView extends Composite implements SelectedPanelDisplay {
-
     private Label selectedText;
     private FlowPanel selectedTable;
     private Grid selectedGrid;
@@ -117,6 +116,22 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
             nameBox.setFocus(true);
         } else 
             handler.onError(StringConstants.ITEM_WAS_NOT_SELECTED);
+    }
+
+    @Override
+    public void clearPanel() {
+        idLabel.setText("");
+        parentLabel.setText("");
+        nameLabel.setText("");
+        ipLabel.setText("");
+        portLabel.setText("");
+
+        selectedGrid.setWidget(0, 1, idLabel);
+        selectedGrid.setWidget(1, 1, parentLabel);
+        selectedGrid.setWidget(2, 1, nameLabel);
+        selectedGrid.setWidget(3, 1, ipLabel);
+        selectedGrid.setWidget(4, 1, portLabel);
+        
     }
 
 }

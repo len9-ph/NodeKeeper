@@ -12,6 +12,8 @@ public interface SelectedPanelDisplay {
 
     void setNode(Node node);
     
+    void clearPanel();
+    
     void setEditState();
 
     void setSelectedPanelActionHandler(SelectedPanelActionHandler handler);

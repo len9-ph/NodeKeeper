@@ -110,6 +110,8 @@ public class NodeKeeperPresenter extends Presenter {
                                     changeNodes.clear();
                                     Collections.sort(nodes, Node.COMPARE_BY_ID);
                                     eventBus.fireEvent(new UpdateStateEvent(nodes));
+                                    if (!selectedNode.equals(null))
+                                        eventBus.fireEvent(new SelectEvent(selectedNode));
                                 }
 
                                 @Override
@@ -191,20 +193,17 @@ public class NodeKeeperPresenter extends Presenter {
                         if (selectedNode.getId().equals(-1))
                             changeNodes.remove(selectedNode);
                         else {
+                            deleteUtil(selectedNode.getId());
                             selectedNode.setDeleted(true);
-                            for (Node n : nodes)
-                                if (n.getParentId().equals(selectedNode.getId())) {
-                                    n.setDeleted(true);
-                                    changeNodes.add(n);
-                                }
                             changeNodes.add(selectedNode);
                         }
+                        selectedNode = null;
                     }
                 });
-        
-        eventBus.addHandler(MessageEvent.TYPE, 
+
+        eventBus.addHandler(MessageEvent.TYPE,
                 new MessageEventHandler() {
-                    
+
                     @Override
                     public void onMessageSend(MessageEvent event) {
                         display.showPopUpMessage(event.getMessage(), NotificationType.DEFAULT);
@@ -215,5 +214,16 @@ public class NodeKeeperPresenter extends Presenter {
     @Override
     public void go(HasWidgets container) {
         container.add(display.asWidget());
+    }
+
+    private void deleteUtil(Integer parentId) {
+        for (Node n : nodes) {
+            if (n.getParentId().equals(parentId) && !n.isDeleted()) {
+
+                n.setDeleted(true);
+                changeNodes.add(n);
+                deleteUtil(n.getId());
+            }
+        }
     }
 }
