@@ -25,7 +25,7 @@ public class MyBatisModule extends XMLMyBatisModule {
     @Override
     protected void initialize() {
         setClassPathResource("com/lgadetsky/nodekeeper/mybatis-config.xml");
-        addProperties(getConnectionPropeties("D:\\lgadetsky\\NodeKeeper\\src\\com\\lgadetsky\\nodekeeper\\db.properties"));
+        addProperties(getConnectionPropeties("C:\\Users\\leoni\\git\\NodeKeeper\\src\\com\\lgadetsky\\nodekeeper\\db.properties"));
         setEnvironmentId("development");
     }
 

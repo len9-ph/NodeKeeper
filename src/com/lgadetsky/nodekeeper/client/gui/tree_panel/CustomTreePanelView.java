@@ -9,7 +9,6 @@ import java.util.Set;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree.TreeRow;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree.TreeTable;
@@ -22,44 +21,22 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
     private HashMap<TreeRow, Node> treeRowToNodeMap;
     private ScrollPanel panel;
 
-    private Integer indexOfSelected;
-    private TreeRow selectedRow;
-
     private TreePanelActionHandler handler;
 
     public CustomTreePanelView() {
-        table = new TreeTable();
+        table = new TreeTable(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				handler.onSelect(treeRowToNodeMap.get(table.getSelectedRow()));
+			}
+		});
         treeRowToNodeMap = new HashMap<TreeRow, Node>();
 
         panel = new ScrollPanel();
         panel.setStyleName(StylesNames.CUSTOM_TREE);
         panel.add(table);
         initWidget(panel);
-
-        //        table.addHandler(new ClickHandler() {
-        //            
-        //            @Override
-        //            public void onClick(ClickEvent event) {
-        //                // TODO Auto-generated method stub
-        //                
-        //            }
-        //        });
-        table.getTreeTable().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (selectedRow != null)
-                    selectedRow.removeSelected();
-
-                Cell cell = table.getTreeTable().getCellForEvent(event);
-                indexOfSelected = cell.getRowIndex();
-
-                selectedRow = (TreeRow) table.getTreeTable().getWidget(indexOfSelected, 0);
-                selectedRow.setSelected();
-
-                handler.onSelect(treeRowToNodeMap.get(selectedRow));
-            }
-        });
-
     }
 
     @Override
@@ -68,18 +45,9 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
         for (Map.Entry<TreeRow, Node> pair : entrySet) {
             if (node.equals(pair.getValue())) {
-                if (selectedRow != null)
-                    selectedRow.removeSelected();
-                selectedRow = pair.getKey();
-                selectedRow.setSelected();
-                //                if (node.getParentId() != -1)
-                //                    indexOfSelected = table.getIndexOfRow(selectedRow);
-
-                // TODO verticalScroll position on selected element
-                //                panel.setVerticalScrollPosition(selectedRow.getAbsoluteTop());
+                table.setSelectedRow(pair.getKey());
             }
         }
-
     }
 
     @Override
@@ -95,9 +63,9 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         if (newNode.getParentId().equals(-1))
             table.addRootRow(newRow);
         else {
-            newRow.increaseLevel(selectedRow.getLevel());
-            selectedRow.addChild(newRow);
-            table.addChildRow(newRow, indexOfSelected);
+            newRow.increaseLevel(table.getSelectedRow().getLevel());
+            table.getSelectedRow().addChild(newRow);
+            table.addChildRow(newRow, table.getIndexOfSelectedRow());
         }
         setSelectedItem(newNode);
     }
@@ -123,25 +91,18 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
                     }
                 }
             }
-
         }
         table.initialize(rootNodes);
     }
 
     @Override
     public void onNameBoxChange(String name) {
-        selectedRow.setName(name);
+        table.getSelectedRow().setName(name);
     }
 
     @Override
     public void onDelete() {
-        if (selectedRow.isParent()) {
-            table.remove(indexOfSelected);
-            for (int i = 0; i < selectedRow.countChilds(); i++)
-                table.remove(indexOfSelected);
-        } else
-            table.remove(indexOfSelected);
-
+    	table.delete();
     }
 
 }
