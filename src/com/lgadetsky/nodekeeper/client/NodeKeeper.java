@@ -5,7 +5,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.lgadetsky.nodekeeper.client.gui.node_keeper.NodeKeeperPresenter;
 import com.lgadetsky.nodekeeper.client.gui.node_keeper.NodeKeeperView;
-import com.lgadetsky.nodekeeper.client.util.StringConstants;
 
 public class NodeKeeper implements EntryPoint {
     private static NodeKeeperServiceAsync rpcService = GWT.create(NodeKeeperService.class);
@@ -14,7 +13,7 @@ public class NodeKeeper implements EntryPoint {
     public void onModuleLoad() {
         NodeKeeperView display = new NodeKeeperView();
         NodeKeeperPresenter keeperPresenter = new NodeKeeperPresenter(display);
-        keeperPresenter.go(RootPanel.get(StringConstants.PAGE));
+        keeperPresenter.go(RootPanel.get());
     }
 
     public static NodeKeeperServiceAsync getRpc() {

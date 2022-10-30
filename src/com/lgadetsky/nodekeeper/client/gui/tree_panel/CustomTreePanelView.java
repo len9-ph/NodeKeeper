@@ -9,6 +9,8 @@ import java.util.Set;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree.TreeRow;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree.TreeTable;
@@ -20,6 +22,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
     private TreeTable table;
     private HashMap<TreeRow, Node> treeRowToNodeMap;
     private ScrollPanel panel;
+    private Label customTreeLabel;
 
     private TreePanelActionHandler handler;
 
@@ -36,7 +39,13 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         panel = new ScrollPanel();
         panel.setStyleName(StylesNames.CUSTOM_TREE);
         panel.add(table);
-        initWidget(panel);
+        
+        FlowPanel mainPanel = new FlowPanel();
+        customTreeLabel = new Label("Custom tree");
+        mainPanel.add(customTreeLabel);
+        mainPanel.add(panel);
+        mainPanel.setStyleName("custom-tree-panel");
+        initWidget(mainPanel);
     }
 
     @Override
