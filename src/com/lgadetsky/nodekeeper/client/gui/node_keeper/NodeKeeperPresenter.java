@@ -110,10 +110,13 @@ public class NodeKeeperPresenter extends Presenter {
                                     changeNodes.clear();
                                     Collections.sort(nodes, Node.COMPARE_BY_ID);
                                     eventBus.fireEvent(new UpdateStateEvent(nodes));
-                                    
-                                    
-                                    if (selectUtil(selectedNode) != null) {
-                                        selectedNode = selectUtil(selectedNode);
+
+                                    //                                    if (selectedNode != null) {
+                                    //                                        selectedNode = se
+                                    //                                    }
+
+                                    if (selectedNode != null) {
+                                        selectedNode = selectUtil();
                                         eventBus.fireEvent(new SelectEvent(selectedNode));
                                     }
                                 }
@@ -229,18 +232,16 @@ public class NodeKeeperPresenter extends Presenter {
             }
         }
     }
-    
-    private Node selectUtil(Node oldSelectedNode) {
-        if (!selectedNode.equals(null)) {
-            for (Node n : nodes)
-                if (n.getId().equals(oldSelectedNode.getId()))
-                    return n;
-                else if (n.getParentId().equals(oldSelectedNode.getParentId()) &
-                        n.getIp().equals(oldSelectedNode.getIp()) &
-                        n.getName().equals(oldSelectedNode.getName()) &
-                        n.getPort().equals(oldSelectedNode.getPort()))
-                    return n;
-        }
-        return null;
+
+    private Node selectUtil() {
+        for (Node n : nodes)
+            if (n.getId().equals(selectedNode.getId()))
+                return n;
+            else if (n.getParentId().equals(selectedNode.getParentId()) &&
+                    n.getIp().equals(selectedNode.getIp()) &&
+                    n.getName().equals(selectedNode.getName()) &&
+                    n.getPort().equals(selectedNode.getPort()))
+                return n;
+        return selectedNode;
     }
 }

@@ -1,12 +1,6 @@
-.bordered {
+.borders {
   border: 1px solid;
   border-radius: 4px;
-}
-.hide {
-  display: none;
-}
-.hidden {
-  visibility: hidden;
 }
 .row-toggle-button-up {
   background: url(open-button-small.png) no-repeat;
@@ -20,8 +14,27 @@
 .row-toggle-button-down-hovering {
   background: url(close-button-small.png) no-repeat;
 }
+.hide {
+  display: none;
+}
+.hidden {
+  visibility: hidden;
+}
+.tree {
+  display: inline-block;
+  width: 298px;
+  height: 153px;
+  vertical-align: top;
+}
 .gwt-Label {
   font-weight: bold;
+}
+.scroll {
+  overflow-y: scroll !important;
+  background-color: #f6f4df;
+  border: 1px solid;
+  border-radius: 4px;
+  height: 75%;
 }
 .notification-widget-popup {
   border: 1px solid;
@@ -29,7 +42,7 @@
   padding: 3px;
   background-color: #857f5e;
   width: 250px;
-  height: 60px ;
+  height: 60px;
   overflow: visible;
   position: fixed !important;
   left: 10px !important;
@@ -46,31 +59,22 @@
   font-weight: bold;
   color: red;
 }
-.upper-panel {
-  width: 610px;
-  display: block;
-}
 .tree-panel {
   display: inline-block;
-  width: 300px;
-  height: 150px;
+  width: 298px;
+  height: 153px;
   vertical-align: top;
+  margin-left: 0px;
+  margin-right: 2px;
 }
-.tree-scroll {
+.tree-panel .tree-scroll {
+  overflow-y: scroll !important;
+  background-color: #f6f4df;
   border: 1px solid;
   border-radius: 4px;
   height: 75%;
-  margin: 4px;
-  background-color: #f6f4df;
-  overflow-y: scroll !important;
 }
-.custom-tree-panel {
-    display: inline-block;
-    width: 300px;
-    height: 150px;
-    vertical-align: top;
-}
-.gwt-Tree .gwt-TreeItem {
+.tree-panel .tree-scroll .gwt-Tree .gwt-TreeItem {
   padding: 1px 0px;
   margin: 0px;
   white-space: nowrap;
@@ -78,112 +82,118 @@
   cursor: pointer;
 }
 .gwt-TreeItem-selected {
-  color: #005C53;
+  color: #005c53;
   font-weight: bolder;
 }
-.selected-node-panel {
+.custom-tree-panel {
   display: inline-block;
-  position: fixed;
-  width: 367px;
-  margin: 2px 4px 2px 4px;
+  width: 298px;
+  height: 153px;
+  vertical-align: top;
+  margin-left: 2px;
 }
-.selected-node-table {
-  height: auto;
-  border: 1px solid;
-  border-radius: 4px;
+.custom-tree-panel .custom-tree {
+  overflow-y: scroll !important;
   background-color: #f6f4df;
-}
-.selected-grid {
-  display: block;
-  border-collapse: collapse;
-  width: 98%;
-  table-layout: fixed;
-  margin: 5px 8px 5px 8px;
-}
-.selected-grid td {
-  border: 1px solid;
-  height: 27px;
-  width: 169px;
-  padding: 2px 2px 2px 2px;
-}
-.selected-grid td .gwt-TextBox {
-  width: 160px;
-}
-.lower-panel {
-  width: 600px;
-  display: block;
-}
-.custom-tree {
   border: 1px solid;
   border-radius: 4px;
   height: 75%;
-  margin: 4px;
-  background-color: #f6f4df;
-  overflow-y: scroll !important;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  margin-left: 0px;
-  width: 300px;
-  display: inline-block;
 }
-.custom-tree .tree-table {
+.custom-tree-panel .custom-tree .tree-table {
   border-collapse: collapse;
 }
-.custom-tree .tree-table td {
+.custom-tree-panel .custom-tree .tree-table td {
   padding: 0px;
 }
-.custom-tree .tree-table .row-toggle-button {
+.custom-tree-panel .custom-tree .tree-table .row-toggle-button {
   display: inline-block;
   width: 16px;
   height: 16px;
   margin: 4px;
 }
-.custom-tree .tree-table .row-text {
+.custom-tree-panel .custom-tree .tree-table .row-text {
   display: inline-block;
   margin: 4px;
   width: 90px;
   height: 20px;
   vertical-align: 7px;
 }
-.custom-tree .tree-table .row-text:hover {
+.custom-tree-panel .custom-tree .tree-table .row-text:hover {
   cursor: default;
 }
-.gwt-Button {
-  margin-top: 2px;
-  margin-bottom: 4px;
+.selected-node-panel {
+  display: inline-block;
+  position: fixed;
+  width: 367px;
+  margin: 4px;
+  margin-left: 6px;
+  margin-top: 0px;
+}
+.selected-node-panel .selected-node-table {
+  border: 1px solid;
+  border-radius: 4px;
+  background-color: #f6f4df;
+  height: auto;
+}
+.selected-node-panel .selected-node-table .selected-grid {
+  display: block;
+  border-collapse: collapse;
+  width: 98%;
+  table-layout: fixed;
+  margin: 4px 8px 4px 8px;
+}
+.selected-node-panel .selected-node-table .selected-grid td {
+  border: 1px solid;
+  height: 27px;
+  width: 170px;
+  padding: 2px;
+}
+.selected-node-panel .selected-node-table .selected-grid td .gwt-TextBox {
+  width: 160px;
 }
 .button-panel {
+  border: 1px solid;
+  border-radius: 4px;
   width: 600px;
   height: 30px;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  border: 1px solid;
-  border-radius: 4px;
+  margin-top: 4px;
+  margin-bottom: 4px;
   background-color: #f6f4df;
 }
-.button-panel > * {
+.button-panel .gwt-Button {
+  margin: 4px;
+  display: inline-block;
+}
+.button-panel .selected-label {
   display: inline-block;
   margin: 4px;
-}
-.selected-label {
   font-weight: normal;
 }
-.all-nodes-panel {
-  height: auto;
-  width: 100%;
+.lower-panel {
+  width: 600px;
+  display: block;
+}
+.lower-panel .gwt-Button {
+  margin: 4px;
+  margin-left: 0px;
+}
+.lower-panel .all-nodes-panel {
   border: 1px solid;
   border-radius: 4px;
+  width: 100%;
+  height: auto;
   background-color: #f6f4df;
 }
-.all-nodes-grid {
-  margin: 4px 6px 4px 6px;
+.lower-panel .all-nodes-panel .all-nodes-grid {
   width: 98%;
+  margin: 4px;
+  margin-left: 6px;
+  margin-right: 6px;
   table-layout: fixed;
   border: 1px solid;
   border-collapse: collapse;
-  align-content: center;
 }
-.all-nodes-grid td {
+.lower-panel .all-nodes-panel .all-nodes-grid td {
   border: 1px solid;
   padding: 4px;
 }
