@@ -59,8 +59,10 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
         for (Map.Entry<TreeItem, Node> pair : entrySet) {
             if (node.equals(pair.getValue())) {
                 mainTree.setSelectedItem(null);
+
                 if (pair.getKey().getParentItem() != null)
-                    pair.getKey().getParentItem().setState(true);
+                    showFromTop(pair.getKey().getParentItem());
+
                 mainTree.setSelectedItem(pair.getKey(), false);
                 break;
             }
@@ -125,5 +127,11 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
             mainTree.removeItem(mainTree.getSelectedItem());
         else
             mainTree.getSelectedItem().getParentItem().removeItem(mainTree.getSelectedItem());
+    }
+
+    private void showFromTop(TreeItem parent) {
+        if (parent.getParentItem() != null)
+            showFromTop(parent.getParentItem());
+        parent.setState(true);
     }
 }

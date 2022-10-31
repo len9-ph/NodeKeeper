@@ -16,7 +16,8 @@ public class TreeRow extends Composite {
     private Label treeItemText;
     private Integer level;
     private List<TreeRow> childs;
-
+    private TreeRow parentRow;
+    
     public TreeRow(String name) {
         this.level = 0;
         this.childs = new LinkedList<>();
@@ -47,6 +48,14 @@ public class TreeRow extends Composite {
     public void setSelected() {
         treeItemText.addStyleName(StylesNames.SELECTED_ITEM);
     }
+    
+    public TreeRow getParentRow() {
+        return parentRow;
+    }
+
+    public void setParentRow(TreeRow parent) {
+        this.parentRow = parent;
+    }
 
     public void removeSelected() {
         treeItemText.removeStyleName(StylesNames.SELECTED_ITEM);
@@ -66,6 +75,7 @@ public class TreeRow extends Composite {
 
     public void addChild(TreeRow row) {
         button.removeStyleName(StylesNames.HIDDEN);
+//        row.setParentRow(this);
         childs.add(row);
     }
 
