@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree.TreeRow;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree.TreeTable;
+import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 import com.lgadetsky.nodekeeper.shared.Node;
 
@@ -28,23 +29,23 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
     public CustomTreePanelView() {
         table = new TreeTable(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				handler.onSelect(treeRowToNodeMap.get(table.getSelectedRow()));
-			}
-		});
+
+            @Override
+            public void onClick(ClickEvent event) {
+                handler.onSelect(treeRowToNodeMap.get(table.getSelectedRow()));
+            }
+        });
         treeRowToNodeMap = new HashMap<TreeRow, Node>();
 
         panel = new ScrollPanel();
         panel.setStyleName(StylesNames.CUSTOM_TREE);
         panel.add(table);
-        
+
         FlowPanel mainPanel = new FlowPanel();
-        customTreeLabel = new Label("Custom tree");
+        customTreeLabel = new Label(StringConstants.CUSTOM_TREE);
         mainPanel.add(customTreeLabel);
         mainPanel.add(panel);
-        mainPanel.setStyleName("custom-tree-panel");
+        mainPanel.setStyleName(StylesNames.CUSTOM_TREE_PANEL);
         initWidget(mainPanel);
     }
 
@@ -69,7 +70,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         TreeRow newRow = new TreeRow(newNode.getName());
         treeRowToNodeMap.put(newRow, newNode);
 
-        if (newNode.getParentId().equals(-1))
+        if (newNode.getParentId() == null)
             table.addRootRow(newRow);
         else {
             newRow.increaseLevel(table.getSelectedRow().getLevel());
@@ -88,10 +89,9 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
             TreeRow newRow = new TreeRow(n.getName());
             treeRowToNodeMap.put(newRow, n);
 
-            if (n.getParentId().equals(-1))
+            if (n.getParentId() == null)
                 rootNodes.add(newRow);
             else {
-                // Find root and put this in it
                 Set<Map.Entry<TreeRow, Node>> entrySet = treeRowToNodeMap.entrySet();
                 for (Map.Entry<TreeRow, Node> pair : entrySet) {
                     if (pair.getValue().getId().equals(n.getParentId())) {
@@ -111,7 +111,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
     @Override
     public void onDelete() {
-    	table.delete();
+        table.delete();
     }
 
 }

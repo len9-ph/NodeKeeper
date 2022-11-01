@@ -3,6 +3,8 @@ package com.lgadetsky.nodekeeper.shared;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import com.lgadetsky.nodekeeper.client.util.StringConstants;
+
 /**
  * Bean
  * 
@@ -21,14 +23,13 @@ public class Node implements Serializable {
 
     public Node() {
         this.id = -1;
-        this.parentId = -1;
-        this.name = "new root";
+        this.name = StringConstants.NEW_ROOT;
     }
 
     public Node(int parentId) {
         this.id = -1;
         this.parentId = parentId;
-        this.name = "new child";
+        this.name = StringConstants.NEW_CHILD;
     }
 
     public void setDeleted(boolean flag) {
@@ -37,20 +38,6 @@ public class Node implements Serializable {
 
     public boolean isDeleted() {
         return this.isDeleted;
-    }
-
-    public Node(int parentId, String name, String ip, String port) {
-        this.parentId = parentId;
-        this.name = name;
-        this.ip = ip;
-        this.port = port;
-    }
-
-    public Node(String name, String ip, String port) {
-        this.parentId = -1;
-        this.name = name;
-        this.ip = ip;
-        this.port = port;
     }
 
     public Integer getId() {

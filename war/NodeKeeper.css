@@ -116,7 +116,9 @@
   margin: 4px;
   width: 90px;
   height: 20px;
-  vertical-align: 7px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .custom-tree-panel .custom-tree .tree-table .row-text:hover {
   cursor: default;
@@ -141,12 +143,19 @@
   width: 98%;
   table-layout: fixed;
   margin: 4px 8px 4px 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .selected-node-panel .selected-node-table .selected-grid td {
   border: 1px solid;
   height: 27px;
-  width: 170px;
+  min-width: 170px;
+  max-width: 170px;
   padding: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .selected-node-panel .selected-node-table .selected-grid td .gwt-TextBox {
   width: 160px;
@@ -196,4 +205,7 @@
 .lower-panel .all-nodes-panel .all-nodes-grid td {
   border: 1px solid;
   padding: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

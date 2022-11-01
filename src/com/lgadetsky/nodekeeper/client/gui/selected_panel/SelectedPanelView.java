@@ -16,12 +16,6 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
     private FlowPanel selectedTable;
     private Grid selectedGrid;
 
-    private Label idLabel;
-    private Label parentLabel;
-    private Label nameLabel;
-    private Label ipLabel;
-    private Label portLabel;
-
     private TextBox nameBox;
     private TextBox ipBox;
     private TextBox portBox;
@@ -47,12 +41,6 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
         selectedGrid.setText(2, 0, StringConstants.NAME);
         selectedGrid.setText(3, 0, StringConstants.IP);
         selectedGrid.setText(4, 0, StringConstants.PORT);
-
-        idLabel = new Label();
-        parentLabel = new Label();
-        nameLabel = new Label();
-        ipLabel = new Label();
-        portLabel = new Label();
 
         nameBox = new TextBox();
         ipBox = new TextBox();
@@ -82,21 +70,14 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void setNode(Node node) {
-        idLabel.setText(node.getId().toString());
-        nameLabel.setText(node.getName());
-        ipLabel.setText(node.getIp());
-        portLabel.setText(node.getPort());
-
-        if (node.getParentId() > -1)
-            parentLabel.setText(node.getParentId().toString());
-        else
-            parentLabel.setText("");
-
-        selectedGrid.setWidget(0, 1, idLabel);
-        selectedGrid.setWidget(1, 1, parentLabel);
-        selectedGrid.setWidget(2, 1, nameLabel);
-        selectedGrid.setWidget(3, 1, ipLabel);
-        selectedGrid.setWidget(4, 1, portLabel);
+        selectedGrid.setText(0, 1, node.getId().toString());
+        if (node.getParentId() != null)
+            selectedGrid.setText(1, 1, node.getParentId().toString());
+        else 
+            selectedGrid.setText(1, 1, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(2, 1, node.getName());
+        selectedGrid.setText(3, 1, node.getIp());
+        selectedGrid.setText(4, 1, node.getPort());
     }
 
     @Override
@@ -106,10 +87,16 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void setEditState() {
-        if (!idLabel.getText().isEmpty()) {
-            nameBox.setText(nameLabel.getText());
-            ipBox.setText(ipLabel.getText());
-            portBox.setText(portLabel.getText());
+        if (!selectedGrid.getText(0, 1).isEmpty()) {
+            nameBox.setText(StringConstants.EMPTY_STRING);
+            if (selectedGrid.getText(2, 1).equals(StringConstants.NEW_ROOT)) 
+                nameBox.getElement().setPropertyString(StylesNames.PLACEHOLDER, StringConstants.NEW_ROOT);
+            else if (selectedGrid.getText(2, 1).equals(StringConstants.NEW_CHILD))
+                nameBox.getElement().setPropertyString(StylesNames.PLACEHOLDER, StringConstants.NEW_CHILD);
+            else 
+                nameBox.setText(selectedGrid.getText(2, 1));
+            ipBox.setText(selectedGrid.getText(3, 1));
+            portBox.setText(selectedGrid.getText(4, 1));
             selectedGrid.setWidget(2, 1, nameBox);
             selectedGrid.setWidget(3, 1, ipBox);
             selectedGrid.setWidget(4, 1, portBox);
@@ -120,17 +107,11 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void clearPanel() {
-        idLabel.setText("");
-        parentLabel.setText("");
-        nameLabel.setText("");
-        ipLabel.setText("");
-        portLabel.setText("");
-
-        selectedGrid.setWidget(0, 1, idLabel);
-        selectedGrid.setWidget(1, 1, parentLabel);
-        selectedGrid.setWidget(2, 1, nameLabel);
-        selectedGrid.setWidget(3, 1, ipLabel);
-        selectedGrid.setWidget(4, 1, portLabel);
+        selectedGrid.setText(0, 1, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(1, 1, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(2, 1, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(3, 1, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(4, 1, StringConstants.EMPTY_STRING);
         
     }
 

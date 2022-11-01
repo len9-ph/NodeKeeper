@@ -14,9 +14,9 @@ public class StylesNames {
     public static final String DEFAULT_MESSAGE = "default-message";
     public static final String ERROR_MESSAGE = "error-message";
 
+    public static final String CUSTOM_TREE_PANEL = "custom-tree-panel";
     public static final String CUSTOM_TREE = "custom-tree";
 
-    public static final String UPPER_PANEL = "upper-panel";
     public static final String LOWER_PANEL = "lower-panel";
 
     public static final String TREE_SCROLL = "tree-scroll";
@@ -31,4 +31,6 @@ public class StylesNames {
 
     public static final String ALL_NODES_GRID = "all-nodes-grid";
     public static final String ALL_NODES_PANEL = "all-nodes-panel";
+    
+    public static final String PLACEHOLDER = "placeholder";
 }

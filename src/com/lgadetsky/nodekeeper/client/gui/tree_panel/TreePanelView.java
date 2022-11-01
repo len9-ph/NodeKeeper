@@ -79,7 +79,7 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
         TreeItem newTreeItem = new TreeItem(new HTML(newNode.getName()));
         treeItemtoNodeMap.put(newTreeItem, newNode);
 
-        if (newNode.getParentId().equals(-1))
+        if (newNode.getParentId() == null)
             mainTree.addItem(newTreeItem);
         else {
             mainTree.getSelectedItem().setState(true);
@@ -97,12 +97,12 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
         for (Node n : nodes) {
             TreeItem item = new TreeItem(new HTML(n.getName()));
             treeItemtoNodeMap.put(item, n);
-            if (n.getParentId() == -1) {
+            if (n.getParentId() == null) {
                 mainTree.addItem(item);
             } else {
                 TreeItem parentItem = null;
                 for (Node node : nodes) {
-                    if (node.getId().equals(n.getParentId())) {
+                    if (n.getParentId() != null && node.getId().equals(n.getParentId())) {
                         Set<Map.Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
 
                         for (Map.Entry<TreeItem, Node> pair : entrySet) {

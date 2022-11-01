@@ -31,13 +31,12 @@ public class NodeTablePanelPresenter extends Presenter {
     }
 
     public void setUpLocalEventBus() {
-        eventBus.addHandler(UpdateStateEvent.TYPE,
-                new UpdateStateEventHandler() {
-                    @Override
-                    public void onUpdate(UpdateStateEvent event) {
-                        display.setData(event.getNodes());
-                    }
-                });
+        eventBus.addHandler(UpdateStateEvent.TYPE, new UpdateStateEventHandler() {
+            @Override
+            public void onUpdate(UpdateStateEvent event) {
+                display.setData(event.getNodes());
+            }
+        });
     }
 
     @Override

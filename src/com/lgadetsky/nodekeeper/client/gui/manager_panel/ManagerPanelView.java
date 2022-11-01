@@ -29,8 +29,8 @@ public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
         editButton = new Button(StringConstants.EDIT);
         deleteButton = new Button(StringConstants.DELETE);
 
-        selectedNodeLabel = new Label(StringConstants.SELECTED);
-        selectedNodeTextLabel = new Label("");
+        selectedNodeLabel = new Label(StringConstants.SELECTED_NODE);
+        selectedNodeTextLabel = new Label(StringConstants.EMPTY_STRING);
         buttonPanel.setStyleName(StylesNames.BUTTON_PANEL);
         selectedNodeLabel.setStyleName(StylesNames.SELECTED_LABEL);
         selectedNodeTextLabel.setStyleName(StylesNames.SELECTED_LABEL);
@@ -81,7 +81,7 @@ public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
         if (id != 0)
             selectedNodeTextLabel.setText(id.toString());
         else
-            selectedNodeTextLabel.setText("");
+            selectedNodeTextLabel.setText(StringConstants.EMPTY_STRING);
     }
 
 }

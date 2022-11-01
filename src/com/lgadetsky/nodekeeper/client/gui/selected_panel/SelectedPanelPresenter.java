@@ -46,17 +46,17 @@ public class SelectedPanelPresenter extends Presenter {
                 display.setNode(event.getSelectedNode());
             }
         });
-        
+
         eventBus.addHandler(EditEvent.TYPE, new EditEventHandler() {
-            
+
             @Override
             public void onEdit(EditEvent event) {
                 display.setEditState();
             }
         });
-        
+
         eventBus.addHandler(DeleteEvent.TYPE, new DeleteEventHandler() {
-            
+
             @Override
             public void onDelete(DeleteEvent event) {
                 display.clearPanel();

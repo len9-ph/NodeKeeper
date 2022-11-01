@@ -1,6 +1,8 @@
 package com.lgadetsky.nodekeeper.client.util;
 
 public class StringConstants {
+    public static final String EMPTY_STRING = "";
+    
     // Table fields
     public static final String ID = "id";
     public static final String PARENT_ID = "parentId";
@@ -24,9 +26,11 @@ public class StringConstants {
 
     public static final String SELECTED_NODE = "Selected node: ";
     public static final String TREE = "Tree";
+    public static final String CUSTOM_TREE = "Custom tree";
     public static final String SELECTED = "Selected";
 
     public static final String ALL_NODES = "All nodes";
     
-    public static final String PAGE = "page";
+    public static final String NEW_ROOT = "new root";
+    public static final String NEW_CHILD = "new child";
 }

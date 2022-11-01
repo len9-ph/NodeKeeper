@@ -56,15 +56,15 @@ public class ManagerPanelPresenter extends Presenter {
                         display.setSelectedId(event.getSelectedNode().getId());
                     }
                 });
-        
+
         eventBus.addHandler(DeleteEvent.TYPE, new DeleteEventHandler() {
-            
+
             @Override
             public void onDelete(DeleteEvent event) {
                 display.setSelectedId(0);
             }
         });
-        
+
     }
 
     @Override

@@ -50,28 +50,23 @@ public class NodeKeeperPresenter extends Presenter {
 
         setUpLocalEventBus();
 
-        Presenter treePresenter = new TreePanelPresenter(eventBus,
-                new TreePanelView());
+        Presenter treePresenter = new TreePanelPresenter(eventBus, new TreePanelView());
 
         treePresenter.go(display.getContainer());
 
-        Presenter customTreePresenter = new TreePanelPresenter(eventBus,
-                new CustomTreePanelView());
+        Presenter customTreePresenter = new TreePanelPresenter(eventBus, new CustomTreePanelView());
 
         customTreePresenter.go(display.getContainer());
 
-        Presenter selectedPresenter = new SelectedPanelPresenter(eventBus,
-                new SelectedPanelView());
+        Presenter selectedPresenter = new SelectedPanelPresenter(eventBus, new SelectedPanelView());
 
         selectedPresenter.go(display.getContainer());
 
-        Presenter managerPresenter = new ManagerPanelPresenter(eventBus,
-                new ManagerPanelView());
+        Presenter managerPresenter = new ManagerPanelPresenter(eventBus, new ManagerPanelView());
 
         managerPresenter.go(display.getContainer());
 
-        Presenter tablePresenter = new NodeTablePanelPresenter(eventBus,
-                new NodeTablePanelView());
+        Presenter tablePresenter = new NodeTablePanelPresenter(eventBus, new NodeTablePanelView());
 
         tablePresenter.go(display.getContainer());
 
@@ -86,8 +81,7 @@ public class NodeKeeperPresenter extends Presenter {
 
             @Override
             public void onFailure(Throwable caught) {
-                NodeKeeperPresenter.this.display.showPopUpMessage(StringConstants.ERROR,
-                        NotificationType.ERROR);
+                NodeKeeperPresenter.this.display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
             }
         });
 
@@ -111,10 +105,6 @@ public class NodeKeeperPresenter extends Presenter {
                                     Collections.sort(nodes, Node.COMPARE_BY_ID);
                                     eventBus.fireEvent(new UpdateStateEvent(nodes));
 
-                                    //                                    if (selectedNode != null) {
-                                    //                                        selectedNode = se
-                                    //                                    }
-
                                     if (selectedNode != null) {
                                         selectedNode = selectUtil();
                                         eventBus.fireEvent(new SelectEvent(selectedNode));
@@ -130,92 +120,84 @@ public class NodeKeeperPresenter extends Presenter {
                     }
                 });
 
-        eventBus.addHandler(SelectEvent.TYPE,
-                new SelectEventHandler() {
+        eventBus.addHandler(SelectEvent.TYPE, new SelectEventHandler() {
 
-                    @Override
-                    public void onSelect(SelectEvent event) {
-                        selectedNode = event.getSelectedNode();
-                    }
-                });
+            @Override
+            public void onSelect(SelectEvent event) {
+                selectedNode = event.getSelectedNode();
+            }
+        });
 
-        eventBus.addHandler(AddRootEvent.TYPE,
-                new AddRootEventHandler() {
+        eventBus.addHandler(AddRootEvent.TYPE, new AddRootEventHandler() {
 
-                    @Override
-                    public void onAddRoot(AddRootEvent event) {
-                        Node newNode = new Node();
+            @Override
+            public void onAddRoot(AddRootEvent event) {
+                Node newNode = new Node();
+                changeNodes.add(newNode);
+                eventBus.fireEvent(new UpdateTreeEvent(newNode));
+            }
+        });
+
+        eventBus.addHandler(AddChildEvent.TYPE, new AddChildEventHandler() {
+
+            @Override
+            public void onAddChild(AddChildEvent event) {
+                if (selectedNode != null) {
+                    if (selectedNode.getId() > 0) {
+                        Node newNode = new Node(selectedNode.getId());
                         changeNodes.add(newNode);
                         eventBus.fireEvent(new UpdateTreeEvent(newNode));
-                    }
-                });
+                    } else
+                        display.showPopUpMessage(StringConstants.PARENT_ITEM_NOT_VALID, NotificationType.DEFAULT);
+                } else
+                    display.showPopUpMessage(StringConstants.PARENT_ITEM_WAS_NOT_SELECTED, NotificationType.DEFAULT);
+            }
+        });
 
-        eventBus.addHandler(AddChildEvent.TYPE,
-                new AddChildEventHandler() {
+        eventBus.addHandler(BoxChangeEvent.TYPE, new BoxChangeEventHandler() {
 
-                    @Override
-                    public void onAddChild(AddChildEvent event) {
-                        if (selectedNode != null) {
-                            if (selectedNode.getId() > 0) {
-                                Node newNode = new Node(selectedNode.getId());
-                                changeNodes.add(newNode);
-                                eventBus.fireEvent(new UpdateTreeEvent(newNode));
-                            } else
-                                display.showPopUpMessage(StringConstants.PARENT_ITEM_NOT_VALID,
-                                        NotificationType.DEFAULT);
-                        } else
-                            display.showPopUpMessage(StringConstants.PARENT_ITEM_WAS_NOT_SELECTED,
-                                    NotificationType.DEFAULT);
-                    }
-                });
+            @Override
+            public void onBoxChange(BoxChangeEvent event) {
+                if (changeNodes.contains(selectedNode))
+                    changeNodes.remove(selectedNode);
 
-        eventBus.addHandler(BoxChangeEvent.TYPE,
-                new BoxChangeEventHandler() {
+                switch (event.getField()) {
+                    case StringConstants.NAME:
+                        selectedNode.setName(event.getValue());
+                        break;
+                    case StringConstants.IP:
+                        selectedNode.setIp(event.getValue());
+                        break;
+                    case StringConstants.PORT:
+                        selectedNode.setPort(event.getValue());
+                        break;
+                }
+                changeNodes.add(selectedNode);
+            }
+        });
 
-                    @Override
-                    public void onBoxChange(BoxChangeEvent event) {
-                        if (changeNodes.contains(selectedNode))
-                            changeNodes.remove(selectedNode);
+        eventBus.addHandler(DeleteEvent.TYPE, new DeleteEventHandler() {
 
-                        switch (event.getField()) {
-                            case StringConstants.NAME:
-                                selectedNode.setName(event.getValue());
-                                break;
-                            case StringConstants.IP:
-                                selectedNode.setIp(event.getValue());
-                                break;
-                            case StringConstants.PORT:
-                                selectedNode.setPort(event.getValue());
-                                break;
-                        }
-                        changeNodes.add(selectedNode);
-                    }
-                });
+            @Override
+            public void onDelete(DeleteEvent event) {
+                if (selectedNode.getId().equals(-1))
+                    changeNodes.remove(selectedNode);
+                else {
+                    deleteUtil(selectedNode.getId());
+                    selectedNode.setDeleted(true);
+                    changeNodes.add(selectedNode);
+                }
+                selectedNode = null;
+            }
+        });
 
-        eventBus.addHandler(DeleteEvent.TYPE,
-                new DeleteEventHandler() {
+        eventBus.addHandler(MessageEvent.TYPE, new MessageEventHandler() {
 
-                    @Override
-                    public void onDelete(DeleteEvent event) {
-                        if (selectedNode.getId().equals(-1))
-                            changeNodes.remove(selectedNode);
-                        else {
-                            deleteUtil(selectedNode.getId());
-                            selectedNode.setDeleted(true);
-                            changeNodes.add(selectedNode);
-                        }
-                        selectedNode = null;
-                    }
-                });
-
-        eventBus.addHandler(MessageEvent.TYPE,
-                new MessageEventHandler() {
-
-                    @Override
-                    public void onMessageSend(MessageEvent event) {
-                        display.showPopUpMessage(event.getMessage(), NotificationType.DEFAULT);
-                    }
-                });
+            @Override
+            public void onMessageSend(MessageEvent event) {
+                display.showPopUpMessage(event.getMessage(), NotificationType.DEFAULT);
+            }
+        });
     }
 
     @Override
@@ -224,8 +206,13 @@ public class NodeKeeperPresenter extends Presenter {
     }
 
     private void deleteUtil(Integer parentId) {
+        for (Node n : changeNodes) {
+            if (n.getParentId() != null && n.getParentId().equals(parentId) && !n.isDeleted())
+                changeNodes.remove(n);
+        }
+
         for (Node n : nodes) {
-            if (n.getParentId().equals(parentId) && !n.isDeleted()) {
+            if (n.getParentId() != null && n.getParentId().equals(parentId) && !n.isDeleted()) {
                 n.setDeleted(true);
                 changeNodes.add(n);
                 deleteUtil(n.getId());
@@ -237,7 +224,7 @@ public class NodeKeeperPresenter extends Presenter {
         for (Node n : nodes)
             if (n.getId().equals(selectedNode.getId()))
                 return n;
-            else if (n.getParentId().equals(selectedNode.getParentId()) &&
+            else if (n.getParentId() != null && n.getParentId().equals(selectedNode.getParentId()) &&
                     n.getIp().equals(selectedNode.getIp()) &&
                     n.getName().equals(selectedNode.getName()) &&
                     n.getPort().equals(selectedNode.getPort()))

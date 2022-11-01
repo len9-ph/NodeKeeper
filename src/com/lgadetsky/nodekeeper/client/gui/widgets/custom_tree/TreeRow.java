@@ -75,7 +75,6 @@ public class TreeRow extends Composite {
 
     public void addChild(TreeRow row) {
         button.removeStyleName(StylesNames.HIDDEN);
-//        row.setParentRow(this);
         childs.add(row);
     }
 
@@ -100,9 +99,10 @@ public class TreeRow extends Composite {
     }
 
     public void pressButton() {
-        button.setValue(true);
-
-        showChilds();
+        if (button.getValue() == false) {
+            button.setValue(true);
+            showChilds();
+        }
     }
 
     public List<TreeRow> getChilds() {
