@@ -3,7 +3,7 @@ package com.lgadetsky.nodekeeper.client.gui.tree_panel;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,8 +22,6 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
     private TreeTable table;
     private HashMap<TreeRow, Node> treeRowToNodeMap;
-    private ScrollPanel panel;
-    private Label customTreeLabel;
 
     private TreePanelActionHandler handler;
 
@@ -37,12 +35,12 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         });
         treeRowToNodeMap = new HashMap<TreeRow, Node>();
 
-        panel = new ScrollPanel();
+        ScrollPanel panel = new ScrollPanel();
         panel.setStyleName(StylesNames.CUSTOM_TREE);
         panel.add(table);
 
         FlowPanel mainPanel = new FlowPanel();
-        customTreeLabel = new Label(StringConstants.CUSTOM_TREE);
+        Label customTreeLabel = new Label(StringConstants.CUSTOM_TREE);
         mainPanel.add(customTreeLabel);
         mainPanel.add(panel);
         mainPanel.setStyleName(StylesNames.CUSTOM_TREE_PANEL);
@@ -51,9 +49,9 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
     @Override
     public void setSelectedItem(Node node) {
-        Set<Map.Entry<TreeRow, Node>> entrySet = treeRowToNodeMap.entrySet();
+        Set<Entry<TreeRow, Node>> entrySet = treeRowToNodeMap.entrySet();
 
-        for (Map.Entry<TreeRow, Node> pair : entrySet) {
+        for (Entry<TreeRow, Node> pair : entrySet) {
             if (node.equals(pair.getValue())) {
                 table.setSelectedRow(pair.getKey());
             }
@@ -70,9 +68,9 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         TreeRow newRow = new TreeRow(newNode.getName());
         treeRowToNodeMap.put(newRow, newNode);
 
-        if (newNode.getParentId() == null)
+        if (newNode.getParentId() == null) {
             table.addRootRow(newRow);
-        else {
+        } else {
             newRow.increaseLevel(table.getSelectedRow().getLevel());
             table.getSelectedRow().addChild(newRow);
             table.addChildRow(newRow, table.getIndexOfSelectedRow());
@@ -89,11 +87,11 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
             TreeRow newRow = new TreeRow(n.getName());
             treeRowToNodeMap.put(newRow, n);
 
-            if (n.getParentId() == null)
+            if (n.getParentId() == null) {
                 rootNodes.add(newRow);
-            else {
-                Set<Map.Entry<TreeRow, Node>> entrySet = treeRowToNodeMap.entrySet();
-                for (Map.Entry<TreeRow, Node> pair : entrySet) {
+            } else {
+                Set<Entry<TreeRow, Node>> entrySet = treeRowToNodeMap.entrySet();
+                for (Entry<TreeRow, Node> pair : entrySet) {
                     if (pair.getValue().getId().equals(n.getParentId())) {
                         newRow.increaseLevel(pair.getKey().getLevel());
                         pair.getKey().addChild(newRow);
@@ -106,7 +104,11 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
 
     @Override
     public void onNameBoxChange(String name) {
-        table.getSelectedRow().setName(name);
+        if (!name.isEmpty()) {
+            table.getSelectedRow().setName(name);
+        } else {
+            table.getSelectedRow().setName(StringConstants.EMPTY_ITEM);
+        }
     }
 
     @Override

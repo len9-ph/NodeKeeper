@@ -74,8 +74,9 @@ public class TreePanelPresenter extends Presenter {
 
             @Override
             public void onBoxChange(BoxChangeEvent event) {
-                if (event.getField().equals(StringConstants.NAME))
+                if (event.getField().equals(StringConstants.NAME)) {
                     display.onNameBoxChange(event.getValue());
+                }
             }
         });
 

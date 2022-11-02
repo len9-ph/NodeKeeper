@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
@@ -78,10 +79,17 @@ public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
 
     @Override
     public void setSelectedId(Integer id) {
-        if (id != 0)
+        if (id != 0) {
             selectedNodeTextLabel.setText(id.toString());
-        else
+        }
+        else {
             selectedNodeTextLabel.setText(StringConstants.EMPTY_STRING);
+        }
+    }
+
+    @Override
+    public HasWidgets getContainer() {
+        return (HasWidgets) super.getWidget();
     }
 
 }

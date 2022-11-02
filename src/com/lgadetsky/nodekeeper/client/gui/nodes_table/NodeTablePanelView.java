@@ -65,8 +65,9 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
 
         for (int i = 0; i < nodes.size(); i++) {
             allNodesGrid.setText(i + 1, 0, nodes.get(i).getId().toString());
-            if (nodes.get(i).getParentId() != null)
+            if (nodes.get(i).getParentId() != null) {
                 allNodesGrid.setText(i + 1, 1, nodes.get(i).getParentId().toString());
+            }
             allNodesGrid.setText(i + 1, 2, nodes.get(i).getName());
             allNodesGrid.setText(i + 1, 3, nodes.get(i).getIp());
             allNodesGrid.setText(i + 1, 4, nodes.get(i).getPort());

@@ -16,6 +16,8 @@ public class StringConstants {
     public static final String ITEM_WAS_NOT_SELECTED = "Item was not selected";
     public static final String PARENT_ITEM_WAS_NOT_SELECTED = "Parent item not selected";
     public static final String PARENT_ITEM_NOT_VALID = "Parent has no id and cannot have children";
+    public static final String EMPTY_ITEMS = "Edit empty item or they will be deleted on next 'refresh' press";
+    
 
     // Buttons 
     public static final String ADD_ROOT = "Add root";
@@ -33,4 +35,6 @@ public class StringConstants {
     
     public static final String NEW_ROOT = "new root";
     public static final String NEW_CHILD = "new child";
+    
+    public static final String EMPTY_ITEM = "empty name item";
 }

@@ -17,7 +17,7 @@ public class TreeRow extends Composite {
     private Integer level;
     private List<TreeRow> childs;
     private TreeRow parentRow;
-    
+
     public TreeRow(String name) {
         this.level = 0;
         this.childs = new LinkedList<>();
@@ -27,10 +27,11 @@ public class TreeRow extends Composite {
         button.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (button.getValue())
+                if (button.getValue()) {
                     showChilds();
-                else
+                } else {
                     hideChilds();
+                }
             }
         });
 
@@ -48,7 +49,7 @@ public class TreeRow extends Composite {
     public void setSelected() {
         treeItemText.addStyleName(StylesNames.SELECTED_ITEM);
     }
-    
+
     public TreeRow getParentRow() {
         return parentRow;
     }
@@ -79,10 +80,11 @@ public class TreeRow extends Composite {
     }
 
     public boolean isParent() {
-        if (childs.isEmpty())
+        if (childs.isEmpty()) {
             return false;
-        else
+        } else {
             return true;
+        }
     }
 
     public Integer countChilds() {
@@ -90,12 +92,12 @@ public class TreeRow extends Composite {
     }
 
     private Integer countUtil(List<TreeRow> list) {
-        for (TreeRow row : list)
-            if (row.isParent())
+        for (TreeRow row : list) {
+            if (row.isParent()) {
                 return list.size() + countUtil(row.getChilds());
-
+            }
+        }
         return list.size();
-
     }
 
     public void pressButton() {
@@ -115,8 +117,9 @@ public class TreeRow extends Composite {
 
     private void hideChilds() {
         for (TreeRow row : childs) {
-            if (row.isParent())
+            if (row.isParent()) {
                 row.hideChilds();
+            }
             row.hide();
         }
     }
@@ -124,8 +127,9 @@ public class TreeRow extends Composite {
     private void showChilds() {
         for (TreeRow row : childs) {
             row.show();
-            if (row.isParent())
+            if (row.isParent()) {
                 row.setButtonHide();
+            }
         }
     }
 

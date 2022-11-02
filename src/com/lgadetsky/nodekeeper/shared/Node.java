@@ -5,13 +5,7 @@ import java.util.Comparator;
 
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
 
-/**
- * Bean
- * 
- * @author Leonid Gadetsky
- *
- */
-public class Node implements Serializable {
+public class Node implements Serializable, Comparator<Node>{
     private static final long serialVersionUID = 3927932427045891397L;
 
     private Integer id;
@@ -80,10 +74,8 @@ public class Node implements Serializable {
         this.port = port;
     }
 
-    public static final Comparator<Node> COMPARE_BY_ID = new Comparator<Node>() {
-        @Override
-        public int compare(Node o1, Node o2) {
-            return o1.getId().compareTo(o2.getId());
-        }
-    };
+    @Override
+    public int compare(Node o1, Node o2) {
+        return o1.getId().compareTo(o2.getId());
+    }
 }

@@ -10,4 +10,6 @@ public interface NodeKeeperDisplay {
     HasWidgets getContainer();
 
     void showPopUpMessage(String mes, NotificationType type);
+    
+    boolean showChoiceDialogBox(String mes);
 }

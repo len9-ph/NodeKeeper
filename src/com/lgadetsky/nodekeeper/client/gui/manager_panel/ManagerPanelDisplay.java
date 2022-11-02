@@ -1,5 +1,6 @@
 package com.lgadetsky.nodekeeper.client.gui.manager_panel;
 
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 public interface ManagerPanelDisplay {
@@ -16,6 +17,8 @@ public interface ManagerPanelDisplay {
     void setSelectedId(Integer id);
 
     void setManagerPanelActionHandler(ManagerPanelActionHandler handler);
+    
+    HasWidgets getContainer();
 
     Widget asWidget();
 }

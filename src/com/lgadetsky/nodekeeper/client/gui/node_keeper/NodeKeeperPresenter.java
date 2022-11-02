@@ -8,10 +8,9 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.lgadetsky.nodekeeper.client.NodeKeeper;
-import com.lgadetsky.nodekeeper.client.event.AddChildEvent;
-import com.lgadetsky.nodekeeper.client.event.AddChildEventHandler;
-import com.lgadetsky.nodekeeper.client.event.AddRootEvent;
-import com.lgadetsky.nodekeeper.client.event.AddRootEventHandler;
+import com.lgadetsky.nodekeeper.client.event.AddEvent;
+import com.lgadetsky.nodekeeper.client.event.AddEvent.ItemType;
+import com.lgadetsky.nodekeeper.client.event.AddEventHandler;
 import com.lgadetsky.nodekeeper.client.event.BoxChangeEvent;
 import com.lgadetsky.nodekeeper.client.event.BoxChangeEventHandler;
 import com.lgadetsky.nodekeeper.client.event.DeleteEvent;
@@ -51,23 +50,18 @@ public class NodeKeeperPresenter extends Presenter {
         setUpLocalEventBus();
 
         Presenter treePresenter = new TreePanelPresenter(eventBus, new TreePanelView());
-
         treePresenter.go(display.getContainer());
 
         Presenter customTreePresenter = new TreePanelPresenter(eventBus, new CustomTreePanelView());
-
         customTreePresenter.go(display.getContainer());
 
         Presenter selectedPresenter = new SelectedPanelPresenter(eventBus, new SelectedPanelView());
-
         selectedPresenter.go(display.getContainer());
 
         Presenter managerPresenter = new ManagerPanelPresenter(eventBus, new ManagerPanelView());
-
         managerPresenter.go(display.getContainer());
 
         Presenter tablePresenter = new NodeTablePanelPresenter(eventBus, new NodeTablePanelView());
-
         tablePresenter.go(display.getContainer());
 
         NodeKeeper.getRpc().getAllNodes(new AsyncCallback<List<Node>>() {
@@ -75,7 +69,7 @@ public class NodeKeeperPresenter extends Presenter {
             @Override
             public void onSuccess(List<Node> result) {
                 nodes.addAll(result);
-                Collections.sort(nodes, Node.COMPARE_BY_ID);
+                Collections.sort(nodes, new Node());
                 eventBus.fireEvent(new UpdateStateEvent(nodes));
             }
 
@@ -88,37 +82,32 @@ public class NodeKeeperPresenter extends Presenter {
     }
 
     public void setUpLocalEventBus() {
-        eventBus.addHandler(RefreshEvent.TYPE,
-                new RefreshEventHandler() {
-                    @Override
-                    public void onRefresh(RefreshEvent event) {
-                        if (changeNodes.isEmpty())
-                            display.showPopUpMessage(StringConstants.UP_TO_DATE, NotificationType.DEFAULT);
-                        else {
-                            NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
+        eventBus.addHandler(RefreshEvent.TYPE, new RefreshEventHandler() {
+            @Override
+            public void onRefresh(RefreshEvent event) {
+                display.showChoiceDialogBox("AAAAAAAAAAAAA");
+                if (changeNodes.isEmpty()) {
+                    display.showPopUpMessage(StringConstants.UP_TO_DATE, NotificationType.DEFAULT);
+                } else if (validate()) {
+                    
+                    
+                    NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
 
-                                @Override
-                                public void onSuccess(List<Node> result) {
-                                    nodes.clear();
-                                    nodes.addAll(result);
-                                    changeNodes.clear();
-                                    Collections.sort(nodes, Node.COMPARE_BY_ID);
-                                    eventBus.fireEvent(new UpdateStateEvent(nodes));
-
-                                    if (selectedNode != null) {
-                                        selectedNode = selectUtil();
-                                        eventBus.fireEvent(new SelectEvent(selectedNode));
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Throwable caught) {
-                                    display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
-                                }
-                            });
+                        @Override
+                        public void onSuccess(List<Node> result) {
+                            updateUtil(result);
                         }
-                    }
-                });
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
+                        }
+                    });
+                } else {
+                    display.showPopUpMessage(StringConstants.EMPTY_ITEMS, NotificationType.DEFAULT);
+                }
+            }
+        });
 
         eventBus.addHandler(SelectEvent.TYPE, new SelectEventHandler() {
 
@@ -128,29 +117,27 @@ public class NodeKeeperPresenter extends Presenter {
             }
         });
 
-        eventBus.addHandler(AddRootEvent.TYPE, new AddRootEventHandler() {
+        eventBus.addHandler(AddEvent.TYPE, new AddEventHandler() {
 
             @Override
-            public void onAddRoot(AddRootEvent event) {
-                Node newNode = new Node();
-                changeNodes.add(newNode);
-                eventBus.fireEvent(new UpdateTreeEvent(newNode));
-            }
-        });
-
-        eventBus.addHandler(AddChildEvent.TYPE, new AddChildEventHandler() {
-
-            @Override
-            public void onAddChild(AddChildEvent event) {
-                if (selectedNode != null) {
-                    if (selectedNode.getId() > 0) {
-                        Node newNode = new Node(selectedNode.getId());
-                        changeNodes.add(newNode);
-                        eventBus.fireEvent(new UpdateTreeEvent(newNode));
-                    } else
-                        display.showPopUpMessage(StringConstants.PARENT_ITEM_NOT_VALID, NotificationType.DEFAULT);
-                } else
-                    display.showPopUpMessage(StringConstants.PARENT_ITEM_WAS_NOT_SELECTED, NotificationType.DEFAULT);
+            public void onAdd(AddEvent event) {
+                if (event.getItemType() == ItemType.ROOT) {
+                    Node newNode = new Node();
+                    changeNodes.add(newNode);
+                    eventBus.fireEvent(new UpdateTreeEvent(newNode));
+                } else {
+                    if (selectedNode != null) {
+                        if (selectedNode.getId() > 0) {
+                            Node newNode = new Node(selectedNode.getId());
+                            changeNodes.add(newNode);
+                            eventBus.fireEvent(new UpdateTreeEvent(newNode));
+                        } else {
+                            display.showPopUpMessage(StringConstants.PARENT_ITEM_NOT_VALID, NotificationType.DEFAULT);
+                        }
+                    } else {
+                        display.showPopUpMessage(StringConstants.PARENT_ITEM_WAS_NOT_SELECTED, NotificationType.DEFAULT);
+                    }
+                }
             }
         });
 
@@ -158,8 +145,9 @@ public class NodeKeeperPresenter extends Presenter {
 
             @Override
             public void onBoxChange(BoxChangeEvent event) {
-                if (changeNodes.contains(selectedNode))
+                if (changeNodes.contains(selectedNode)) {
                     changeNodes.remove(selectedNode);
+                }
 
                 switch (event.getField()) {
                     case StringConstants.NAME:
@@ -180,13 +168,7 @@ public class NodeKeeperPresenter extends Presenter {
 
             @Override
             public void onDelete(DeleteEvent event) {
-                if (selectedNode.getId().equals(-1))
-                    changeNodes.remove(selectedNode);
-                else {
-                    deleteUtil(selectedNode.getId());
-                    selectedNode.setDeleted(true);
-                    changeNodes.add(selectedNode);
-                }
+                delete(selectedNode);
                 selectedNode = null;
             }
         });
@@ -205,10 +187,21 @@ public class NodeKeeperPresenter extends Presenter {
         container.add(display.asWidget());
     }
 
+    private void delete(Node node) {
+        if (node.getId().equals(-1)) {
+            changeNodes.remove(node);
+        } else {
+            deleteUtil(node.getId());
+            node.setDeleted(true);
+            changeNodes.add(node);
+        }
+    }
+
     private void deleteUtil(Integer parentId) {
         for (Node n : changeNodes) {
-            if (n.getParentId() != null && n.getParentId().equals(parentId) && !n.isDeleted())
+            if (n.getParentId() != null && n.getParentId().equals(parentId) && !n.isDeleted()) {
                 changeNodes.remove(n);
+            }
         }
 
         for (Node n : nodes) {
@@ -222,13 +215,37 @@ public class NodeKeeperPresenter extends Presenter {
 
     private Node selectUtil() {
         for (Node n : nodes)
-            if (n.getId().equals(selectedNode.getId()))
+            if (n.getId().equals(selectedNode.getId())) {
                 return n;
-            else if (n.getParentId() != null && n.getParentId().equals(selectedNode.getParentId()) &&
+            } else if ((n.getParentId() == null || n.getParentId().equals(selectedNode.getParentId())) &&
                     n.getIp().equals(selectedNode.getIp()) &&
                     n.getName().equals(selectedNode.getName()) &&
-                    n.getPort().equals(selectedNode.getPort()))
+                    n.getPort().equals(selectedNode.getPort())) {
                 return n;
+            }
         return selectedNode;
     }
+
+    private void updateUtil(List<Node> result) {
+        nodes.clear();
+        nodes.addAll(result);
+        changeNodes.clear();
+        Collections.sort(nodes, new Node());
+        eventBus.fireEvent(new UpdateStateEvent(nodes));
+
+        if (selectedNode != null) {
+            selectedNode = selectUtil();
+            eventBus.fireEvent(new SelectEvent(selectedNode));
+        }
+    }
+
+    private boolean validate() {
+        for (Node n : changeNodes) {
+            if (n.getName().isEmpty() && !n.isDeleted()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

@@ -2,7 +2,7 @@ package com.lgadetsky.nodekeeper.client.gui.tree_panel;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -20,9 +20,6 @@ import com.lgadetsky.nodekeeper.shared.Node;
 
 public class TreePanelView extends Composite implements TreePanelDisplay {
     private HashMap<TreeItem, Node> treeItemtoNodeMap;
-    private FlowPanel treePanel;
-    private Label treeText;
-    private ScrollPanel treeScroll;
     private final Tree mainTree;
 
     private TreePanelActionHandler handler;
@@ -33,12 +30,12 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
 
         mainTree = new Tree();
 
-        treePanel = new FlowPanel();
+        FlowPanel treePanel = new FlowPanel();
         treePanel.setStyleName(StylesNames.TREE_PANEL);
         initWidget(treePanel);
-        treeScroll = new ScrollPanel();
+        ScrollPanel treeScroll = new ScrollPanel();
         treeScroll.setStyleName(StylesNames.TREE_SCROLL);
-        treeText = new Label(StringConstants.TREE);
+        Label treeText = new Label(StringConstants.TREE);
         treePanel.add(treeText);
         treePanel.add(treeScroll);
         treeScroll.add(mainTree);
@@ -54,14 +51,15 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
     @Override
     public void setSelectedItem(Node node) {
 
-        Set<Map.Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
+        Set<Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
 
-        for (Map.Entry<TreeItem, Node> pair : entrySet) {
+        for (Entry<TreeItem, Node> pair : entrySet) {
             if (node.equals(pair.getValue())) {
                 mainTree.setSelectedItem(null);
 
-                if (pair.getKey().getParentItem() != null)
+                if (pair.getKey().getParentItem() != null) {
                     showFromTop(pair.getKey().getParentItem());
+                }
 
                 mainTree.setSelectedItem(pair.getKey(), false);
                 break;
@@ -79,9 +77,9 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
         TreeItem newTreeItem = new TreeItem(new HTML(newNode.getName()));
         treeItemtoNodeMap.put(newTreeItem, newNode);
 
-        if (newNode.getParentId() == null)
+        if (newNode.getParentId() == null) {
             mainTree.addItem(newTreeItem);
-        else {
+        } else {
             mainTree.getSelectedItem().setState(true);
             mainTree.getSelectedItem().addItem(newTreeItem);
         }
@@ -103,11 +101,12 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
                 TreeItem parentItem = null;
                 for (Node node : nodes) {
                     if (n.getParentId() != null && node.getId().equals(n.getParentId())) {
-                        Set<Map.Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
+                        Set<Entry<TreeItem, Node>> entrySet = treeItemtoNodeMap.entrySet();
 
-                        for (Map.Entry<TreeItem, Node> pair : entrySet) {
-                            if (node.equals(pair.getValue()))
+                        for (Entry<TreeItem, Node> pair : entrySet) {
+                            if (node.equals(pair.getValue())) {
                                 parentItem = pair.getKey();
+                            }
                         }
                     }
                 }
@@ -118,20 +117,26 @@ public class TreePanelView extends Composite implements TreePanelDisplay {
 
     @Override
     public void onNameBoxChange(String name) {
-        mainTree.getSelectedItem().setHTML(name);
+        if (!name.isEmpty()) {
+            mainTree.getSelectedItem().setHTML(name);
+        } else {
+            mainTree.getSelectedItem().setHTML(StringConstants.EMPTY_ITEM);
+        }
     }
 
     @Override
     public void onDelete() {
-        if (treeItemtoNodeMap.get(mainTree.getSelectedItem()).getParentId().equals(-1))
+        if (treeItemtoNodeMap.get(mainTree.getSelectedItem()).getParentId() == null) {
             mainTree.removeItem(mainTree.getSelectedItem());
-        else
+        } else {
             mainTree.getSelectedItem().getParentItem().removeItem(mainTree.getSelectedItem());
+        }
     }
 
     private void showFromTop(TreeItem parent) {
-        if (parent.getParentItem() != null)
+        if (parent.getParentItem() != null) {
             showFromTop(parent.getParentItem());
+        }
         parent.setState(true);
     }
 }

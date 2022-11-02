@@ -2,8 +2,8 @@ package com.lgadetsky.nodekeeper.client.gui.manager_panel;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.lgadetsky.nodekeeper.client.event.AddChildEvent;
-import com.lgadetsky.nodekeeper.client.event.AddRootEvent;
+import com.lgadetsky.nodekeeper.client.event.AddEvent;
+import com.lgadetsky.nodekeeper.client.event.AddEvent.ItemType;
 import com.lgadetsky.nodekeeper.client.event.DeleteEvent;
 import com.lgadetsky.nodekeeper.client.event.DeleteEventHandler;
 import com.lgadetsky.nodekeeper.client.event.EditEvent;
@@ -38,12 +38,12 @@ public class ManagerPanelPresenter extends Presenter {
 
             @Override
             public void onAddRootClick() {
-                eventBus.fireEvent(new AddRootEvent());
+                eventBus.fireEvent(new AddEvent(ItemType.ROOT));
             }
 
             @Override
             public void onAddChildClick() {
-                eventBus.fireEvent(new AddChildEvent());
+                eventBus.fireEvent(new AddEvent(ItemType.CHILD));
             }
         });
     }

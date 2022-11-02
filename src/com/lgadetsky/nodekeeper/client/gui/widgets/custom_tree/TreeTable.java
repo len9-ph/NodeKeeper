@@ -29,8 +29,9 @@ public class TreeTable extends Composite {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (selectedRow != null)
+                if (selectedRow != null) {
                     selectedRow.removeSelected();
+                }
 
                 Cell cell = treeTable.getCellForEvent(event);
                 indexOfSelected = cell.getRowIndex();
@@ -48,12 +49,14 @@ public class TreeTable extends Composite {
     }
 
     public void setSelectedRow(TreeRow selectedRow) {
-        if (this.selectedRow != null)
+        if (this.selectedRow != null) {
             this.selectedRow.removeSelected();
+        }
         this.selectedRow = selectedRow;
         this.selectedRow.setSelected();
-        if (selectedRow.getParentRow() != null)
+        if (selectedRow.getParentRow() != null) {
             showFromTop(selectedRow.getParentRow());
+        }
         this.indexOfSelected = getIndexOfRow(selectedRow);
     }
 
@@ -70,8 +73,9 @@ public class TreeTable extends Composite {
         TreeRow parentRow = (TreeRow) treeTable.getWidget(index, 0);
         parentRow.pressButton();
         row.setParentRow(parentRow);
-        if (index + parentRow.countChilds() > treeTable.getRowCount())
+        if (index + parentRow.countChilds() > treeTable.getRowCount()) {
             treeTable.setWidget(treeTable.getRowCount(), 0, row);
+        }
         else {
             treeTable.insertRow(index + parentRow.countChilds());
             treeTable.setWidget(index + parentRow.countChilds(), 0, row);
@@ -104,10 +108,12 @@ public class TreeTable extends Composite {
     public void delete() {
         if (selectedRow.isParent()) {
             treeTable.removeRow(indexOfSelected);
-            for (int i = 0; i < selectedRow.countChilds(); i++)
+            for (int i = 0; i < selectedRow.countChilds(); i++) {
                 treeTable.removeRow(indexOfSelected);
-        } else
+            }
+        } else {
             treeTable.removeRow(indexOfSelected);
+        }
     }
 
     public void clear() {
@@ -115,15 +121,17 @@ public class TreeTable extends Composite {
     }
     
     private void showFromTop(TreeRow parent) {
-        if (parent.getParentRow() != null)
+        if (parent.getParentRow() != null) {
             showFromTop(parent.getParentRow());
+        }
         parent.pressButton();
     }
     
     private Integer getIndexOfRow(TreeRow row) {
         for (int i = 0; i < treeTable.getRowCount(); i++) {
-            if (treeTable.getWidget(i, 0).equals(row))
+            if (treeTable.getWidget(i, 0).equals(row)) {
                 return i;
+            }
         }
         return null;
     }

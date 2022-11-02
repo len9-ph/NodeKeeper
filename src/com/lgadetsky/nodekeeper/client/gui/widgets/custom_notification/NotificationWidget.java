@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.lgadetsky.nodekeeper.client.util.NumberConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 
 public class NotificationWidget extends Composite {
@@ -41,7 +42,7 @@ public class NotificationWidget extends Composite {
                 hide();
             }
         };
-        timer.schedule(5000);
+        timer.schedule(NumberConstants.FIVE_SECONDS);
     }
 
     private void show() {
