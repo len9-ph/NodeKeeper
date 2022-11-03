@@ -75,8 +75,7 @@ public class TreeTable extends Composite {
         row.setParentRow(parentRow);
         if (index + parentRow.countChilds() > treeTable.getRowCount()) {
             treeTable.setWidget(treeTable.getRowCount(), 0, row);
-        }
-        else {
+        } else {
             treeTable.insertRow(index + parentRow.countChilds());
             treeTable.setWidget(index + parentRow.countChilds(), 0, row);
         }
@@ -119,14 +118,14 @@ public class TreeTable extends Composite {
     public void clear() {
         treeTable.removeAllRows();
     }
-    
+
     private void showFromTop(TreeRow parent) {
         if (parent.getParentRow() != null) {
             showFromTop(parent.getParentRow());
         }
         parent.pressButton();
     }
-    
+
     private Integer getIndexOfRow(TreeRow row) {
         for (int i = 0; i < treeTable.getRowCount(); i++) {
             if (treeTable.getWidget(i, 0).equals(row)) {

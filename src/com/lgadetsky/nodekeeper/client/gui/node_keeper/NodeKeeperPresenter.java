@@ -1,6 +1,7 @@
 package com.lgadetsky.nodekeeper.client.gui.node_keeper;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,13 +27,11 @@ import com.lgadetsky.nodekeeper.client.event.UpdateTreeEvent;
 import com.lgadetsky.nodekeeper.client.gui.Presenter;
 import com.lgadetsky.nodekeeper.client.gui.manager_panel.ManagerPanelPresenter;
 import com.lgadetsky.nodekeeper.client.gui.manager_panel.ManagerPanelView;
+import com.lgadetsky.nodekeeper.client.gui.node_keeper.NodeKeeperDisplay.NodeKeeperActionHandler;
 import com.lgadetsky.nodekeeper.client.gui.nodes_table.NodeTablePanelPresenter;
 import com.lgadetsky.nodekeeper.client.gui.nodes_table.NodeTablePanelView;
 import com.lgadetsky.nodekeeper.client.gui.selected_panel.SelectedPanelPresenter;
 import com.lgadetsky.nodekeeper.client.gui.selected_panel.SelectedPanelView;
-import com.lgadetsky.nodekeeper.client.gui.tree_panel.CustomTreePanelView;
-import com.lgadetsky.nodekeeper.client.gui.tree_panel.TreePanelPresenter;
-import com.lgadetsky.nodekeeper.client.gui.tree_panel.TreePanelView;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_notification.NotificationType;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.shared.Node;
@@ -47,64 +46,36 @@ public class NodeKeeperPresenter extends Presenter {
     public NodeKeeperPresenter(NodeKeeperDisplay display) {
         this.display = display;
 
+        bind();
         setUpLocalEventBus();
 
-        Presenter treePresenter = new TreePanelPresenter(eventBus, new TreePanelView());
-        treePresenter.go(display.getContainer());
+        initPresenters();
 
-        Presenter customTreePresenter = new TreePanelPresenter(eventBus, new CustomTreePanelView());
-        customTreePresenter.go(display.getContainer());
+        downloadData();
 
-        Presenter selectedPresenter = new SelectedPanelPresenter(eventBus, new SelectedPanelView());
-        selectedPresenter.go(display.getContainer());
+    }
 
-        Presenter managerPresenter = new ManagerPanelPresenter(eventBus, new ManagerPanelView());
-        managerPresenter.go(display.getContainer());
-
-        Presenter tablePresenter = new NodeTablePanelPresenter(eventBus, new NodeTablePanelView());
-        tablePresenter.go(display.getContainer());
-
-        NodeKeeper.getRpc().getAllNodes(new AsyncCallback<List<Node>>() {
+    public void bind() {
+        display.setNodeKeeperActionHandler(new NodeKeeperActionHandler() {
 
             @Override
-            public void onSuccess(List<Node> result) {
-                nodes.addAll(result);
-                Collections.sort(nodes, new Node());
-                eventBus.fireEvent(new UpdateStateEvent(nodes));
-            }
-
-            @Override
-            public void onFailure(Throwable caught) {
-                NodeKeeperPresenter.this.display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
+            public void onChoice() {
+                fixChangeNodes();
+                refreshData();
             }
         });
-
     }
 
     public void setUpLocalEventBus() {
         eventBus.addHandler(RefreshEvent.TYPE, new RefreshEventHandler() {
             @Override
             public void onRefresh(RefreshEvent event) {
-                display.showChoiceDialogBox("AAAAAAAAAAAAA");
                 if (changeNodes.isEmpty()) {
                     display.showPopUpMessage(StringConstants.UP_TO_DATE, NotificationType.DEFAULT);
                 } else if (validate()) {
-                    
-                    
-                    NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
-
-                        @Override
-                        public void onSuccess(List<Node> result) {
-                            updateUtil(result);
-                        }
-
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
-                        }
-                    });
+                    refreshData();
                 } else {
-                    display.showPopUpMessage(StringConstants.EMPTY_ITEMS, NotificationType.DEFAULT);
+                    display.showChoiceDialogBox(StringConstants.CHOICE_MESSAGE);
                 }
             }
         });
@@ -127,7 +98,7 @@ public class NodeKeeperPresenter extends Presenter {
                     eventBus.fireEvent(new UpdateTreeEvent(newNode));
                 } else {
                     if (selectedNode != null) {
-                        if (selectedNode.getId() > 0) {
+                        if (selectedNode.getId() != -1) {
                             Node newNode = new Node(selectedNode.getId());
                             changeNodes.add(newNode);
                             eventBus.fireEvent(new UpdateTreeEvent(newNode));
@@ -218,15 +189,49 @@ public class NodeKeeperPresenter extends Presenter {
             if (n.getId().equals(selectedNode.getId())) {
                 return n;
             } else if ((n.getParentId() == null || n.getParentId().equals(selectedNode.getParentId())) &&
+                    n.getIp() != null &&
                     n.getIp().equals(selectedNode.getIp()) &&
+                    n.getName() != null &&
                     n.getName().equals(selectedNode.getName()) &&
+                    n.getPort() != null &&
                     n.getPort().equals(selectedNode.getPort())) {
                 return n;
             }
         return selectedNode;
     }
 
-    private void updateUtil(List<Node> result) {
+    private void downloadData() {
+        NodeKeeper.getRpc().getAllNodes(new AsyncCallback<List<Node>>() {
+
+            @Override
+            public void onSuccess(List<Node> result) {
+                nodes.addAll(result);
+                Collections.sort(nodes, new Node());
+                eventBus.fireEvent(new UpdateStateEvent(nodes));
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                NodeKeeperPresenter.this.display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
+            }
+        });
+    }
+
+    private void refreshData() {
+        NodeKeeper.getRpc().saveChanges(changeNodes, new AsyncCallback<List<Node>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                display.showPopUpMessage(StringConstants.ERROR, NotificationType.ERROR);
+            }
+
+            @Override
+            public void onSuccess(List<Node> result) {
+                refreshUtil(result);
+            }
+        });
+    }
+
+    private void refreshUtil(List<Node> result) {
         nodes.clear();
         nodes.addAll(result);
         changeNodes.clear();
@@ -239,6 +244,19 @@ public class NodeKeeperPresenter extends Presenter {
         }
     }
 
+    private void fixChangeNodes() {
+        Iterator<Node> iter = changeNodes.iterator();
+
+        while (iter.hasNext()) {
+            Node curNode = iter.next();
+            if (curNode.getName().isEmpty() && !curNode.isDeleted()) {
+                if (curNode.equals(selectedNode) && curNode.getId().equals(-1))
+                    selectedNode = null;
+                iter.remove();
+            }
+        }
+    }
+
     private boolean validate() {
         for (Node n : changeNodes) {
             if (n.getName().isEmpty() && !n.isDeleted()) {
@@ -246,6 +264,17 @@ public class NodeKeeperPresenter extends Presenter {
             }
         }
         return true;
+    }
+
+    private void initPresenters() {
+        Presenter selectedPresenter = new SelectedPanelPresenter(eventBus, new SelectedPanelView());
+        selectedPresenter.go(display.getContainer());
+
+        Presenter managerPresenter = new ManagerPanelPresenter(eventBus, new ManagerPanelView());
+        managerPresenter.go(display.getContainer());
+
+        Presenter tablePresenter = new NodeTablePanelPresenter(eventBus, new NodeTablePanelView());
+        tablePresenter.go(display.getContainer());
     }
 
 }

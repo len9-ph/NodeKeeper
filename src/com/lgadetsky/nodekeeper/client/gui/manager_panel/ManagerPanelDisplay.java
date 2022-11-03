@@ -18,7 +18,9 @@ public interface ManagerPanelDisplay {
 
     void setManagerPanelActionHandler(ManagerPanelActionHandler handler);
     
-    HasWidgets getContainer();
-
+    HasWidgets getTreeContainer(); 
+    
+    HasWidgets getCustomTreeContainer();
+    
     Widget asWidget();
 }

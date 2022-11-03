@@ -8,12 +8,24 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.lgadetsky.nodekeeper.client.gui.widgets.ChoiceDialogBox;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_notification.NotificationType;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_notification.NotificationWidget;
+import com.lgadetsky.nodekeeper.client.util.StringConstants;
 
 public class NodeKeeperView extends Composite implements NodeKeeperDisplay {
     private NotificationWidget popUp;
+    private ChoiceDialogBox dialogBox;
+    private NodeKeeperActionHandler handler;
 
     public NodeKeeperView() {
         popUp = new NotificationWidget();
+        dialogBox = new ChoiceDialogBox(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (event.getSource().toString().equals(StringConstants.YES_SOURCE)) {
+                    handler.onChoice();
+                }
+            }
+        });
         FlowPanel mainpanel = new FlowPanel();
         initWidget(mainpanel);
     }
@@ -29,17 +41,12 @@ public class NodeKeeperView extends Composite implements NodeKeeperDisplay {
     }
 
     @Override
-    public boolean showChoiceDialogBox(String mes) {
-        
-        ChoiceDialogBox choiceBox = new ChoiceDialogBox(mes, new ClickHandler() {
-            
-            @Override
-            public void onClick(ClickEvent event) {
-                String src;
-                src = event.getSource().toString();
-                System.out.print(src);
-            }
-        });
-        return false;
+    public void showChoiceDialogBox(String mes) {
+        dialogBox.showDialog(mes);
+    }
+
+    @Override
+    public void setNodeKeeperActionHandler(NodeKeeperActionHandler handler) {
+        this.handler = handler;
     }
 }

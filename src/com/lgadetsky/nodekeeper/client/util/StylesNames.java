@@ -13,7 +13,8 @@ public class StylesNames {
     public static final String NOTIFICATION_WIDGET = "notification-widget-popup";
     public static final String DEFAULT_MESSAGE = "default-message";
     public static final String ERROR_MESSAGE = "error-message";
-
+    
+    public static final String MANAGER_CONTAINER = "manager-container";
     public static final String CUSTOM_TREE_PANEL = "custom-tree-panel";
     public static final String CUSTOM_TREE = "custom-tree";
 
@@ -33,4 +34,8 @@ public class StylesNames {
     public static final String ALL_NODES_PANEL = "all-nodes-panel";
     
     public static final String PLACEHOLDER = "placeholder";
+    
+    public static final String CHOICE_BOX = "choice-dialog-box";
+    public static final String YES_BUTTON = "yes-button";
+    public static final String NO_BUTTON = "no-button";
 }

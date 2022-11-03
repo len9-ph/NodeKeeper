@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.lgadetsky.nodekeeper.client.util.NumberConstants;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 import com.lgadetsky.nodekeeper.shared.Node;
@@ -27,18 +28,18 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
         Label selectedText = new Label(StringConstants.SELECTED);
         selectedPanel.add(selectedText);
         FlowPanel selectedTable = new FlowPanel();
-        selectedGrid = new Grid(5, 2);
+        selectedGrid = new Grid(NumberConstants.FIVE_ROW_COUNT, NumberConstants.TWO_COLUMN_COUNT);
         selectedTable.add(selectedGrid);
         selectedPanel.add(selectedTable);
         selectedGrid.setStyleName(StylesNames.SELECTED_GRID);
         selectedTable.setStyleName(StylesNames.SELECTED_NODE_TABLE);
         selectedPanel.setStyleName(StylesNames.SELECTED_NODE_PANEL);
 
-        selectedGrid.setText(0, 0, StringConstants.ID);
-        selectedGrid.setText(1, 0, StringConstants.PARENT_ID);
-        selectedGrid.setText(2, 0, StringConstants.NAME);
-        selectedGrid.setText(3, 0, StringConstants.IP);
-        selectedGrid.setText(4, 0, StringConstants.PORT);
+        selectedGrid.setText(NumberConstants.ID_ROW, NumberConstants.FIRST_COLUMN, StringConstants.ID);
+        selectedGrid.setText(NumberConstants.PARENT_ID_ROW, NumberConstants.FIRST_COLUMN, StringConstants.PARENT_ID);
+        selectedGrid.setText(NumberConstants.NAME_ROW, NumberConstants.FIRST_COLUMN, StringConstants.NAME);
+        selectedGrid.setText(NumberConstants.IP_ROW, NumberConstants.FIRST_COLUMN, StringConstants.IP);
+        selectedGrid.setText(NumberConstants.PORT_ROW, NumberConstants.FIRST_COLUMN, StringConstants.PORT);
 
         nameBox = new TextBox();
         ipBox = new TextBox();
@@ -68,15 +69,15 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void setNode(Node node) {
-        selectedGrid.setText(0, 1, node.getId().toString());
+        selectedGrid.setText(NumberConstants.ID_ROW, NumberConstants.PARENT_ID_COLUMN, node.getId().toString());
         if (node.getParentId() != null) {
-            selectedGrid.setText(1, 1, node.getParentId().toString());
+            selectedGrid.setText(NumberConstants.PARENT_ID_ROW, NumberConstants.PARENT_ID_COLUMN, node.getParentId().toString());
         } else {
-            selectedGrid.setText(1, 1, StringConstants.EMPTY_STRING);
+            selectedGrid.setText(NumberConstants.PARENT_ID_ROW, NumberConstants.PARENT_ID_COLUMN, StringConstants.EMPTY_STRING);
         }
-        selectedGrid.setText(2, 1, node.getName());
-        selectedGrid.setText(3, 1, node.getIp());
-        selectedGrid.setText(4, 1, node.getPort());
+        selectedGrid.setText(NumberConstants.NAME_ROW, NumberConstants.PARENT_ID_COLUMN, node.getName());
+        selectedGrid.setText(NumberConstants.IP_ROW, NumberConstants.PARENT_ID_COLUMN, node.getIp());
+        selectedGrid.setText(NumberConstants.PORT_ROW, NumberConstants.PARENT_ID_COLUMN, node.getPort());
     }
 
     @Override
@@ -86,23 +87,21 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void setEditState() {
-        if (!selectedGrid.getText(0, 1).isEmpty()) {
+        if (!selectedGrid.getText(NumberConstants.ID_ROW, NumberConstants.SECOND_COLUMN).equals(" ")) {
             nameBox.setText(StringConstants.EMPTY_STRING);
-            if (selectedGrid.getText(2, 1).equals(StringConstants.NEW_ROOT)) {
+            if (selectedGrid.getText(NumberConstants.NAME_ROW, NumberConstants.SECOND_COLUMN).equals(StringConstants.NEW_ROOT)) {
                 nameBox.getElement().setPropertyString(StylesNames.PLACEHOLDER, StringConstants.NEW_ROOT);
-            }
-            else if (selectedGrid.getText(2, 1).equals(StringConstants.NEW_CHILD)) {
+            } else if (selectedGrid.getText(NumberConstants.NAME_ROW, NumberConstants.SECOND_COLUMN).equals(StringConstants.NEW_CHILD)) {
                 nameBox.getElement().setPropertyString(StylesNames.PLACEHOLDER, StringConstants.NEW_CHILD);
-            }
-            else {
+            } else {
                 nameBox.getElement().setPropertyString(StylesNames.PLACEHOLDER, StringConstants.EMPTY_STRING);
-                nameBox.setText(selectedGrid.getText(2, 1));
+                nameBox.setText(selectedGrid.getText(NumberConstants.NAME_ROW, NumberConstants.SECOND_COLUMN));
             }
-            ipBox.setText(selectedGrid.getText(3, 1));
-            portBox.setText(selectedGrid.getText(4, 1));
-            selectedGrid.setWidget(2, 1, nameBox);
-            selectedGrid.setWidget(3, 1, ipBox);
-            selectedGrid.setWidget(4, 1, portBox);
+            ipBox.setText(selectedGrid.getText(NumberConstants.IP_ROW, NumberConstants.SECOND_COLUMN));
+            portBox.setText(selectedGrid.getText(NumberConstants.PORT_ROW, NumberConstants.SECOND_COLUMN));
+            selectedGrid.setWidget(NumberConstants.NAME_ROW, NumberConstants.SECOND_COLUMN, nameBox);
+            selectedGrid.setWidget(NumberConstants.IP_ROW, NumberConstants.SECOND_COLUMN, ipBox);
+            selectedGrid.setWidget(NumberConstants.PORT_ROW, NumberConstants.SECOND_COLUMN, portBox);
             nameBox.setFocus(true);
         } else {
             handler.onError(StringConstants.ITEM_WAS_NOT_SELECTED);
@@ -111,11 +110,11 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void clearPanel() {
-        selectedGrid.setText(0, 1, StringConstants.EMPTY_STRING);
-        selectedGrid.setText(1, 1, StringConstants.EMPTY_STRING);
-        selectedGrid.setText(2, 1, StringConstants.EMPTY_STRING);
-        selectedGrid.setText(3, 1, StringConstants.EMPTY_STRING);
-        selectedGrid.setText(4, 1, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(NumberConstants.ID_ROW, NumberConstants.SECOND_COLUMN, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(NumberConstants.PARENT_ID_ROW, NumberConstants.SECOND_COLUMN, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(NumberConstants.NAME_ROW, NumberConstants.SECOND_COLUMN, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(NumberConstants.IP_ROW, NumberConstants.SECOND_COLUMN, StringConstants.EMPTY_STRING);
+        selectedGrid.setText(NumberConstants.PORT_ROW, NumberConstants.SECOND_COLUMN, StringConstants.EMPTY_STRING);
     }
 
 }

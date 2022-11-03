@@ -17,7 +17,8 @@ public class StringConstants {
     public static final String PARENT_ITEM_WAS_NOT_SELECTED = "Parent item not selected";
     public static final String PARENT_ITEM_NOT_VALID = "Parent has no id and cannot have children";
     public static final String EMPTY_ITEMS = "Edit empty item or they will be deleted on next 'refresh' press";
-    
+    public static final String CHOICE_MESSAGE = "There are empty elements in the tree\r\n"
+            + "Do you want to cancel saving?";
 
     // Buttons 
     public static final String ADD_ROOT = "Add root";
@@ -25,6 +26,8 @@ public class StringConstants {
     public static final String EDIT = "Edit";
     public static final String DELETE = "Delete";
     public static final String REFRESH = "Refresh";
+    public static final String YES = "yes";
+    public static final String NO = "no";
 
     public static final String SELECTED_NODE = "Selected node: ";
     public static final String TREE = "Tree";
@@ -37,4 +40,6 @@ public class StringConstants {
     public static final String NEW_CHILD = "new child";
     
     public static final String EMPTY_ITEM = "empty name item";
+    
+    public static final String YES_SOURCE = "<button class=\"gwt-Button yes-button\" type=\"button\">yes</button>";
 }

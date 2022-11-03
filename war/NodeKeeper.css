@@ -20,6 +20,9 @@
 .hidden {
   visibility: hidden;
 }
+.manager-container {
+  display: inline-block;
+}
 .tree {
   display: inline-block;
   width: 298px;
@@ -126,6 +129,7 @@
 .selected-node-panel {
   display: inline-block;
   position: fixed;
+  left: 610px;
   width: 367px;
   margin: 4px;
   margin-left: 6px;
@@ -165,7 +169,7 @@
   border-radius: 4px;
   width: 600px;
   height: 30px;
-  margin-top: 4px;
+  margin-top: 6px;
   margin-bottom: 4px;
   background-color: #f6f4df;
 }
@@ -208,4 +212,32 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+.choice-dialog-box {
+  border: 1px solid;
+  border-radius: 4px;
+  background-color: #857F5E;
+  height: 80px;
+  left: 40%;
+  position: fixed;
+  top: 40%;
+  width: 300px;
+}
+.choice-dialog-box .gwt-Label {
+  text-align: center;
+  margin: 4px;
+}
+.choice-dialog-box .gwt-Button {
+  border: 1px solid;
+  border-radius: 4px;
+  width: 50px;
+  margin: 4px;
+  display: inline-block;
+  position: relative;
+}
+.choice-dialog-box .yes-button {
+  left: 16%;
+}
+.choice-dialog-box .no-button {
+  left: 46%;
 }

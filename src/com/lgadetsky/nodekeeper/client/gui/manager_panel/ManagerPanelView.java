@@ -11,6 +11,9 @@ import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 
 public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
+    private FlowPanel treeContainer;
+    private FlowPanel customTreeContainer;
+    
     private Button addRootButton;
     private Button addChildButton;
     private Button editButton;
@@ -22,8 +25,19 @@ public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
     private ManagerPanelActionHandler handler;
 
     public ManagerPanelView() {
+        FlowPanel managerPanel = new FlowPanel();
+        treeContainer = new FlowPanel();
+        
+        customTreeContainer = new FlowPanel();
         FlowPanel buttonPanel = new FlowPanel();
-        initWidget(buttonPanel);
+        treeContainer.setStyleName(StylesNames.MANAGER_CONTAINER);
+        customTreeContainer.setStyleName(StylesNames.MANAGER_CONTAINER);
+        
+        managerPanel.add(treeContainer);
+        managerPanel.add(customTreeContainer);
+        managerPanel.add(buttonPanel);
+        
+        initWidget(managerPanel);
 
         addRootButton = new Button(StringConstants.ADD_ROOT);
         addChildButton = new Button(StringConstants.ADD_CHILD);
@@ -88,8 +102,12 @@ public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
     }
 
     @Override
-    public HasWidgets getContainer() {
-        return (HasWidgets) super.getWidget();
+    public HasWidgets getTreeContainer() {
+        return this.treeContainer;
     }
 
+    @Override
+    public HasWidgets getCustomTreeContainer() {
+        return this.customTreeContainer;
+    }
 }

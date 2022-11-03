@@ -11,6 +11,9 @@ import com.lgadetsky.nodekeeper.client.event.SelectEvent;
 import com.lgadetsky.nodekeeper.client.event.SelectEventHandler;
 import com.lgadetsky.nodekeeper.client.gui.Presenter;
 import com.lgadetsky.nodekeeper.client.gui.manager_panel.ManagerPanelDisplay.ManagerPanelActionHandler;
+import com.lgadetsky.nodekeeper.client.gui.tree_panel.CustomTreePanelView;
+import com.lgadetsky.nodekeeper.client.gui.tree_panel.TreePanelPresenter;
+import com.lgadetsky.nodekeeper.client.gui.tree_panel.TreePanelView;
 
 public class ManagerPanelPresenter extends Presenter {
     private final HandlerManager eventBus;
@@ -19,6 +22,8 @@ public class ManagerPanelPresenter extends Presenter {
     public ManagerPanelPresenter(HandlerManager eventBus, ManagerPanelDisplay display) {
         this.eventBus = eventBus;
         this.display = display;
+
+        initPresenters();
 
         bind();
         setUpLocalEventBus();
@@ -72,4 +77,11 @@ public class ManagerPanelPresenter extends Presenter {
         container.add(display.asWidget());
     }
 
+    private void initPresenters() {
+        Presenter treePresenter = new TreePanelPresenter(eventBus, new TreePanelView());
+        treePresenter.go(display.getTreeContainer());
+
+        Presenter customTreePresenter = new TreePanelPresenter(eventBus, new CustomTreePanelView());
+        customTreePresenter.go(display.getCustomTreeContainer());
+    }
 }

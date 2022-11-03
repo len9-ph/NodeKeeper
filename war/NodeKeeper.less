@@ -32,6 +32,10 @@
     visibility: hidden;
 }
 
+.manager-container {
+    display: inline-block;
+}
+
 .tree {
     display: inline-block;
     width: @width / 2 - 2px;
@@ -141,6 +145,7 @@
 .selected-node-panel {
     display: inline-block;
     position: fixed;
+    left: 610px;
     width: 367px;
     margin: @margin-value;
     margin-left: 6px;
@@ -184,7 +189,7 @@
     .borders();
     width: @width;
     height: 30px;
-    margin-top: @margin-value;
+    margin-top: @margin-value + 2px;
     margin-bottom: @margin-value;
     background-color: @main-color;
     
@@ -233,6 +238,38 @@
             }
             
         }
+    }
+}
+
+.choice-dialog-box {
+    .borders();
+    background-color: #857F5E;
+    height: 80px;
+    left: 40%;
+    position: fixed;
+    top: 40%;
+    width: 300px;
+    
+    .gwt-Label {
+        text-align: center;
+        margin: @margin-value;
+    }
+    
+    .gwt-Button {
+        .borders();
+        
+        width: 50px;
+        margin: @margin-value;
+        display: inline-block;
+        position: relative;
+    }
+    
+    .yes-button {
+        left: 16%;
+    }
+    
+    .no-button {
+        left: 46%;
     }
 }
 

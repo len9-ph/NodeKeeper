@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
+import com.lgadetsky.nodekeeper.client.util.NumberConstants;
 import com.lgadetsky.nodekeeper.client.util.StringConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 import com.lgadetsky.nodekeeper.shared.Node;
@@ -41,12 +42,12 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
 
         // Table assembly
         allNodesTable = new FlowPanel();
-        allNodesGrid = new Grid(1, 5);
-        allNodesGrid.setText(0, 0, StringConstants.ID);
-        allNodesGrid.setText(0, 1, StringConstants.PARENT_ID);
-        allNodesGrid.setText(0, 2, StringConstants.NAME);
-        allNodesGrid.setText(0, 3, StringConstants.IP);
-        allNodesGrid.setText(0, 4, StringConstants.PORT);
+        allNodesGrid = new Grid(NumberConstants.HEADER_ROW, NumberConstants.FIVE_COLUMN_COUNT);
+        allNodesGrid.setText(NumberConstants.FIRST_ROW, NumberConstants.ID_COLUMN, StringConstants.ID);
+        allNodesGrid.setText(NumberConstants.FIRST_ROW, NumberConstants.PARENT_ID_COLUMN, StringConstants.PARENT_ID);
+        allNodesGrid.setText(NumberConstants.FIRST_ROW, NumberConstants.NAME_COLUMN, StringConstants.NAME);
+        allNodesGrid.setText(NumberConstants.FIRST_ROW, NumberConstants.IP_COLUMN, StringConstants.IP);
+        allNodesGrid.setText(NumberConstants.FIRST_ROW, NumberConstants.PORT_COLUMN, StringConstants.PORT);
         allNodesGrid.setStyleName(StylesNames.ALL_NODES_GRID);
         allNodesTable.setStyleName(StylesNames.ALL_NODES_PANEL);
 
@@ -61,16 +62,16 @@ public class NodeTablePanelView extends Composite implements NodesTablePanelDisp
 
     @Override
     public void setData(List<Node> nodes) {
-        allNodesGrid.resize(nodes.size() + 1, 5);
+        allNodesGrid.resize(nodes.size() + NumberConstants.HEADER_ROW, NumberConstants.FIVE_COLUMN_COUNT);
 
         for (int i = 0; i < nodes.size(); i++) {
-            allNodesGrid.setText(i + 1, 0, nodes.get(i).getId().toString());
+            allNodesGrid.setText(i + NumberConstants.HEADER_ROW, NumberConstants.ID_COLUMN, nodes.get(i).getId().toString());
             if (nodes.get(i).getParentId() != null) {
-                allNodesGrid.setText(i + 1, 1, nodes.get(i).getParentId().toString());
+                allNodesGrid.setText(i + NumberConstants.HEADER_ROW, NumberConstants.PARENT_ID_COLUMN, nodes.get(i).getParentId().toString());
             }
-            allNodesGrid.setText(i + 1, 2, nodes.get(i).getName());
-            allNodesGrid.setText(i + 1, 3, nodes.get(i).getIp());
-            allNodesGrid.setText(i + 1, 4, nodes.get(i).getPort());
+            allNodesGrid.setText(i + NumberConstants.HEADER_ROW, NumberConstants.NAME_COLUMN, nodes.get(i).getName());
+            allNodesGrid.setText(i + NumberConstants.HEADER_ROW, NumberConstants.IP_COLUMN, nodes.get(i).getIp());
+            allNodesGrid.setText(i + NumberConstants.HEADER_ROW, NumberConstants.PORT_COLUMN, nodes.get(i).getPort());
         }
     }
 }

@@ -5,11 +5,17 @@ import com.google.gwt.user.client.ui.Widget;
 import com.lgadetsky.nodekeeper.client.gui.widgets.custom_notification.NotificationType;
 
 public interface NodeKeeperDisplay {
+    interface NodeKeeperActionHandler {
+        void onChoice();
+    }
+
     Widget asWidget();
 
     HasWidgets getContainer();
 
     void showPopUpMessage(String mes, NotificationType type);
-    
-    boolean showChoiceDialogBox(String mes);
+
+    void showChoiceDialogBox(String mes);
+
+    void setNodeKeeperActionHandler(NodeKeeperActionHandler handler);
 }
