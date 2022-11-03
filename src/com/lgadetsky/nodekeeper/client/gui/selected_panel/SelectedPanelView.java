@@ -87,7 +87,7 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void setEditState() {
-        if (!selectedGrid.getText(NumberConstants.ID_ROW, NumberConstants.SECOND_COLUMN).equals(" ")) {
+        if (!selectedGrid.getHTML(NumberConstants.ID_ROW, NumberConstants.SECOND_COLUMN).equals(StringConstants.SET_EDIT_CHECK)) {
             nameBox.setText(StringConstants.EMPTY_STRING);
             if (selectedGrid.getText(NumberConstants.NAME_ROW, NumberConstants.SECOND_COLUMN).equals(StringConstants.NEW_ROOT)) {
                 nameBox.getElement().setPropertyString(StylesNames.PLACEHOLDER, StringConstants.NEW_ROOT);

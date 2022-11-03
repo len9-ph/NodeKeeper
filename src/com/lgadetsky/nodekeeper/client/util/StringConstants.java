@@ -42,4 +42,6 @@ public class StringConstants {
     public static final String EMPTY_ITEM = "empty name item";
     
     public static final String YES_SOURCE = "<button class=\"gwt-Button yes-button\" type=\"button\">yes</button>";
+    
+    public static final String SET_EDIT_CHECK = "&nbsp;";
 }
