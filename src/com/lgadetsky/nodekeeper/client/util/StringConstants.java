@@ -28,7 +28,7 @@ public class StringConstants {
     public static final String REFRESH = "Refresh";
     public static final String YES = "yes";
     public static final String NO = "no";
-
+    
     public static final String SELECTED_NODE = "Selected node: ";
     public static final String TREE = "Tree";
     public static final String CUSTOM_TREE = "Custom tree";
@@ -38,10 +38,13 @@ public class StringConstants {
     
     public static final String NEW_ROOT = "new root";
     public static final String NEW_CHILD = "new child";
+    public static final String NOT_SAVED = "Not saved";
     
     public static final String EMPTY_ITEM = "empty name item";
     
     public static final String YES_SOURCE = "<button class=\"gwt-Button yes-button\" type=\"button\">yes</button>";
     
     public static final String SET_EDIT_CHECK = "&nbsp;";
+    
+    
 }
