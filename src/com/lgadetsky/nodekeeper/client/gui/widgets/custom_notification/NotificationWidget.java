@@ -23,16 +23,7 @@ public class NotificationWidget extends Composite {
 
     public void showPopUp(String message, NotificationType type) {
         popUpMessage.setText(message);
-        switch (type) {
-            case DEFAULT:
-                popUpMessage.setStyleName(StylesNames.DEFAULT_MESSAGE);
-                break;
-            case ERROR:
-                popUpMessage.setStyleName(StylesNames.ERROR_MESSAGE);
-                break;
-            default:
-                break;
-        }
+        popUpMessage.setStyleName(type.getStyleName());
 
         show();
         Timer timer = new Timer() {

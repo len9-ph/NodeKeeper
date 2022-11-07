@@ -14,12 +14,6 @@ public class ManagerPanelView extends Composite implements ManagerPanelDisplay {
     private FlowPanel treeContainer;
     private FlowPanel customTreeContainer;
     
-//    private Button addRootButton;
-//    private Button addChildButton;
-//    private Button editButton;
-//    private Button deleteButton;
-//
-//    private Label selectedNodeLabel;
     private Label selectedNodeTextLabel;
 
     private ManagerPanelActionHandler handler;

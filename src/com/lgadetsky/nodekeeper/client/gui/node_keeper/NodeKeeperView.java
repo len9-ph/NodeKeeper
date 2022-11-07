@@ -17,6 +17,7 @@ public class NodeKeeperView extends Composite implements NodeKeeperDisplay {
 
     public NodeKeeperView() {
         popUp = new NotificationWidget();
+
         dialogBox = new ChoiceDialogBox(new ClickHandler() {
 
             @Override
