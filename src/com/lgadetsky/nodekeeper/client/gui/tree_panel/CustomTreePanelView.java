@@ -69,6 +69,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
         treeRowToNodeMap.put(newRow, newNode);
 
         if (newNode.getParentId() == null) {
+            newRow.increaseLevel(-1);
             table.addRootRow(newRow);
         } else {
             newRow.increaseLevel(table.getSelectedRow().getLevel());
@@ -88,6 +89,7 @@ public class CustomTreePanelView extends Composite implements TreePanelDisplay {
             treeRowToNodeMap.put(newRow, n);
 
             if (n.getParentId() == null) {
+                newRow.increaseLevel(-1);
                 rootNodes.add(newRow);
             } else {
                 Set<Entry<TreeRow, Node>> entrySet = treeRowToNodeMap.entrySet();
