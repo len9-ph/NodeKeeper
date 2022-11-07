@@ -3,12 +3,14 @@ package com.lgadetsky.nodekeeper.client.gui.widgets.custom_tree;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ToggleButton;
+import com.lgadetsky.nodekeeper.client.util.NumberConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 
 public class TreeRow extends Composite {
@@ -72,6 +74,11 @@ public class TreeRow extends Composite {
 
     public void increaseLevel(Integer parentLevel) {
         this.level = parentLevel + 1;
+        if (NumberConstants.DEFAULT_WIDTH - this.level * NumberConstants.WIDTH_SHIFT > NumberConstants.MIN_ROW_WIDTH) {
+            treeItemText.getElement().getStyle().setWidth(NumberConstants.DEFAULT_WIDTH - this.level * NumberConstants.WIDTH_SHIFT, Unit.PX);
+        } else {
+            treeItemText.getElement().getStyle().setWidth(NumberConstants.MIN_ROW_WIDTH, Unit.PX);
+        }
     }
 
     public void addChild(TreeRow row) {

@@ -26,4 +26,8 @@ public class NumberConstants {
     public static final Integer SECOND_COLUMN = 1;
 
     public static final Integer FIRST_ROW = 0;
+    
+    public static final Integer MIN_ROW_WIDTH = 30;
+    public static final Integer WIDTH_SHIFT = 15;
+    public static final Integer DEFAULT_WIDTH = 240;
 }

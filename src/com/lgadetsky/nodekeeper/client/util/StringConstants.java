@@ -46,5 +46,4 @@ public class StringConstants {
     
     public static final String SET_EDIT_CHECK = "&nbsp;";
     
-    
 }
