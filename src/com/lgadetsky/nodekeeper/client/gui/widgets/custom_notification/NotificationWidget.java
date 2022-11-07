@@ -9,11 +9,10 @@ import com.lgadetsky.nodekeeper.client.util.NumberConstants;
 import com.lgadetsky.nodekeeper.client.util.StylesNames;
 
 public class NotificationWidget extends Composite {
-    private FlowPanel popUpPanel;
     private Label popUpMessage;
 
     public NotificationWidget() {
-        popUpPanel = new FlowPanel();
+        FlowPanel popUpPanel = new FlowPanel();
         popUpPanel.setStyleName(StylesNames.NOTIFICATION_WIDGET);
 
         popUpMessage = new Label();

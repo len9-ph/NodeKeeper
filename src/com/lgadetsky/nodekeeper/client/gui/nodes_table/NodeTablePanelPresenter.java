@@ -34,7 +34,7 @@ public class NodeTablePanelPresenter extends Presenter {
         eventBus.addHandler(UpdateStateEvent.TYPE, new UpdateStateEventHandler() {
             @Override
             public void onUpdate(UpdateStateEvent event) {
-                display.setData(event.getNodes());
+                display.refreshData(event.getNodes());
             }
         });
     }

@@ -12,7 +12,7 @@ public interface NodesTablePanelDisplay {
 
     void setNodesTablePanelHandler(NodesTablePanelActionHandler handler);
 
-    void setData(List<Node> nodes);
+    void refreshData(List<Node> nodes);
 
     Widget asWidget();
 }

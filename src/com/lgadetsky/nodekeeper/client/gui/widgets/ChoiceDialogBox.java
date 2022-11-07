@@ -13,7 +13,7 @@ import com.lgadetsky.nodekeeper.client.util.StylesNames;
 public class ChoiceDialogBox extends Composite {
     private final ClickHandler handler;
 
-    private final Label messageLabel;
+    private final Label messageText;
 
     public ChoiceDialogBox(ClickHandler handler) {
         this.handler = handler;
@@ -21,8 +21,8 @@ public class ChoiceDialogBox extends Composite {
         choicePanel.setStyleName(StylesNames.CHOICE_BOX);
         initWidget(choicePanel);
 
-        messageLabel = new Label();
-        choicePanel.add(messageLabel);
+        messageText = new Label();
+        choicePanel.add(messageText);
 
         Button yesButton = new Button(StringConstants.YES);
         yesButton.addStyleName(StylesNames.YES_BUTTON);
@@ -52,7 +52,7 @@ public class ChoiceDialogBox extends Composite {
     }
 
     public void showDialog(String message) {
-        messageLabel.setText(message);
+        messageText.setText(message);
         show();
     }
 

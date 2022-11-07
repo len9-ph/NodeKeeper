@@ -188,13 +188,7 @@ public class NodeKeeperPresenter extends Presenter {
         for (Node n : nodes)
             if (n.getId().equals(selectedNode.getId())) {
                 return n;
-            } else if ((n.getParentId() == null || n.getParentId().equals(selectedNode.getParentId())) &&
-                    n.getIp() != null &&
-                    n.getIp().equals(selectedNode.getIp()) &&
-                    n.getName() != null &&
-                    n.getName().equals(selectedNode.getName()) &&
-                    n.getPort() != null &&
-                    n.getPort().equals(selectedNode.getPort())) {
+            } else if ((n.getName() != null && n.getName().equals(selectedNode.getName())) ) {
                 return n;
             }
         return selectedNode;

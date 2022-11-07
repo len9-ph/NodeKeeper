@@ -69,7 +69,7 @@ public class SelectedPanelView extends Composite implements SelectedPanelDisplay
 
     @Override
     public void setNode(Node node) {
-        if(!node.getId().equals(-1)) {
+        if (!node.getId().equals(-1)) {
             selectedGrid.setText(NumberConstants.ID_ROW, NumberConstants.PARENT_ID_COLUMN, node.getId().toString());
         } else {
             selectedGrid.setText(NumberConstants.ID_ROW, NumberConstants.PARENT_ID_COLUMN, StringConstants.NOT_SAVED);
